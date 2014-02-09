@@ -1,15 +1,16 @@
+
 class OneBlock extends Block {
 
 	public OneBlock(Tile.TileType t){
 		tileGrid = new Tile[3][3];
 		switch(t){
-			case Tile.TileType.RICE:
+			case RICE:
 				tileGrid[1][1] = new RiceField();
 				break;
-			case Tile.TileType.IRRIGATION:
+			case IRRIGATION:
 				tileGrid[1][1] = new Irrigation();
 				break;
-			case Tile.TileType.VILLAGE:
+			case VILLAGE:
 				tileGrid[1][1] = new Village();
 				break;
 			default:
@@ -21,15 +22,15 @@ class OneBlock extends Block {
 		tileGrid = t;
 	}
 
-	public static boolean rotate(){
+	public boolean rotate(){
 		return true; 
 	}
 
-	public getGrid(){
+	public Tile[][] getGrid(){
 		return tileGrid;
 	}
 
-	public setGrid(tileGrid[][] t){
+	public void setGrid(Tile[][] t){
 		tileGrid = t;
 	}
 }
