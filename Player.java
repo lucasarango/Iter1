@@ -10,14 +10,14 @@ public class Player {
 	private Color color;
 	private List<Developer> developers;
 	private List<Block> blocksLeft;
+	private Inventory inventory;
 	private int actionTokens;
 	
-	public Player(String name, Color color, List<Developer> developers, List<Block> blocks) {
+	public Player(String name, Color color) {
 		turnScore = 0;
 		this.name = name;
 		this.color = color;
-		this.developers = developers;
-		this.blocks = blocks;
+		inventory = new Inventory();
 		actionTokens = 3;
 	}
 	
