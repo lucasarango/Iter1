@@ -3,7 +3,7 @@ public class Palace extends Tile {
 	public Palace(Integer startValue)
 	{
 		value = startValue;
-		type = Tile.TileTypes.PALACE;
+		type = Tile.TileType.PALACE;
 	}
 	public void levelUp(Integer newValue)
 	{
