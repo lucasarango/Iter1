@@ -85,7 +85,7 @@ public class Board{
 			for(int j = 0; j < tiles[i].length; j++)
 			{
 				//check if empty part of grid
-				if(tiles.[i][j] != null)
+				if(tiles[i][j] != null)
 				{
 					//check for valid placement
 					if(checkplacement(b, spaces[coord[0]-1]][coord[1]-1]))
