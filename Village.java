@@ -1,6 +1,6 @@
 public class Village extends Tile {
 	public Village()
 	{
-		type = VILLAGE;
+		type = Tile.TileTypes.VILLAGE;
 	}
 }

@@ -1,6 +1,6 @@
 public class RiceField extends Tile {
 	public RiceField()
 	{
-		type = RICE;
+		type = Tile.TileTypes.RICE;
 	}
 }

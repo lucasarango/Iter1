@@ -1,6 +1,6 @@
 public class Irrigation extends Tile {
 	public Village()
 	{
-		type = IRRIGATION;
+		type = Tile.TileTypes.IRRIGATION;
 	}
 }

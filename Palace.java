@@ -1,9 +1,9 @@
 public class Palace extends Tile {
-	private Integer value;
+	protected Integer value;
 	public Palace(Integer startValue)
 	{
 		value = startValue;
-		type = PALACE;
+		type = Tile.TileTypes.PALACE;
 	}
 	public void levelUp(Integer newValue)
 	{
