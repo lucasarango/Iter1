@@ -1,6 +1,11 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
+/**************************************************************************************
+ *  Inventory is a state object managed by Player. It doesn't influence the game on its
+ *  own and is only accessible by the Player that owns it. 
+ **************************************************************************************/
 
 public class Inventory {
 	private List<Developer> developers;
@@ -41,5 +46,20 @@ public class Inventory {
 		else {
 			return false;
 		}
+	}
+	
+	public List<Developer> getDevelopers() {
+		return developers;
+	}
+	
+	public List<Block> getBlocksLeft() {
+		return blocksLeft;
+	}
+	
+	public void removeBlock(Block block) {
+		if(!blocksLeft.contains(block)) {
+			throw new NoSuchElementException();
+		}
+		blocksLeft.remove(block);
 	}
 }
