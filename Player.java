@@ -8,8 +8,6 @@ public class Player {
 	private int turnScore;
 	private String name;
 	private Color color;
-	private List<Developer> developers;
-	private List<Block> blocksLeft;
 	private Inventory inventory;
 	private int actionTokens;
 	
@@ -42,13 +40,7 @@ public class Player {
 	}
 	
 	public boolean useActionToken() {
-		if(actionTokens > 0) {
-			actionTokens--;
-			return true;
-		}
-		else {
-			return false;
-		}
+		return Inventory.useActionToken();
 	}
 	
 	public Developer getDeveloper(int coord_x, int coord_y) throws NoSuchElementException{

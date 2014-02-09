@@ -5,6 +5,7 @@ import java.util.List;
 public class Inventory {
 	private List<Developer> developers;
 	private List<Block> blocksLeft;
+	private int actionTokens;
 	
 	public Inventory() {
 		// Create initial developer list: 12 developers per player
@@ -24,6 +25,21 @@ public class Inventory {
 		}
 		for(int i = 0; i < 2; i++) {
 			// Create 2 one-space village/city tile
+		}
+		
+		actionTokens = 3;
+	}
+	
+	public int getActionTokens() {
+		return actionTokens;
+	}
+	public boolean useActionToken() {
+		if(actionTokens > 0) {
+			actionTokens--;
+			return true;
+		}
+		else {
+			return false;
 		}
 	}
 }
