@@ -10,15 +10,11 @@ public class Space{
 		tile = null;
 	}
 
-	public void placeBlock(Block b)
+	public void placeBlock(Block b, Tile t)
 	{
-		
-		if(b.getTile() != null)
-		{
-			this.block = b;
-			height++;
-			this.tile = b.getTile();
-		}
+		this.block = b;
+		height++;
+		this.tile = t;
 	}
 
 	public Block getBlock()
