@@ -1,14 +1,11 @@
 public class Board{
 
-	Space[][] spaces;
-	List<Block> threeBlocksLeft;
-	int[] dimensions;
+	private Space[][] spaces;
+	private List<Block> threeBlocksLeft;
+	private int[] dimensions;
 	
-	Board(){
-		
-	}
 
-	Board(int x, int y){
+	public Board(){
 		threeBlocksLeft = new ArrayList<Block>();
 
 		for(int i = 0; i < 56; i++)
@@ -20,9 +17,18 @@ public class Board{
 		dimensions = new int[2];
 		dimensions[0] = 12;
 		dimensions[1] = 12;
+
+		for(int i = 0; i < dimensions[0]; i++)
+		{
+			for(int j = 0; j < dimensions[1]; j++)
+			{
+				spaces[i][j] = new Space();
+			}
+		}
+		
 	}
 
-	Board(int x, int y){
+	public Board(int x, int y){
 		threeBlocksLeft = new ArrayList<Block>();
 
 		for(int i = 0; i < 56; i++)
@@ -34,6 +40,15 @@ public class Board{
 		dimensions = new int[2];
 		dimensions[0] = x;
 		dimensions[1] = y;
+
+		for(int i = 0; i < dimensions[0]; i++)
+		{
+			for(int j = 0; j < dimensions[1]; j++)
+			{
+				spaces[i][j] = new Space();
+			}
+		}
+
 	}
 
 	public boolean placeThreeBlock(Space s){
@@ -47,6 +62,7 @@ public class Board{
 			//select block
 			Block b = threeBlocksLeft.get(0);
 			placeBlock(b, s);
+			threeBlocksLeft.remove(0);
 			
 		}
 
@@ -113,6 +129,11 @@ public class Board{
 		}
 
 		return ret;
+	}
+
+	public Space[][] getSpaces()
+	{
+		return this.spaces;
 	}
 
 
