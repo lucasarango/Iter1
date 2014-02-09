@@ -73,6 +73,7 @@ public class GameMaster {
 		}
 		else {
 			developer.move(newSpace);
+			actionPoints -= cost;
 		}
 	}
 }
