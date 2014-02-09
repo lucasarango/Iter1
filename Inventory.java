@@ -24,12 +24,15 @@ public class Inventory {
 		blocksLeft = new ArrayList<Block>();
 		for(int i = 0; i < 5; i++) {
 			// Create 5 two-space land tiles
+			blocksLeft.add(new TwoBlock());
 		}
 		for(int i = 0; i < 3; i++) {
 			// Create 3 one-space rice field land tiles
+			blocksLeft.add(new OneBlock(RICE));
 		}
 		for(int i = 0; i < 2; i++) {
 			// Create 2 one-space village/city tile
+			blocksLeft.add(new OneBlock(VILLAGE));
 		}
 		
 		actionTokens = 3;
