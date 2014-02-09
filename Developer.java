@@ -1,5 +1,5 @@
 public class Developer {
-	Space location;
+	private Space location;
 
 	
 	public Developer() {
