@@ -1,9 +1,10 @@
 public class Developer {
 	private Space location;
+	private Player player;
 
 	
-	public Developer() {
-
+	public Developer(Player p) {
+		this.player = p;
 	}
 	
 	public boolean move(Space s) {
@@ -13,5 +14,9 @@ public class Developer {
 	
 	public Space getSpace() {
 		return location;
+	}
+
+	public void score(int score){
+		player.score(score);
 	}
 }
