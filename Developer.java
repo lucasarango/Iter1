@@ -1,15 +1,17 @@
 public class Developer {
-	private int xCoord;
-	private int yCoord;
+	private Space location;
 
 	
 	public Developer() {
 
 	}
 	
-	public boolean move(int x, int y) {
-		this.xCoord= x;
-		this.yCoord= y;
+	public boolean move(Space s) {
+		this.location=s;
+		return true;
 	}
 	
+	public Space getSpace() {
+		return location;
+	}
 }
