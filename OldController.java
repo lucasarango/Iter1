@@ -1,7 +1,7 @@
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class Controller {
+public class OldController {
 
 	public static void main(String[] args) {
 		View view = new View();
