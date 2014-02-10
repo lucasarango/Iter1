@@ -42,10 +42,20 @@ public class GameMaster {
 		return currentPlayer.useActionToken();
 	}
 	
-	public boolean endTurn() {
+	public void endTurn() {
 		// Reset stuff
 		// Add score to player
 		// Transition to new player
+		int turn = playerList.indexOf(currentPlayer);
+		turn++;
+		if(turn >= playerList.size())
+		{
+      turn -= playerList.size();
+		}
+		actionPoints = 6;
+		currentPlayer.addToScore(turnScore);
+		turnScore = 0;
+		currentPlayer = playerList.get(turn);
 	}
 	
 	// Removes block from player inventory and decrements action points.
@@ -56,6 +66,10 @@ public class GameMaster {
 			return currentPlayer.removeBlock(block);
 		}
 		return false;
+	}
+
+	public void returnBlock(Block block) {
+	  currentPlayer.addBlock(block);
 	}
 	
 	

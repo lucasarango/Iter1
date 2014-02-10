@@ -58,4 +58,8 @@ public class Player {
 			return false;
 		}
 	}
+
+	public void addBlock(Block block) {
+    inventory.addBlock(block);
+	}
 }

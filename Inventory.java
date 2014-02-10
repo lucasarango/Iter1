@@ -65,4 +65,8 @@ public class Inventory {
 		}
 		blocksLeft.remove(block);
 	}
+
+	public void addBlock(Block block) {
+    blocksLeft.add(block);
+	}
 }
