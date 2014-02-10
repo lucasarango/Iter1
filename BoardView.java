@@ -28,12 +28,12 @@ public class BoardView extends JFrame{
 		this.setBounds(50, 50, 910, 700);
         this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.getContentPane().setLayout(new GridLayout(12, 12, 4, 4));
+		this.getContentPane().setLayout(new GridLayout(14, 14, 4, 4));
 		
 		//Now we initialize the 144 game spaces
-		spaces = new JLabel[12][12];
-		for (int i = 0; i < 12; i++)
-			for (int x = 0; x < 12; x++) {
+		spaces = new JLabel[14][14];
+		for (int i = 0; i < 14; i++)
+			for (int x = 0; x < 14; x++) {
 				spaces[i][x] = new JLabel("X");
 				add(spaces[i][x]);
 			}
