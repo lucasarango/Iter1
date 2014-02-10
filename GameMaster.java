@@ -89,4 +89,12 @@ public class GameMaster {
 		}
 		return true;
 	}
+	
+	public void upgradePalace(int newLevel) {
+		turnScore += newLevel/2;
+	}
+	
+	public void scoreIrrigationTiles(int numOfITiles) {
+		turnScore += numOfITiles * 3;
+	}
 }
