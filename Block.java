@@ -1,11 +1,11 @@
 abstract class Block {
-	abstract private Tile[][] tileGrid;
+	protected Tile[][] tileGrid;
 
-	abstract public static boolean rotate();
+	abstract public boolean rotate();
 		
-	abstract public getGrid();
+	abstract public Tile[][] getGrid();
 
-	abstract public setGrid(tileGrid[][] t);
+	abstract public void setGrid(Tile[][] t);
 	/*
 		one blocks
 		it is variable

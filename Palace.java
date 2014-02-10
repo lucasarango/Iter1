@@ -1,5 +1,5 @@
 public class Palace extends Tile {
-	protected Integer value;
+	private Integer value;
 	public Palace(Integer startValue)
 	{
 		value = startValue;
@@ -8,5 +8,9 @@ public class Palace extends Tile {
 	public void levelUp(Integer newValue)
 	{
 		value = newValue;
+	}
+	public Integer getValue()
+	{
+		return value;
 	}
 }
