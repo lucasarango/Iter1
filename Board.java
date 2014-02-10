@@ -107,6 +107,12 @@ public class Board{
 					if(checkPlacement(b, spaces[coord[0]+i][coord[1]+j]))
 					{
 						spaces[coord[0]+i][coord[1]+j].placeBlock(b, tiles[i][j]);
+
+						//check if a scoreable tile
+						if(tiles[i][coord[j].getType() == Tile.TileType.Palace)
+							scorePalace(tiles[i][j], coord[0]+i, coord[1]+j);
+						else if(tiles[i][coord[j].getType() == Tile.TileType.Palace)
+							scoreIrrigation(tiles[i][j], coord[0]+i, coord[1]+j);
 					}
 				}
 			}
@@ -151,6 +157,46 @@ public class Board{
 	{
 		return this.spaces;
 	}
+
+	private void scorePalace(Palace p, int x, int y){
+		Developer highestDev = findHighestDeveloper(spaces[x][y]);
+		int score = 0
+		//check if owner is current player
+		//if(check here)
+			score = p.getvalue()/2
+
+		if(highestDev != null)
+			highestDev.score(score);
+		
+	}
+
+	private void scoreIrrigation(Irrigation i, int x, int y){
+		Developer highestDev = findHighestDeveloper(spaces[x][y]);
+		int score = 0;
+
+		//DFS for number of surrounded irrigation tiles
+		if(highestDev != null)
+			highestDev.score(score);
+		
+	}
+
+	private Developer findHighestDeveloper(Space s){
+		Developer highestDev = null;
+		int[] coord = findSpace(s);
+
+		//check for which algorithm to use to search
+		if(s.getTile() == Tile.TileType.Palace){
+			//DFS for highest rank developer in the surrounding city;
+		}
+		else if(s.getTile() == Tile.TileType.Irrigation){
+			//DFS for highest rank developer in the surrounding tiles;
+
+			//check there is no tie, if there is then return nothing
+		}
+		
+		return highestDev;
+	}
+
 
 
 

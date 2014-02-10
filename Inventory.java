@@ -12,11 +12,11 @@ public class Inventory {
 	private ArrayList<Block> blocksLeft;
 	private int actionTokens;
 
-	public Inventory() {
+	public Inventory(Player p) {
 		// Create initial developer list: 12 developers per player
 		developers = new ArrayList<Developer>();
 		for (int i = 0; i < 12; i++) {
-			developers.add(new Developer());
+			developers.add(new Developer(p));
 		}
 
 		// Create initial block list:

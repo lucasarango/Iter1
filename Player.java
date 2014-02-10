@@ -16,7 +16,7 @@ public class Player {
 		score = 0;
 		this.name = name;
 		this.color = color;
-		inventory = new Inventory();
+		inventory = new Inventory(this);
 	}
 
 	public String getName() {
@@ -41,6 +41,10 @@ public class Player {
 
 	public int getScore() {
 		return score;
+	}
+
+	public int setScore(int score){
+		this.score = score;
 	}
 
 	public boolean useActionToken() {
