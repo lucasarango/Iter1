@@ -4,7 +4,7 @@ class ThreeBlock extends Block {
 		tileGrid = new Tile[3][3];
 		tileGrid[1][1] = new Village();
 		tileGrid[1][0] = new RiceField();
-		tileGrid[1][2] = new RiceField();
+		tileGrid[0][1] = new RiceField();
 		//basically it's an L shape with a city in the center and a ricefield to the right and left in the grid
 	}
 
