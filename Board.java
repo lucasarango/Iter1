@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.*;
+
 public class Board{
 
 	private Space[][] spaces;
@@ -13,14 +16,15 @@ public class Board{
 			threeBlocksLeft.add(new ThreeBlock());
 		}
 		
-		spaces = new Space[12][12];
+		//The board needs a buffer zone on all sides because blocks can be placed on a board with just one tile on a space
+		spaces = new Space[14][14];
 		dimensions = new int[2];
 		dimensions[0] = 12;
 		dimensions[1] = 12;
 
-		for(int i = 0; i < dimensions[0]; i++)
+		for(int i = 0; i < dimensions[0]+2; i++)
 		{
-			for(int j = 0; j < dimensions[1]; j++)
+			for(int j = 0; j < dimensions[1]+2; j++)
 			{
 				spaces[i][j] = new Space();
 			}
@@ -35,15 +39,15 @@ public class Board{
 		{
 			threeBlocksLeft.add(new ThreeBlock());
 		}
-		
-		spaces = new Space[x][y];
+		//The board needs a buffer zone on all sides because blocks can be placed on a board with just one tile on a space
+		spaces = new Space[x+2][y+2];
 		dimensions = new int[2];
 		dimensions[0] = x;
 		dimensions[1] = y;
 
-		for(int i = 0; i < dimensions[0]; i++)
+		for(int i = 0; i < dimensions[0]+2; i++)
 		{
-			for(int j = 0; j < dimensions[1]; j++)
+			for(int j = 0; j < dimensions[1]+2; j++)
 			{
 				spaces[i][j] = new Space();
 			}
@@ -53,7 +57,7 @@ public class Board{
 
 	public Block getThreeBlock(){
 		//initialize return value to false
-		Block ret = NULL;
+		Block ret = null;
 
 		//check for existing block
 		if(!threeBlocksLeft.isEmpty())
@@ -78,6 +82,11 @@ public class Board{
 		}
 	}
 
+	public int getNumThreeBlocks()
+	{
+		return threeBlocksLeft.size();
+	}
+	
 	public boolean placeBlock(Block b, Space s){
 		//assumes block has been checked and exists
 
@@ -89,7 +98,7 @@ public class Board{
 		int[] coord = findSpace(s);
 
 		//iterate through grid and only place nonempty tiles
-		for(int i = 0; i < tiles.length: i++)
+		for(int i = 0; i < tiles.length; i++)
 		{
 			for(int j = 0; j < tiles[i].length; j++)
 			{
@@ -97,9 +106,9 @@ public class Board{
 				if(tiles[i][j] != null)
 				{
 					//check for valid placement
-					if(checkplacement(b, spaces[coord[0]-1]][coord[1]-1]))
+					if(checkPlacement(b, spaces[coord[0]+i][coord[1]+j]))
 					{
-						spaces[coord[0]-1]][coord[1]-1].placeBlock(b, tiles[i][j]);
+						spaces[coord[0]+i][coord[1]+j].placeBlock(b, tiles[i][j]);
 					}
 				}
 			}
@@ -108,14 +117,14 @@ public class Board{
 		return ret;
 	}
 
-	private boolean checkPlacement(Block b, Space[] s){
+	private boolean checkPlacement(Block b, Space s){
 		//initialize return value
 		boolean ret = false;
 
 		/* Oops dont have to do error checking
 		for(int i = 0; i < s.length; i++)
 		{
-			if(s[i].getBlock() = )
+			if(spaces[i].getBlock() = )
 		}*/
 
 		return true;
@@ -124,10 +133,10 @@ public class Board{
 
 	private int[] findSpace(Space s){
 		//optimize this
-		int[] ret = {-1,-1}
-		for(int i = 0; i < dimensions[0]; i++)
+		int[] ret = {-1,-1};
+		for(int i = 0; i < dimensions[0]+2; i++)
 		{
-			for(int j = 0 ; j < dimensions[1]; j++)
+			for(int j = 0 ; j < dimensions[1]+2; j++)
 			{
 				if(spaces[i][j].equals(s))
 				{

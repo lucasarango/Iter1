@@ -31,16 +31,4 @@ public class Space{
 	{
 		return this.height;
 	}
-
-	public boolean equals(Space s)
-	{
-    if(this.height == s.getHeight() && this.tile.equals(s.getTile)  && this.block.equals(s.getBlock()))
-    {
-      return true;
-    }
-    else
-    {
-      return false;
-    }
-	}
 }
