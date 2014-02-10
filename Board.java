@@ -51,22 +51,31 @@ public class Board{
 
 	}
 
-	public boolean placeThreeBlock(Space s){
+	public Block getThreeBlock(){
 		//initialize return value to false
-		boolean ret = false;
+		Block ret = NULL;
 
 		//check for existing block
 		if(!threeBlocksLeft.isEmpty())
 		{
-
 			//select block
-			Block b = threeBlocksLeft.get(0);
-			placeBlock(b, s);
-			threeBlocksLeft.remove(0);
-			
+			ret = threeBlocksLeft.remove(0);
 		}
 
 		return ret;
+	}
+
+	public boolean returnThreeBlock(Block b){
+		//Put three block back if player doesn't want to place it
+		if(threeBlocksLeft.size() >= 56)
+		{
+			threeBlocksLeft.add(b);
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	public boolean placeBlock(Block b, Space s){
@@ -103,10 +112,10 @@ public class Board{
 		//initialize return value
 		boolean ret = false;
 
-		/* Oops dont have to do error checking jk lol
+		/* Oops dont have to do error checking
 		for(int i = 0; i < s.length; i++)
 		{
-			if(s[i].getBlock() =)
+			if(s[i].getBlock() = )
 		}*/
 
 		return true;
@@ -120,7 +129,7 @@ public class Board{
 		{
 			for(int j = 0 ; j < dimensions[1]; j++)
 			{
-				if(spaces[i][j] == s)
+				if(spaces[i][j].equals(s))
 				{
 					ret[0] = i;
 					ret[1] = j;
