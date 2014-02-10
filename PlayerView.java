@@ -29,21 +29,23 @@ public class PlayerView extends JFrame{
 	private void initialize() throws Exception {
 		//First we set up the window. 
         this.setTitle("Player Info: ");
-		this.setBounds(50, 50, 400, 200);
+		this.setBounds(50, 50, 400, 250);
         this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.getContentPane().setLayout(new GridLayout(1, 4, 1 , 1));
 		
-		player1 = new JTextArea("P 1:\nDevs: \n1Blks: \n2Blks: \n3Blks: ");
+		String inventoryBoilerplate = "Devs: \n1Blks: \n2Blks: \nAction " +
+									  "Tokens: \nScore: ";
+		player1 = new JTextArea("P 1:\n" + inventoryBoilerplate);
 		player1.setEditable(false);
 		add(player1);
-		player2 = new JTextArea("P 2:\nDevs: \n1Blks: \n2Blks: \n3Blks: ");
+		player2 = new JTextArea("P 2:\n" + inventoryBoilerplate);
 		player2.setEditable(false);
 		add(player2);
-		player3 = new JTextArea("P 3:\nDevs: \n1Blks: \n2Blks: \n3Blks: ");
+		player3 = new JTextArea("P 3:\n" + inventoryBoilerplate);
 		player3.setEditable(false);
 		add(player3);
-		player4 = new JTextArea("P 4:\nDevs: \n1Blks: \n2Blks: \n3Blks: ");
+		player4 = new JTextArea("P 4:\n" + inventoryBoilerplate);
 		player4.setEditable(false);
 		add(player4);
 	}

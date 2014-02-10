@@ -38,6 +38,6 @@ public class BoardView extends JFrame{
 				add(spaces[i][x]);
 			}
 			
-		
 	}
+	
 }
