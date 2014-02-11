@@ -20,7 +20,7 @@ public class Board{
 
 		for(int i = 0; i < 12; i++)
 		{
-			irrigationsLeft.add(new OneBlock(new Irrigation()));
+			irrigationsLeft.add(new OneBlock(new IrrigationTile()));
 		}
 		
 		spaces = new Space[14][14];
@@ -94,7 +94,7 @@ public class Board{
 	}
 	
 	
-	public Block getIrrigationBlock(){
+	public Block getIrrigationTileBlock(){
 		//initialize return value to false
 		Block ret = null;
 
@@ -108,7 +108,7 @@ public class Board{
 		return ret;
 	}
 
-	public boolean returnIrrigation(Block b){
+	public boolean returnIrrigationTile(Block b){
 		//Put three block back if player doesn't want to place it
 		if(irrigationsLeft.size() >= 12)
 		{
@@ -121,7 +121,7 @@ public class Board{
 		}
 	}
 
-	public int getIrrigationsLeft()
+	public int getIrrigationTilesLeft()
 	{
 		return irrigationsLeft.size();
 	}
@@ -153,7 +153,7 @@ public class Board{
 						if (tiles[i][j] instanceof Palace)
 							scorePalace(tiles[i][j], coord[0] + i, coord[1] + j);
 						else if (tiles[i][j] instanceof Palace)
-							scoreIrrigation(tiles[i][j], coord[0] + i, coord[1]+ j);
+							scoreIrrigationTile(tiles[i][j], coord[0] + i, coord[1]+ j);
 					}
 				}
 			}
@@ -206,7 +206,7 @@ public class Board{
 
 	}
 
-	private void scoreIrrigation(Tile tiles, int x, int y) {
+	private void scoreIrrigationTile(Tile tiles, int x, int y) {
 		Developer highestDev = findHighestDeveloper(spaces[x][y]);
 		int score = 0;
 
@@ -221,7 +221,7 @@ public class Board{
 		// check for which algorithm to use to search
 		if (s.getTile() instanceof Palace) {
 			// DFS for highest rank developer in the surrounding city;
-		} else if (s.getTile() instanceof Irrigation) {
+		} else if (s.getTile() instanceof IrrigationTile) {
 			// DFS for highest rank developer in the surrounding tiles;
 
 			// check there is no tie, if there is then return nothing
