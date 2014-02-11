@@ -2,11 +2,7 @@ import java.util.*;
 
 public class Position {
 
-	private static HashMap<Space, Developer> map;
-
-	public Position() {
-		Position.map = new HashMap<Space, Developer>();
-	}
+	public static HashMap<Space, Developer> map = new HashMap<Space, Developer>();
 
 	public void addPair(Space s, Developer d) {
 		map.put(s, d);

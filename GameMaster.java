@@ -84,7 +84,7 @@ public class GameMaster {
 		}
 		pos.addPair(newSpace, developer);
 
-		Space oldSpice = developer.getSpace();
+		// Space oldSpice = developer.getSpace();
 		int cost = 1;
 
 		// Implement a better way to do this

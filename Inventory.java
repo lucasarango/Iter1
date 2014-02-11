@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 /**************************************************************************************
  * Inventory is a state object managed by Player. It doesn't influence the game

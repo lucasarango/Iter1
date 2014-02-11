@@ -213,7 +213,7 @@ public class Board {
 			while (it.hasNext()) {
 				s = queuePath.remove();
 				// FOUND A DEVELOPER
-				if (pos.isThereDeveloper(s)) {
+				if (Position.isThereDeveloper(s)) {
 					return pos.getDeveloper(s);
 				}
 				if (spaces[x][y + 1].getTile() instanceof VillageTile

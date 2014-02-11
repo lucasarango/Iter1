@@ -7,48 +7,59 @@ public class Main {
 		Scanner in = new Scanner(System.in);
 		// 1. Initialize Board
 		Board board = new Board();
-
 		ArrayList<String> players = new ArrayList<String>();
 		System.out.println("How many players are playing?");
 		int p = in.nextInt();
-
 		// 2. Initialize a playerList for GameMaster
-
 		for (int i = 0; i < p; i++) {
 			System.out.println("What is the name of Player " + (i + 1));
 			players.add(in.next());
 		}
-
-		// START GAME MASTER TEST
-
-		// 3. Initializing a Game
+		// Initialize Game with list of players
 		GameMaster game = new GameMaster(players);
 
-		while (true) {
+		boolean endgame = false;
+		// This while true should be the end game condition. In otherwords,
+		// while !endgame
+		while (!endgame) {
 			System.out.println("It is currently " + game.getPlayerName()
 					+ " turn");
 
-			// 4. Player 1's Turn
-			// FLOW IS: MUST PLACE LAND TILE
-			System.out.println("What land tile would you like to place?");
-			System.out.println("1. One block tile 2. Two block tile?");
+			// Player 1's Turn
+			// FLOW IS:
+			// 1. MUST PLACE LAND TILE
+			System.out.println("Which land tile would you like to place?");
+			System.out
+					.println("1. One block tile 2. Two block tile 3. Three Block TIle?");
 			int k = in.nextInt();
 			System.out.println("Where in the board? x y coordinate");
 			printBoard(board);
+			// Potential to fix something here. Might not be the best to read in
+			// two rows, up to you guys
+			// This part could also use the numPad as a way to move it around.
 			int x = in.nextInt();
 			int y = in.nextInt();
+
+			int q;
+			// Place 1 Block Tile
 			if (k == 1) {
-				// Place 1 Block Tile
+				System.out.println("Do you want to place");
+				System.out.println("1. Village 2.Irrigation");
+
+				// FIX ME HERE PLZ
 				Block OneBlock = game.getOneBlock();
 				printBlock(OneBlock);
 				board.placeBlock(OneBlock, board.getSpaces()[x][y]);
 			}
+			// Place 2 Block Tile
+
 			if (k == 2) {
-				// Place Block Tile
+				// Get a TwoBlock from Game Master
 				Block TwoBlock = game.getTwoBlock();
 				printBlock(TwoBlock);
 				System.out.println("Rotate tile? 1. Yes 2. No");
-				int q = in.nextInt();
+				q = in.nextInt();
+				// DO WE MAKE IT DANCE?
 				while (q != 2) {
 					if (q == 1) {
 						TwoBlock.rotate();
@@ -57,11 +68,33 @@ public class Main {
 					System.out.println("Rotate tile? 1. Yes 2. No");
 					q = in.nextInt();
 				}
+				// Place block on coordinates.
 				board.placeBlock(TwoBlock, board.getSpaces()[x][y]);
+			}
+			// Place 3 Block Tile
+
+			if (k == 3) {
+				Block ThreeBlock = board.getThreeBlock();
+				printBlock(ThreeBlock);
+				System.out.println("Rotate tile? 1. Yes 2. No");
+				q = in.nextInt();
+				while (q != 2) {
+					if (q == 1) {
+						ThreeBlock.rotate();
+						printBlock(ThreeBlock);
+					}
+					System.out.println("Rotate tile? 1. Yes 2. No");
+					q = in.nextInt();
+				}
+				board.placeBlock(ThreeBlock, board.getSpaces()[x][y]);
 			}
 			printBoard(board);
 
+			// Mandatory Step is over, the rest is "optional" from here
 			boolean endTurn = false;
+			int d;
+			// Check if player has enough action points and if he declared his
+			// end of turn
 			while (game.getActionPoints() != 0 && !endTurn) {
 				System.out.println("You have " + game.getActionPoints()
 						+ " action Points left");
@@ -71,16 +104,19 @@ public class Main {
 						.println("1. Move Developer to Board 2. Move Developer on Board");
 				System.out
 						.println("3. Build Palace 4. Place another block 5. End Turn");
-				int d;
 
 				switch (in.nextInt()) {
 				case 1:
 					// Move Developer to Board
 					System.out.println("Which Developer do you want to move?");
+					// FIX METHOD BELOW
 					printDevelopers(game.getPlayerDevelopers(), board);
+					// Developer list starts at 0, but I offset it when printing
+					// the developers out
 					d = in.nextInt() - 1;
 					System.out.println("Where in the board? x y coordinate");
 					printBoard(board);
+					// Same as with block, this section could be improved.
 					x = in.nextInt();
 					y = in.nextInt();
 					System.out.println("Moving Developer to Board");
@@ -101,12 +137,19 @@ public class Main {
 					x = in.nextInt();
 					y = in.nextInt();
 
-					int a = 0;
-					while (a != 1) {
+					int confirm = 0;
+					// I tried to make it so that the player could choose wether
+					// to confirm the move they wanted or not.
+
+					while (confirm != 1) {
+						// The point here is to emphasize that moving from
+						// thisSpace to thatSpace will cost X action points. I
+						// was thinking of a greedy algorithm, but it's not
+						// necessary if the player is dictating the moves
 						System.out
 								.println("It will take 3 AP points. Confirm? 1. Yes 2. No");
-						a = in.nextInt();
-						if (a == 1) {
+						confirm = in.nextInt();
+						if (confirm == 1) {
 							System.out.println("Moving Developer on Board");
 
 							game.moveDeveloper(game.getDeveloper(d),
@@ -114,6 +157,7 @@ public class Main {
 							printBoard(board);
 
 						} else {
+							// Else, try another set of coordinates
 							System.out
 									.println("Where in the board? x y coordinate");
 							printBoard(board);
@@ -124,11 +168,17 @@ public class Main {
 
 					break;
 				case 3:
+
+					// This should be highlited in red if I could
+
 					System.out.println("Building Palace");
 
 					// Place another Block
 					break;
 				case 4:
+					// Same as placing a land tile the first time around, no
+					// creative innovations :( Maybe make this a method? It
+					// would make the code look nicer
 					System.out.println("Placing another block");
 					System.out
 							.println("What land tile would you like to place?");
@@ -149,7 +199,7 @@ public class Main {
 						Block TwoBlock = game.getTwoBlock();
 						printBlock(TwoBlock);
 						System.out.println("Rotate tile? 1. Yes 2. No");
-						int q = in.nextInt();
+						q = in.nextInt();
 						while (q != 2) {
 							if (q == 1) {
 								TwoBlock.rotate();
@@ -160,56 +210,38 @@ public class Main {
 						}
 						board.placeBlock(TwoBlock, board.getSpaces()[x][y]);
 					}
+					if (k == 3) {
+						// Place Block Tile
+						Block ThreeBlock = board.getThreeBlock();
+						printBlock(ThreeBlock);
+						System.out.println("Rotate tile? 1. Yes 2. No");
+						q = in.nextInt();
+						while (q != 2) {
+							if (q == 1) {
+								ThreeBlock.rotate();
+								printBlock(ThreeBlock);
+							}
+							System.out.println("Rotate tile? 1. Yes 2. No");
+							q = in.nextInt();
+						}
+						board.placeBlock(ThreeBlock, board.getSpaces()[x][y]);
+					}
 					printBoard(board);
 					break;
 				case 5:
 					System.out.println("End Turn");
+					// set endTurn to true to exit the while loop
 					endTurn = true;
 					game.endTurn();
 					break;
 
 				}
 			}
-
-			/*
-			 * game.endTurn(); System.out.println("End Turn");
-			 * System.out.println("Current Player: " + game.getPlayerName());
-			 * System.out.println(game.getPlayerBlocks());
-			 * 
-			 * game.endTurn(); System.out.println("Current Player: " +
-			 * game.getPlayerName());
-			 * 
-			 * // END GAME MASTER TEST
-			 * 
-			 * // START BOARD TEST printBoard(board);
-			 * System.out.println("There are " + board.getNumThreeBlocks() +
-			 * " Three-Blocks left.");
-			 * 
-			 * Block three = board.getThreeBlock(); printBlock(three);
-			 * three.rotate(); printBlock(three); three.rotate();
-			 * printBlock(three);
-			 * 
-			 * board.placeBlock(three, board.getSpaces()[0][0]);
-			 * 
-			 * printBoard(board);
-			 * 
-			 * Block three2 = board.getThreeBlock(); printBlock(three2);
-			 * 
-			 * board.placeBlock(three2, board.getSpaces()[11][11]);
-			 * 
-			 * printBoard(board);
-			 * 
-			 * // END BOARD TEST
-			 * 
-			 * // START PLAYER TEST
-			 * 
-			 * // END PLAYER TEST
-			 */}
+		}
 	}
 
 	private static void printDevelopers(List<Developer> playerDevelopers,
 			Board board) {
-		// TODO Auto-generated method stub
 		int i = 1;
 		for (Developer d : playerDevelopers) {
 			System.out.print("Developer " + i + ": is in ");
