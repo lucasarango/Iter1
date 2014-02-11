@@ -150,10 +150,10 @@ public class Board{
 					{
 						spaces[coord[0]+i][coord[1]+j].placeBlock(b, tiles[i][j]);
 						// check if a scoreable tile
-						if (tiles[i][j] instanceof Palace)
-							scorePalace(tiles[i][j], coord[0] + i, coord[1] + j);
-						else if (tiles[i][j] instanceof Palace)
-							scoreIrrigationTile(tiles[i][j], coord[0] + i, coord[1]+ j);
+						if (tiles[i][j] instanceof PalaceTile)
+							scorePalace((PalaceTile)tiles[i][j], coord[0] + i, coord[1] + j);
+						else if (tiles[i][j] instanceof IrrigationTile)
+							scoreIrrigationTile((IrrigationTile)tiles[i][j], coord[0] + i, coord[1]+ j);
 					}
 				}
 			}
@@ -194,19 +194,19 @@ public class Board{
 		return ret;
 	}
 	
-	private void scorePalace(Tile tiles, int x, int y) {
+	private void scorePalace(PalaceTile tile, int x, int y) {
 		Developer highestDev = findHighestDeveloper(spaces[x][y]);
 		int score = 0;
 		// check if owner is current player
 		// if(check here)
-		score = tiles.getValue() / 2;
+		score = tile.getValue() / 2;
 
 		if (highestDev != null)
 			highestDev.score(score);
 
 	}
 
-	private void scoreIrrigationTile(Tile tiles, int x, int y) {
+	private void scoreIrrigationTile(IrrigationTile tile, int x, int y) {
 		Developer highestDev = findHighestDeveloper(spaces[x][y]);
 		int score = 0;
 
@@ -219,7 +219,7 @@ public class Board{
 	private Developer findHighestDeveloper(Space s) {
 		Developer highestDev = null;
 		// check for which algorithm to use to search
-		if (s.getTile() instanceof Palace) {
+		if (s.getTile() instanceof PalaceTile) {
 			// DFS for highest rank developer in the surrounding city;
 		} else if (s.getTile() instanceof IrrigationTile) {
 			// DFS for highest rank developer in the surrounding tiles;
