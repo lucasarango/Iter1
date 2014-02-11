@@ -15,10 +15,16 @@ public class GameMaster {
 			playerList.add(player);
 		}
 		currentPlayer = playerList.get(0);
+		actionPoints = 6;
 	}
 
 	public String getPlayerName() {
 		return currentPlayer.getName();
+	}
+
+	public int getActionPoints() {
+		return actionPoints;
+
 	}
 
 	public List<Developer> getPlayerDevelopers() {
@@ -52,16 +58,16 @@ public class GameMaster {
 		currentPlayer = playerList.get(turn);
 	}
 
-	public boolean placeBlock(Block block) {
+	public void placeBlock(Block block) {
 		// Removes block from player inventory and decrements action points.
 		// Returns true if successful.
 		// Returning false doesn't distinguish between insufficient action
 		// points or
 		// the block not existing.
 		if (actionPoints > 0) {
-			return currentPlayer.removeBlock(block);
+			currentPlayer.removeBlock(block);
+
 		}
-		return false;
 	}
 
 	public void returnBlock(Block block) {
@@ -98,6 +104,24 @@ public class GameMaster {
 
 	public void scoreIrrigationTiles(int numOfITiles) {
 		turnScore += numOfITiles * 3;
+	}
+
+	public int getPlayerActionTokens() {
+		return currentPlayer.getActionTokens();
+	}
+
+	public Block getOneBlock() {
+		Block b = currentPlayer.getOneBlock();
+		currentPlayer.removeBlock(b);
+
+		return b;
+	}
+
+	public Block getTwoBlock() {
+		Block b = currentPlayer.getTwoBlock();
+		currentPlayer.removeBlock(b);
+
+		return b;
 	}
 
 }

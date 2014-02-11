@@ -234,13 +234,7 @@ public class Board {
 				}
 			}
 		} else if (s.getTile() instanceof IrrigationTile) {
-			// DFS for highest rank developer in the surrounding tiles;
-
 			/*
-			 * // check for which algorithm to use to search if
-			 * (s.getTile().equals(Tile.TileType.PALACE)) { // DFS for highest
-			 * rank developer in the surrounding city; } else if
-			 * (s.getTile().equals(Tile.TileType.IRRIGATION)) { // DFS for
 			 * highest rank developer in the surrounding tiles;
 			 * 
 			 * // check there is no tie, if there is then return nothing }

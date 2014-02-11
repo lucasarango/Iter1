@@ -3,89 +3,133 @@ import java.util.*;
 public class Main {
 
 	public static void main(String[] args) {
-		// Steps to start a new game and flow of the game!
-		Player player1 = new Player("Jon");
-
+		Scanner in = new Scanner(System.in);
 		// 1. Initialize Board
 		Board board = new Board();
 
-		// START GAME MASTER TEST
+		ArrayList<String> players = new ArrayList<String>();
+		System.out.println("How many players are playing?");
+		int p = in.nextInt();
 
 		// 2. Initialize a playerList for GameMaster
-		ArrayList<String> players = new ArrayList<String>();
-		players.add("Lucas");
-		players.add("Kevin");
-		players.add("Fink");
+
+		for (int i = 0; i < p; i++) {
+			System.out.println("What is the name of Player " + (i + 1));
+			players.add(in.next());
+		}
+
+		// START GAME MASTER TEST
 
 		// 3. Initializing a Game
 		GameMaster game = new GameMaster(players);
-		System.out.println("Current Player: " + game.getPlayerName());
-		System.out.println(game.getPlayerDevelopers());
-		System.out.println(game.getPlayerBlocks());
-		System.out.println(game.getPlayerScore());
 
-		// 4. Player 1's Turn
-		// FLOW IS: MUST PLACE LAND TILE
+		while (true) {
+			System.out.println("It is currently " + game.getPlayerName()
+					+ " turn");
 
-		// game.placeBlock();
+			// 4. Player 1's Turn
+			// FLOW IS: MUST PLACE LAND TILE
+			System.out.println("What land tile would you like to place?");
+			System.out.println("1. One block tile 2. Two block tile?");
+			int k = in.nextInt();
+			System.out.println("Where in the board? x y coordinate");
+			printBoard(board);
+			int x = in.nextInt();
+			int y = in.nextInt();
+			if (k == 1) {
+				// Place 1 Block Tile
+				Block OneBlock = game.getOneBlock();
+				printBlock(OneBlock);
+				board.placeBlock(OneBlock, board.getSpaces()[x][y]);
+			}
+			if (k == 2) {
+				// Place Block Tile
+				Block TwoBlock = game.getTwoBlock();
+				printBlock(TwoBlock);
+				System.out.println("Rotate tile? 1. Yes 2. No");
+				int q = in.nextInt();
+				while (q != 2) {
+					if (q == 1) {
+						TwoBlock.rotate();
+						printBlock(TwoBlock);
+					}
+					System.out.println("Rotate tile? 1. Yes 2. No");
+					q = in.nextInt();
+				}
+				board.placeBlock(TwoBlock, board.getSpaces()[x][y]);
+			}
+			printBoard(board);
+			System.out.println(game.getActionPoints());
+			boolean endTurn = false;
+			while (game.getActionPoints() != 0 && !endTurn) {
+				System.out.println("What else would you like to do?");
+				System.out
+						.println("1. Move Developer to Board 2. Move Developer on Board");
+				System.out
+						.println("3. Build Palace 4. Place another block 5. End Turn");
 
-		// PLAYER MAY:
-		// 4.a Move Developer to Board
-		// game.moveDeveloper(developer, newSpace);
+				switch (in.nextInt()) {
+				case 1:
+					// Move Developer to Board
+					System.out.println("Moving Developer to Board");
+					break;
+				case 2:
+					// Move Developer on Board
+					System.out.println("Moving Developer on Board");
 
-		// 4.b Move Developer on Board
-		// game.moveDeveloper(developer, newSpace);
+					break;
+				case 3:
+					System.out.println("Building Palace");
 
-		// 4.c Build Palace --- Skipping for now
-		// 4.d Place Irrigation Tile/ 3 block
+					// Place another Block
+					break;
+				case 4:
+					System.out.println("Placing another block");
 
-		// 5. End Turn
+					break;
+				case 5:
+					System.out.println("End Turn");
+					endTurn = true;
+					game.endTurn();
+					break;
 
-		// 6. New turn with new player
-		game.endTurn();
-		System.out.println("End Turn");
-		System.out.println("Current Player: " + game.getPlayerName());
-		System.out.println(game.getPlayerBlocks());
+				}
+			}
 
-		game.endTurn();
-		System.out.println("Current Player: " + game.getPlayerName());
-
-		// END GAME MASTER TEST
-
-		// START BOARD TEST
-		printBoard(board);
-		System.out.println("There are " + board.getNumThreeBlocks()
-				+ " Three-Blocks left.");
-
-		Block three = board.getThreeBlock();
-		printBlock(three);
-		three.rotate();
-		printBlock(three);
-		three.rotate();
-		printBlock(three);
-
-		board.placeBlock(three, board.getSpaces()[1][2]);
-
-		printBoard(board);
-
-		Block three2 = board.getThreeBlock();
-		printBlock(three2);
-
-		board.placeBlock(three2, board.getSpaces()[11][11]);
-
-		printBoard(board);
-
-		// END BOARD TEST
-
-		// START PLAYER TEST
-
-		// Action Token Count
-		System.out.println(player1.getActionTokens());
-		System.out.println(player1.useActionToken());
-		System.out.println(player1.getActionTokens());
-
-		// END PLAYER TEST
-
+			/*
+			 * game.endTurn(); System.out.println("End Turn");
+			 * System.out.println("Current Player: " + game.getPlayerName());
+			 * System.out.println(game.getPlayerBlocks());
+			 * 
+			 * game.endTurn(); System.out.println("Current Player: " +
+			 * game.getPlayerName());
+			 * 
+			 * // END GAME MASTER TEST
+			 * 
+			 * // START BOARD TEST printBoard(board);
+			 * System.out.println("There are " + board.getNumThreeBlocks() +
+			 * " Three-Blocks left.");
+			 * 
+			 * Block three = board.getThreeBlock(); printBlock(three);
+			 * three.rotate(); printBlock(three); three.rotate();
+			 * printBlock(three);
+			 * 
+			 * board.placeBlock(three, board.getSpaces()[0][0]);
+			 * 
+			 * printBoard(board);
+			 * 
+			 * Block three2 = board.getThreeBlock(); printBlock(three2);
+			 * 
+			 * board.placeBlock(three2, board.getSpaces()[11][11]);
+			 * 
+			 * printBoard(board);
+			 * 
+			 * // END BOARD TEST
+			 * 
+			 * // START PLAYER TEST
+			 * 
+			 * // END PLAYER TEST
+			 */}
 	}
 
 	private static void printBlock(Block b) {

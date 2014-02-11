@@ -47,6 +47,35 @@ public class Player {
 		this.score += score;
 	}
 
+	/*
+	 * public boolean removeBlock(Block block) { try {
+	 * inventory.removeBlock(block); return true; } catch
+	 * (NoSuchElementException e) { return false; } }
+	 */
+
+	public void addBlock(Block block) {
+		inventory.addBlock(block);
+	}
+
+	public Block getOneBlock() {
+		return inventory.getOneBlock();
+
+	}
+
+	public Block getTwoBlock() {
+		return inventory.getTwoBlock();
+
+	}
+
+	public boolean removeTwoBlock(Block block) {
+		try {
+			inventory.removeBlock(block);
+			return true;
+		} catch (NoSuchElementException e) {
+			return false;
+		}
+	}
+
 	public boolean removeBlock(Block block) {
 		try {
 			inventory.removeBlock(block);
@@ -56,7 +85,4 @@ public class Player {
 		}
 	}
 
-	public void addBlock(Block block) {
-		inventory.addBlock(block);
-	}
 }
