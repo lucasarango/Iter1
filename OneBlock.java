@@ -1,21 +1,9 @@
 
 class OneBlock extends Block {
 
-	public OneBlock(Tile.TileType t){
+	public OneBlock(Tile t){
 		tileGrid = new Tile[3][3];
-		switch(t){
-			case RICE:
-				tileGrid[1][1] = new RiceField();
-				break;
-			case IRRIGATION:
-				tileGrid[1][1] = new Irrigation();
-				break;
-			case VILLAGE:
-				tileGrid[1][1] = new Village();
-				break;
-			default:
-				tileGrid[1][1] = new Village();
-		}
+		tileGrid[1][1] = t;
 	}
 
 	public OneBlock(Tile[][] t){
