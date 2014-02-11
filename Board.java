@@ -214,19 +214,19 @@ public class Board {
 				if (pos.isThereDeveloper(s)) {
 					return pos.getDeveloper(s);
 				}
-				if (spaces[x][y + 1].equals(Tile.TileType.VILLAGE)
+				if (spaces[x][y + 1].getTile() instanceof VillageTile
 						&& !visited.contains(spaces[x][y + 1])) {
 					queuePath.add(spaces[x][y + 1]);
 				}
-				if (spaces[x][y - 1].equals(Tile.TileType.VILLAGE)
+				if (spaces[x][y - 1].getTile() instanceof VillageTile
 						&& !visited.contains(spaces[x][y - 1])) {
 					queuePath.add(spaces[x][y - 1]);
 				}
-				if (spaces[x + 1][y].equals(Tile.TileType.VILLAGE)
+				if (spaces[x + 1][y].getTile() instanceof VillageTile
 						&& !visited.contains(spaces[x + 1][y])) {
 					queuePath.add(spaces[x + 1][y]);
 				}
-				if (spaces[x - 1][y + 1].equals(Tile.TileType.VILLAGE)
+				if (spaces[x - 1][y + 1].getTile() instanceof VillageTile
 						&& !visited.contains(spaces[x - 1][y])) {
 					queuePath.add(spaces[x - 1][y]);
 				}
@@ -244,8 +244,10 @@ public class Board {
 		 * 
 		 * // check there is no tie, if there is then return nothing }
 		 */
+		}
 		return highestDev;
 	}
+	
 
 	public Space[][] getSpaces() {
 		return this.spaces;

@@ -32,9 +32,5 @@ public class Position {
 		return false;
 	}
 
-	public Space getSpace(Developer d) {
-		return map.get(d);
-
-	}
 
 }
