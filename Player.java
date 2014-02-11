@@ -43,7 +43,7 @@ public class Player {
 		return score;
 	}
 
-	public int setScore(int score){
+	public void setScore(int score){
 		this.score = score;
 	}
 
