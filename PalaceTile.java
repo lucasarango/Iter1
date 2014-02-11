@@ -1,6 +1,6 @@
-public class Palace extends Tile {
+public class PalaceTile extends Tile {
 	private Integer value;
-	public Palace(Integer startValue)
+	public PalaceTile(Integer startValue)
 	{
 		value = startValue;
 	}

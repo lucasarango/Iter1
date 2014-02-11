@@ -128,11 +128,10 @@ public class Board {
 						spaces[coord[0] + i][coord[1] + j].placeBlock(b,
 								tiles[i][j]);
 						// check if a scoreable tile
-						if (tiles[i][j] instanceof Palace)
-							scorePalace(tiles[i][j], coord[0] + i, coord[1] + j);
-						else if (tiles[i][j] instanceof Palace)
-							scoreIrrigationTile(tiles[i][j], coord[0] + i,
-									coord[1] + j);
+						if (tiles[i][j] instanceof PalaceTile)
+							scorePalace((PalaceTile)tiles[i][j], coord[0] + i, coord[1] + j);
+						else if (tiles[i][j] instanceof IrrigationTile)
+							scoreIrrigationTile((IrrigationTile)tiles[i][j], coord[0] + i, coord[1]+ j);
 					}
 				}
 			}
@@ -169,19 +168,19 @@ public class Board {
 		return ret;
 	}
 
-	private void scorePalace(Tile tiles, int x, int y) {
+	private void scorePalace(PalaceTile tile, int x, int y) {
 		Developer highestDev = findHighestDeveloper(spaces[x][y]);
 		int score = 0;
 		// check if owner is current player
 		// if(check here)
-		score = tiles.getValue() / 2;
+		score = tile.getValue() / 2;
 
 		if (highestDev != null)
 			highestDev.score(score);
 
 	}
 
-	private void scoreIrrigationTile(Tile tiles, int x, int y) {
+	private void scoreIrrigationTile(IrrigationTile tile, int x, int y) {
 		Developer highestDev = findHighestDeveloper(spaces[x][y]);
 		int score = 0;
 
@@ -195,40 +194,46 @@ public class Board {
 		ArrayList<Space> visited = new ArrayList<Space>();
 
 		Developer highestDev = null;
-		int[] coord = findSpace(s);
-		int x = coord[0];
-		int y = coord[1];
-		Queue<Space> queuePath = new LinkedList<Space>();
-		Iterator<Space> it = queuePath.iterator();
 
-		queuePath.add(spaces[x][y]);
+		// check for which algorithm to use to search
+		if (s.getTile() instanceof PalaceTile) {
+			// DFS for highest rank developer in the surrounding city;
+			int[] coord = findSpace(s);
+			int x = coord[0];
+			int y = coord[1];
+			Queue<Space> queuePath = new LinkedList<Space>();
+			Iterator<Space> it = queuePath.iterator();
 
-		visited.add(spaces[x][y]);
+			queuePath.add(spaces[x][y]);
 
-		while (it.hasNext()) {
-			s = queuePath.remove();
+			visited.add(spaces[x][y]);
 
-			// FOUND A DEVELOPER
-			if (pos.isThereDeveloper(s)) {
-				return pos.getDeveloper(s);
+			while (it.hasNext()) {
+				s = queuePath.remove();
+				// FOUND A DEVELOPER
+				if (pos.isThereDeveloper(s)) {
+					return pos.getDeveloper(s);
+				}
+				if (spaces[x][y + 1].equals(Tile.TileType.VILLAGE)
+						&& !visited.contains(spaces[x][y + 1])) {
+					queuePath.add(spaces[x][y + 1]);
+				}
+				if (spaces[x][y - 1].equals(Tile.TileType.VILLAGE)
+						&& !visited.contains(spaces[x][y - 1])) {
+					queuePath.add(spaces[x][y - 1]);
+				}
+				if (spaces[x + 1][y].equals(Tile.TileType.VILLAGE)
+						&& !visited.contains(spaces[x + 1][y])) {
+					queuePath.add(spaces[x + 1][y]);
+				}
+				if (spaces[x - 1][y + 1].equals(Tile.TileType.VILLAGE)
+						&& !visited.contains(spaces[x - 1][y])) {
+					queuePath.add(spaces[x - 1][y]);
+				}
 			}
-			if (spaces[x][y + 1].equals(Tile.TileType.VILLAGE)
-					&& !visited.contains(spaces[x][y + 1])) {
-				queuePath.add(spaces[x][y + 1]);
-			}
-			if (spaces[x][y - 1].equals(Tile.TileType.VILLAGE)
-					&& !visited.contains(spaces[x][y - 1])) {
-				queuePath.add(spaces[x][y - 1]);
-			}
-			if (spaces[x + 1][y].equals(Tile.TileType.VILLAGE)
-					&& !visited.contains(spaces[x + 1][y])) {
-				queuePath.add(spaces[x + 1][y]);
-			}
-			if (spaces[x - 1][y + 1].equals(Tile.TileType.VILLAGE)
-					&& !visited.contains(spaces[x - 1][y])) {
-				queuePath.add(spaces[x - 1][y]);
-			}
-		}
+		} else if (s.getTile() instanceof IrrigationTile) {
+			// DFS for highest rank developer in the surrounding tiles;
+			
 
 		/*
 		 * // check for which algorithm to use to search if

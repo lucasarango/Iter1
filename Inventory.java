@@ -29,11 +29,11 @@ public class Inventory {
 		}
 		for (int i = 0; i < 3; i++) {
 			// Create 3 one-space rice field land tiles
-			blocksLeft.add(new OneBlock(Tile.TileType.RICE));
+			blocksLeft.add(new OneBlock(new RiceTile()));
 		}
 		for (int i = 0; i < 2; i++) {
 			// Create 2 one-space village/city tile
-			blocksLeft.add(new OneBlock(Tile.TileType.VILLAGE));
+			blocksLeft.add(new OneBlock(new VillageTile()));
 		}
 
 		actionTokens = 3;
