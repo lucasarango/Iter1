@@ -31,6 +31,9 @@ public class Board {
 				spaces[i][j] = new Space();
 			}
 		}
+		placeBlock(new OneBlock(new IrrigationTile()), spaces[1][2]);
+		placeBlock(new OneBlock(new IrrigationTile()), spaces[5][7]);
+		placeBlock(new OneBlock(new IrrigationTile()), spaces[3][11]);
 
 	}
 
@@ -129,9 +132,11 @@ public class Board {
 								tiles[i][j]);
 						// check if a scoreable tile
 						if (tiles[i][j] instanceof PalaceTile)
-							scorePalace((PalaceTile)tiles[i][j], coord[0] + i, coord[1] + j);
+							scorePalace((PalaceTile) tiles[i][j], coord[0] + i,
+									coord[1] + j);
 						else if (tiles[i][j] instanceof IrrigationTile)
-							scoreIrrigationTile((IrrigationTile)tiles[i][j], coord[0] + i, coord[1]+ j);
+							scoreIrrigationTile((IrrigationTile) tiles[i][j],
+									coord[0] + i, coord[1] + j);
 					}
 				}
 			}
@@ -142,8 +147,6 @@ public class Board {
 
 	private boolean checkPlacement(Block b, Space s) {
 		// initialize return value
-		boolean ret = false;
-
 		/*
 		 * Oops dont have to do error checking for(int i = 0; i < s.length; i++)
 		 * { if(spaces[i].getBlock() = ) }
@@ -205,7 +208,6 @@ public class Board {
 			Iterator<Space> it = queuePath.iterator();
 
 			queuePath.add(spaces[x][y]);
-
 			visited.add(spaces[x][y]);
 
 			while (it.hasNext()) {
@@ -233,21 +235,19 @@ public class Board {
 			}
 		} else if (s.getTile() instanceof IrrigationTile) {
 			// DFS for highest rank developer in the surrounding tiles;
-			
 
-		/*
-		 * // check for which algorithm to use to search if
-		 * (s.getTile().equals(Tile.TileType.PALACE)) { // DFS for highest rank
-		 * developer in the surrounding city; } else if
-		 * (s.getTile().equals(Tile.TileType.IRRIGATION)) { // DFS for highest
-		 * rank developer in the surrounding tiles;
-		 * 
-		 * // check there is no tie, if there is then return nothing }
-		 */
+			/*
+			 * // check for which algorithm to use to search if
+			 * (s.getTile().equals(Tile.TileType.PALACE)) { // DFS for highest
+			 * rank developer in the surrounding city; } else if
+			 * (s.getTile().equals(Tile.TileType.IRRIGATION)) { // DFS for
+			 * highest rank developer in the surrounding tiles;
+			 * 
+			 * // check there is no tie, if there is then return nothing }
+			 */
 		}
 		return highestDev;
 	}
-	
 
 	public Space[][] getSpaces() {
 		return this.spaces;

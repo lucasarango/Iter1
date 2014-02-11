@@ -1,6 +1,4 @@
-import java.awt.Color;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 /**************************************************************************************
  * Player is a state object managed by GameMaster. It doesn't influence the game
@@ -8,23 +6,17 @@ import java.util.NoSuchElementException;
  **************************************************************************************/
 public class Player {
 	private String name;
-	private Color color;
 	private Inventory inventory;
 	private int score;
 
-	public Player(String name, Color color) {
+	public Player(String name) {
 		score = 0;
 		this.name = name;
-		this.color = color;
 		inventory = new Inventory(this);
 	}
 
 	public String getName() {
 		return name;
-	}
-
-	public Color getColor() {
-		return color;
 	}
 
 	public List<Developer> getDevelopers() {
@@ -43,7 +35,7 @@ public class Player {
 		return score;
 	}
 
-	public void setScore(int score){
+	public void setScore(int score) {
 		this.score = score;
 	}
 
