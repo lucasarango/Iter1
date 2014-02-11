@@ -5,6 +5,7 @@ public class GameMaster {
 	private int actionPoints;
 	private int turnScore;
 	private List<Player> playerList;
+	private Position pos = new Position();
 
 	public GameMaster(List<String> names) {
 		playerList = new ArrayList<Player>();
@@ -78,6 +79,10 @@ public class GameMaster {
 		// Removes developer and decrements action points.
 		// Returns true if successful.
 		// Returns false if insufficient action points.
+		if (Position.isThereDeveloper(developer.getSpace())) {
+			pos.removePair(developer.getSpace());
+		}
+		pos.addPair(newSpace, developer);
 
 		Space oldSpice = developer.getSpace();
 		int cost = 1;
@@ -110,6 +115,8 @@ public class GameMaster {
 		return currentPlayer.getActionTokens();
 	}
 
+	// Probably Mediator actions, since it is specifically asking for ONE of
+	// each
 	public Block getOneBlock() {
 		Block b = currentPlayer.getOneBlock();
 		currentPlayer.removeBlock(b);
@@ -122,6 +129,12 @@ public class GameMaster {
 		currentPlayer.removeBlock(b);
 
 		return b;
+	}
+
+	public Developer getDeveloper(int i) {
+		Developer d = currentPlayer.getDevelopers().get(i);
+
+		return d;
 	}
 
 }

@@ -156,7 +156,7 @@ public class Board {
 
 	}
 
-	private int[] findSpace(Space s) {
+	int[] findSpace(Space s) {
 		// optimize this
 		int[] ret = { -1, -1 };
 		for (int i = 0; i < dimensions[0]; i++) {

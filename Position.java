@@ -2,10 +2,10 @@ import java.util.*;
 
 public class Position {
 
-	private HashMap<Space, Developer> map;
+	private static HashMap<Space, Developer> map;
 
 	public Position() {
-		this.map = new HashMap<Space, Developer>();
+		Position.map = new HashMap<Space, Developer>();
 	}
 
 	public void addPair(Space s, Developer d) {
@@ -25,12 +25,11 @@ public class Position {
 
 	}
 
-	public boolean isThereDeveloper(Space s) {
+	public static boolean isThereDeveloper(Space s) {
 		if (map.get(s) != null) {
 			return true;
 		}
 		return false;
 	}
-
 
 }
