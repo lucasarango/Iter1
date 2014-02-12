@@ -4,6 +4,24 @@ import java.awt.*;
 import javax.swing.*;
 
 public class Controller extends JFrame implements KeyListener { 
+	
+	protected static int DEVELOPER_LEFT 	= KeyEvent.VK_NUMPAD4;
+	protected static int DEVELOPER_RIGHT 	= KeyEvent.VK_NUMPAD6;
+	protected static int DEVELOPER_UP 		= KeyEvent.VK_NUMPAD8;
+	protected static int DEVELOPER_DOWN 	= KeyEvent.VK_NUMPAD2;
+	protected static int DEVELOPER_CHANGE	= KeyEvent.VK_TAB;
+	
+	protected static int BLOCK_LEFT			= KeyEvent.VK_LEFT;
+	protected static int BLOCK_RIGHT		= KeyEvent.VK_RIGHT;
+	protected static int BLOCK_UP			= KeyEvent.VK_UP;
+	protected static int BLOCK_DOWN			= KeyEvent.VK_DOWN;
+	protected static int BLOCK_CHANGE		= KeyEvent.VK_C;
+	protected static int BLOCK_ROTATE		= KeyEvent.VK_R;
+	protected static int BLOCK_PLACE		= KeyEvent.VK_P;
+	
+	protected static int ACTION_TOKEN_USE	= KeyEvent.VK_T;
+	
+	protected static int END_TURN			= KeyEvent.VK_ENTER;
 
     JLabel controlOutput;
     
@@ -33,17 +51,86 @@ public class Controller extends JFrame implements KeyListener {
     }
     
     @Override
-    public void keyPressed(KeyEvent e) {
-    
-    }
-    
-    @Override
-    public void keyReleased(KeyEvent e) {
-    
-    }
-    
-    @Override
-    public void keyTyped(KeyEvent e) {
-    
-    }
+	public void keyPressed(KeyEvent e) {
+		// Move Developer
+		if(e.getKeyCode() == DEVELOPER_LEFT)
+			moveDeveloper(DEVELOPER_LEFT);
+		else if(e.getKeyCode() == DEVELOPER_RIGHT)
+			moveDeveloper(DEVELOPER_RIGHT);
+		else if(e.getKeyCode() == DEVELOPER_UP)
+			moveDeveloper(DEVELOPER_UP);
+		else if(e.getKeyCode() == DEVELOPER_DOWN)
+			moveDeveloper(DEVELOPER_DOWN);
+		
+		// Scroll developer
+		else if(e.getKeyCode() == DEVELOPER_CHANGE)
+			changeDeveloper();
+		
+		// Select/Scroll block
+		else if(e.getKeyCode() == BLOCK_CHANGE)
+			changeBlock();
+		
+		// Move block
+		else if(e.getKeyCode() == BLOCK_LEFT)
+			moveBlock(BLOCK_LEFT);
+		else if(e.getKeyCode() == BLOCK_RIGHT)
+			moveBlock(BLOCK_RIGHT);
+		else if(e.getKeyCode() == BLOCK_UP)
+			moveBlock(BLOCK_UP);
+		else if(e.getKeyCode() == BLOCK_DOWN)
+			moveBlock(BLOCK_DOWN);
+		
+		// Rotate block
+		else if(e.getKeyCode() == BLOCK_ROTATE)
+			rotateBlock();
+		
+		// Place block
+		else if(e.getKeyCode() == BLOCK_PLACE)
+			placeBlock();
+	}
+	
+	@Override
+	public void keyReleased(KeyEvent e) {
+	}
+	
+	@Override
+	public void keyTyped(KeyEvent e) {
+	}
+	
+	private void moveDeveloper(int direction) {
+		if(direction == DEVELOPER_LEFT) {
+			
+		}
+		else if(direction == DEVELOPER_RIGHT) {
+			
+		}
+		else if(direction == DEVELOPER_UP) {
+			
+		}
+		else if(direction == DEVELOPER_DOWN) {
+			
+		}
+		return;
+	}
+	private void changeDeveloper() {
+		
+	}
+	private void changeBlock() {
+		
+	}
+	private void moveBlock(int direction) {
+		if(direction == BLOCK_LEFT) {
+			
+		}
+		else if(direction == BLOCK_RIGHT) {
+			
+		}
+		else if(direction == BLOCK_UP) {
+			
+		}
+		else if(direction == BLOCK_DOWN) {
+			
+		}
+		return;
+	}
 }
