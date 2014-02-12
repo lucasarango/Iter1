@@ -4,9 +4,18 @@ public class PalaceTile extends Tile {
 	{
 		value = startValue;
 	}
-	public void levelUp(Integer newValue)
+	public boolean levelUp(Integer newValue)
 	{
-		value = newValue;
+		//Assumes input is always an even integer
+		if(newValue > value  && newValue <= 10)
+		{
+      value = newValue;
+      return true;
+		}
+		else
+		{
+      return false;
+		}
 	}
 	public Integer getValue()
 	{
