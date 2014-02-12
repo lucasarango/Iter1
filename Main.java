@@ -103,7 +103,7 @@ public class Main {
 				System.out
 						.println("1. Move Developer to Board 2. Move Developer on Board");
 				System.out
-						.println("3. Build Palace 4. Place another block 5. End Turn");
+						.println("3. Build Palace 4. Place another block 5. End Turn 6. Show board");
 
 				switch (in.nextInt()) {
 				case 1:
@@ -234,6 +234,9 @@ public class Main {
 					endTurn = true;
 					game.endTurn();
 					break;
+				case 6:
+				    printBoard(board);
+				    break;
 
 				}
 			}
