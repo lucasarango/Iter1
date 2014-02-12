@@ -7,7 +7,6 @@ public class Mediator
 	private Board board;
 	private View view;
 	private Controller controller;
-	private File saveFile;
 
 	public Mediator(GameMaster g, Board b, View v, Controller c)
 	{
@@ -71,11 +70,7 @@ public class Mediator
 
 	public void saveGame()
 	{
-		saveFile = new File("saveFile");
-		PrintWriter writer = new PrintWriter();
-
-
-		writer.close();
+		
 	}
 
 	public void loadGame()
