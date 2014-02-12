@@ -7,8 +7,9 @@ public class Board {
 	private List<Block> irrigationsLeft;
 	private int[] dimensions;
 	private Position pos = new Position();
+	private Mediator mediator;
 
-	public Board() {
+	public Board(Mediator m) {
 		threeBlocksLeft = new ArrayList<Block>();
 
 		for (int i = 0; i < 56; i++) {
@@ -35,9 +36,11 @@ public class Board {
 		placeBlock(new OneBlock(new IrrigationTile()), spaces[5][7]);
 		placeBlock(new OneBlock(new IrrigationTile()), spaces[3][11]);
 
+		this.mediator = m;
+
 	}
 
-	public Board(int x, int y) {
+	public Board(Mediator m, int x, int y) {
 		threeBlocksLeft = new ArrayList<Block>();
 
 		for (int i = 0; i < 56; i++) {
@@ -54,6 +57,8 @@ public class Board {
 				spaces[i][j] = new Space();
 			}
 		}
+
+		this.mediator = m;
 
 	}
 
@@ -156,7 +161,7 @@ public class Board {
 
 	}
 
-	int[] findSpace(Space s) {
+	private int[] findSpace(Space s) {
 		// optimize this
 		int[] ret = { -1, -1 };
 		for (int i = 0; i < dimensions[0]; i++) {
@@ -245,6 +250,24 @@ public class Board {
 
 	public Space[][] getSpaces() {
 		return this.spaces;
+	}
+
+	public void moveDeveloper(Developer d, int[] offset){
+		//find current space
+		Space currentSpace = d.getSpace();
+		//find current index
+		int[] currentLocation = findSpace(currentSpace);
+
+		//update location
+		currentLocation[0] += offset[0];
+		currentLocation[1] += offset[1];
+		Space newSpace = spaces[currentLocation[0]][currentLocation[1]];
+
+		//change developer space and update positions
+		d.move(newSpace);
+		pos.removePair(currentSpace);
+		pos.addPair(newSpace, d);
+
 	}
 
 }

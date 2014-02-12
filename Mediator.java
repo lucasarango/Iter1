@@ -11,21 +11,23 @@ public class Mediator
 
 	public Mediator(GameMaster g, Board b, BoardView bv, PlayerView pv, Controller c)
 	{
-		game = g;
-		board = b;
-		playerView = pv;
-		boardView = bv;
+		game = new GameMaster(this);
+		board = new Board(this);
+		playerView = new PlayerView();
+		boardView = new BoardView();
 		controller = c;
 	}
 
-	public boolean moveDeveloper(Developer d, int x, int y)
+	public void moveDeveloper(Developer d, int[] offset)
 	{
-		game.moveDeveloper(game.getDeveloper(d), board.getSpaces()[x][y]));
+		board.moveDeveloper(d, offset);
+		//notify bv
 	}
 
-	public boolean placeTile(int tileSize, int x, int y)
+	public boolean placeBlock(Block b, int x, int y)
 	{
-		
+		board.placeBlock(b, board.getSpaces()[x][y]);
+		//notify bv and pv
 	}
 
 	public boolean removeDeveloper()
