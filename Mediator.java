@@ -8,64 +8,156 @@ public class Mediator
 	private View view;
 	private Controller controller;
 
-	public Mediator(GameMaster g, Board b, View v, Controller c)
+	public Mediator(List<String> names)
 	{
-		game = g;
-		board = b;
-		view = v;
-		controller = c;
-	}
+		game = new GameMaster(names, this);
+		board = new Board(this);
+		view = new View(names);
 
-	public boolean moveDeveloper(Developer d, int x, int y)
-	{
-		game.moveDeveloper(game.getDeveloper(d), board.getSpaces()[x][y]));
-	}
+		//update board in view
+		Space[][] spaces = board.getSpaces();
 
-	public boolean placeTile(int tileSize, int x, int y)
-	{
-		int option;
-		int rotationDone;
-
-		if(tileSize == 1)
+		for(int x = 0; x < spaces[0].length; x++)
 		{
-			System.out.println("Do you want to place");
-			System.out.println("1. Village 2. Irrigation");
-
-			Block oneBlock = game.getOneBlock();
-
-			//We need to update the view here (to display the 1 block)
-
-			board.placeBlock(oneBlock, board.getSpaces()[x][y]);
-		}
-		if(tileSize == 2)
-		{
-			Block twoBlock = game.getTwoBlock();
-
-			//Assumes controller has this method
-			while(!controller.rotationDone(twoBlock))
+			for(int y = 0; y < spaces[1].length; y++)
 			{
-				twoBlock.rotate();
+				view.updateSpace(x, y, spaces[x][y].getTile(), spaces[x][y].getHeight());
 			}
-
-			board.placeBlock(twoBlock, board.getSpaces()[x][y]);
 		}
-		if(tileSize == 3)
-		{
-			Block threeBlock = game.getThreeBlock();
-
-			//Assumes controller has this method
-			while(!controller.rotationDone(threeBlock))
-			{
-				threeBlock.rotate();
-			}
-
-			board.placeBlock(threeBlock, board.getSpaces()[x][y]);
-		}
-	}
-
-	public boolean removeDeveloper()
-	{
 		
+	}
+
+	public ArrayList<BLock> getBlockList(){
+		return game.getPlayerBlocks();
+	}
+
+	public ArrayList<Developer> getDevelopers(){
+		return game.getPlayerDevelopers();
+	}
+
+	public void moveDeveloper(Developer d, int[] offset)
+	{
+		int[] oldspace = board.findDeveloper(d);
+
+		if(board.moveDeveloper(d, offset)){
+
+			view.updateDeveloper(offset[0] + oldspace[0], offset[1] + oldspace[1], game.getPlayerName());
+
+			view.removeDeveloper(oldspace[0], oldspace[1]);
+		}
+		else{
+			view.removeDeveloper(oldspace[0], oldspace[1]);
+
+			view.developerCount(1);
+		}
+			
+	}
+
+	public void placeBlock(Block b, int[] coord)
+	{
+		if(board.placeBlock(b, board.getSpaces()[coord[0]][coord[1]])){
+			Space[][] temp = board.getSpaces();
+			Space ret = temp[coord[0]][coord[1]];
+			if(ret.getTile() instanceof PalaceTile){
+				//view.updateSpace(coord[0], coord[1], ret.getTile(), ret.getHeight());
+				updateSpace(coord, ret.getBlock());
+			}
+			else{
+				updateSpace(coord, ret.getBlock());
+				//view.updateSpace(coord[0], coord[1], ret.getTile(), ret.getHeight(), (PalaceTile)ret.getTile().getValue());
+			}
+		
+			//check if one or two block
+			if(b instanceof OneBlock){
+				Tile[][] tiles = b.getGrid();
+				Tile checker = tiles[1][1];
+				view.updateOneBlockCount(game.getPlayerName(), checker instanceof VillageTile);
+			}
+			else if(b instanceof TwoBlock){
+				view.updateTwoBlockCount(game.getPlayerName());
+			}
+
+		}
+		else{}
+			//notify error
+	}
+
+	public void placeDeveloper(Developer d, int[] coord)
+	{
+		if(board.placeDeveloper(d, coord)){
+			view.updateDeveloper(coord[0], coord[1], game.getPlayerName());
+			view.developerCount(-1);
+		}
+		else{}
+			//notify error
+	}
+
+	public Block rotateBlock(Block b){
+		if(b.rotate())
+			return b;
+		else
+			return b;
+	}
+
+	public Block getThreeBlock(){
+		Block b = board.getThreeBlock();
+		if(b != null)
+			return b;
+		else{
+			board.returnThreeBlock(b);
+			return null;
+		}
+	}
+
+	public boolean returnThreeBlock(Block b){
+		return board.returnThreeBlock(b);
+	}
+
+	public Block getIrrigationTile(){
+		Block b = board.getIrrigationTileBlock();
+		if(b != null)
+			return b;
+		else{
+			board.returnIrrigationTile(b);
+			return null;
+		}
+	}
+
+	public boolean returnIrrigationTile(Block b){
+		return board.returnIrrigationTile(b);
+	}
+
+
+	public void placePalace(int[] coord, int value){
+		Block b = board.placePalace(coord, value);
+		updateSpace(coord, b);
+	}
+
+	public void upgradePalace(int[] coord, int value)
+	{
+		if(board.upgradePalace(coord, value)){
+			Space[][] temp = board.getSpaces();
+			Space ret = temp[coord[0]][coord[1]];
+			updateSpace(coord, ret.getBlock());
+			//view.updateSpace(coord[0], coord[1], ret.getTile(), ret.getHeight(), (PalaceTile)ret.getTile().getValue());
+		}
+			
+	}
+
+	public void selectSpace(int[] news, int[] old){
+		view.highlightSpace(news[0], news[1]);
+		view.unHighlightSpace(old[0], old[1]);
+	}
+
+	public void switchDeveloper(Developer current, Developer last)
+	{
+		int[] coord = new int[2];
+		coord = board.findDeveloper(current);
+		view.switchFromDeveloper(coord[0], coord[1]);
+
+		coord = board.findDeveloper(last);
+		view.switchToDeveloper(coord[0], coord[1]);
+
 	}
 
 	public void saveGame()
@@ -76,6 +168,32 @@ public class Mediator
 	public void loadGame()
 	{
 
+	}
+
+
+	private void updateSpace(int[] coord, Block b){
+		
+		Tile[][] tiles = b.getGrid();
+
+		Space[][] temp = board.getSpaces();
+		Space ret = temp[coord[0]][coord[1]];
+
+		// iterate through grid and only place nonempty tiles
+		for (int i = 0; i < tiles.length; i++) {
+			for (int j = 0; j < tiles[i].length; j++) {
+				// check if empty part of grid
+				if (tiles[i][j] != null) {
+					// check for palace tile
+					if (tiles[i][j] instanceof PalaceTile) {
+						view.updateSpace(coord[0]+i, coord[1]+j, ret.getTile(), ret.getHeight(), (PalaceTile)ret.getTile().getValue());
+					}
+					else{
+						view.updateSpace(coord[0]+i, coord[1]+j, ret.getTile(), ret.getHeight());
+					}
+				}
+			}
+		}
+		
 	}
 
 }
