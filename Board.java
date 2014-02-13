@@ -1,4 +1,6 @@
 import java.util.*;
+import java.io.PrintWriter;
+import java.util.regex.Pattern;
 
 public class Board {
 
@@ -156,7 +158,7 @@ public class Board {
 
 	}
 
-	int[] findSpace(Space s) {
+	public int[] findSpace(Space s) {
 		// optimize this
 		int[] ret = { -1, -1 };
 		for (int i = 0; i < dimensions[0]; i++) {
@@ -245,6 +247,154 @@ public class Board {
 
 	public Space[][] getSpaces() {
 		return this.spaces;
+	}
+	
+	public void load(Scanner s)
+	{
+		while(s.hasNextLine() && !s.nextLine().equals("%Board%"));
+		threeBlocksLeft.clear();
+		int next = s.nextInt();
+		for(int i = 0; i < next; i++)
+			threeBlocksLeft.add(new ThreeBlock());
+		next = s.nextInt();
+		irrigationsLeft.clear();
+		for(int i = 0; i < next; i++)
+			irrigationsLeft.add(new OneBlock(new IrrigationTile()));
+		dimensions[0] = s.nextInt();
+		dimensions[1] = s.nextInt();
+		spaces = new Space[dimensions[0]][dimensions[1]];
+		for (int i = 0; i < dimensions[0]; i++)
+			for (int j = 0; j < dimensions[1]; j++)
+				spaces[i][j] = new Space();
+		System.out.println("dimensions:" +dimensions[0]+" "+dimensions[1]+" three left: "+threeBlocksLeft.size()+" irri left: "+next);
+		while(s.hasNext() && s.next().equals("position:"))
+		{
+			int y = s.nextInt();
+			int x = s.nextInt();
+			s.next("height:");
+			int height = s.nextInt();
+			
+			System.out.print("position:" +y+" "+x+" height: "+height+" grid: ");
+			s.next("grid:");
+			
+			Tile[][] t = new Tile[3][3];
+			int tiles = 0;
+			int sex = 0;
+			for (int i = 0; i < 3; i++)
+			{
+				for (int j = 0; j < 3; j++)
+				{
+					sex++;
+					String str = s.next();
+					System.out.print(str+" ");
+					if (str.equals("+"))
+						continue;
+					else if (str.equals("P"))
+						t[i][j] = new PalaceTile(s.nextInt());
+					else if (str.equals("V"))
+						t[i][j] = new VillageTile();
+					else if (str.equals("I"))
+						t[i][j] = new IrrigationTile();
+					else if (str.equals("R"))
+						t[i][j] = new RiceTile();
+					tiles++;
+				}
+			}
+			System.out.println(sex);
+			Block b;
+			if(tiles == 1)
+				b = new OneBlock(t);
+			else if(tiles == 2)
+				b = new TwoBlock(t);
+			else if(tiles == 3)
+				b = new ThreeBlock(t);
+			else
+				continue;
+			for (int i = 0; i < 3; i++)
+				for (int j = 0; j < 3; j++)
+				{
+					if(b.getGrid()[i][j] != null)
+					{
+						if((spaces[i+y][j+x].getTile() != null && spaces[i+y][j+x].getHeight()<height) || spaces[i+y][j+x].getTile() == null)
+						{
+							System.out.println("It got where it needed");
+							for(int currentHeight = 0; currentHeight < height; currentHeight++)
+								spaces[i+y][j+x].placeBlock(b, b.getGrid()[i][j]);
+						}
+					}
+				}
+		}
+	}
+	
+	public void save(PrintWriter p)
+	{
+		p.println("%Board%");
+		p.println(threeBlocksLeft.size()+" "+irrigationsLeft.size()+" "+dimensions[0]+" "+dimensions[1]);
+		ArrayList<int[]> blocksSaved = new ArrayList<int[]>();
+		ArrayList<int[]> developersSaving = new ArrayList<int[]>();
+		for(int i = 0; i < dimensions[0]; i++)
+			for(int j = 0; j < dimensions[1]; j++)
+			{
+				if(spaces[i][j].getTile() != null)
+				{
+					Block b = spaces[i][j].getBlock();
+					
+					int[] info = new int[3];
+					for(int y = 0; y < 3; y++)
+						for(int x = 0; x < 3; x++)
+							if(spaces[i][j].getTile() == b.getGrid()[y][x])
+							{
+								info[0]=i-y;
+								info[1]=j-x;
+							}
+					info[2]=spaces[i][j].getHeight();
+				
+					boolean found = false;
+					for(int x = 0; x<blocksSaved.size() && !found; x++)
+						if(blocksSaved.get(x)[0] == info[0] && blocksSaved.get(x)[1] == info[1] && blocksSaved.get(x)[2] == info[2])
+							found = true;
+					if(found)
+						continue;
+					
+				
+					blocksSaved.add(info);
+				
+					p.print("position: "+info[0]+" "+info[1]+" height: "+info[2]+" grid: ");
+					for(int y = 0; y < 3; y++)
+					{
+						for(int x = 0; x < 3; x++)
+						{
+							if (b.getGrid()[y][x] == null)
+								p.print("+");
+							else if (b.getGrid()[y][x] instanceof PalaceTile)
+								p.print("P,"+((PalaceTile)spaces[y][x].getTile()).getValue());
+							else if (b.getGrid()[y][x] instanceof VillageTile)
+								p.print("V");
+							else if (b.getGrid()[y][x] instanceof IrrigationTile)
+								p.print("I");
+							else if (b.getGrid()[y][x] instanceof RiceTile)
+								p.print("R");
+							p.print(" ");		
+						}
+						if(y != 2)
+							p.print("| ");
+					}
+					p.println();
+				}/*
+				if(pos.isThereDeveloper(spaces[i][j]))
+				{
+					int[] pos = new int[2];
+					pos[0] = i;
+					pos[1] = j;
+					developersSaving.add(pos);
+				}*/
+			}
+		/*p.println("%Developers%");
+		for(int i = 0; i < developersSaving.size(); i++)
+		{
+			int x = developersSaving.get(i)[0], y = developersSaving.get(i)[1];
+			p.print(x+" "+y+" "); pos.getDeveloper(spaces[x][y]).save(p);
+		}*/
 	}
 
 }
