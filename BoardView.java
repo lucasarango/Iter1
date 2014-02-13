@@ -8,8 +8,11 @@ public class BoardView extends JFrame{
 	 */
 	 
 	private JLabel[][] spaces;
+	private String[] playerNames;
 	 
-	public BoardView() {
+	public BoardView(String[] playerNames) {
+                     
+        this.playerNames = playerNames;
         try {
             initialize();
         }
@@ -34,10 +37,70 @@ public class BoardView extends JFrame{
 		spaces = new JLabel[14][14];
 		for (int i = 0; i < 14; i++)
 			for (int x = 0; x < 14; x++) {
-				spaces[i][x] = new JLabel("X");
+			    spaces[i][x] = new JLabel("");
+				if (x > 0 && x < 13 && i > 0 && i < 13)
+				    spaces[i][x] = new JLabel("XXXX");
 				add(spaces[i][x]);
 			}
-			
+		
 	}
 	
+	//Order of display on single space is 
+	//Type, Height, Developer, Palace Height (if there)
+	
+	//Update space w/ no palace
+	public void updateSpace(int x, int y, String type, int height) {
+	    String isDevHere = spaces[x][y].getText().substring(2,3);
+	    spaces[x][y].setText(type + Integer.toString(height) + isDevHere + "X"); 
+	}
+	
+	//Update space w/ palace
+	public void updateSpace(int x, int y, String type, 
+	                        int height, int palaceLevel) {
+	    String isDevHere = spaces[x][y].getText().substring(2,3);
+	    spaces[x][y].setText(type + Integer.toString(height) + isDevHere + 
+	                        Integer.toString(palaceLevel)); 
+	}
+	
+	//Put a developer here
+    public void updateDeveloper(int x, int y, Color color) {
+        spaces[x][y].setText(spaces[x][y].getText().substring(0,2) + "d" + 
+                             spaces[x][y].getText().substring(3));       
+        spaces[x][y].setForeground(color);
+        
+    }
+    
+    //Remove a developer from here
+    public void removeDeveloper(int x, int y) {
+        spaces[x][y].setText(spaces[x][y].getText().substring(0,2) + "X" + 
+                             spaces[x][y].getText().substring(3));
+        spaces[x][y].setForeground(Color.BLACK);
+    }
+    
+    //When tabbing through developers, switch to this one
+    public void switchToDeveloper(int x, int y) {
+        spaces[x][y].setText(spaces[x][y].getText().substring(0,2) + "D" + 
+                             spaces[x][y].getText().substring(3));
+    }
+    
+    //When tabbing through developers, switch away from this one
+    public void switchFromDeveloper(int x, int y) {
+        spaces[x][y].setText(spaces[x][y].getText().substring(0,2) + "d " + 
+                             spaces[x][y].getText().substring(3));
+    }
+    
+    //Highlights a given space (if it's not highlighted)
+    public void highlightSpace(int x, int y) {
+        if (!spaces[x][y].getText().substring(0,3).equals("<b>"))
+            spaces[x][y].setText("<html><h2>" + spaces[x][y].getText() +
+                                 "</h2></html>");
+    }
+    
+    //DeHighlights a given space (if it's higlighted)
+    public void unHighlightSpace(int x, int y) {
+        if (spaces[x][y].getText().substring(0,3).equals("<ht"))
+            spaces[x][y].setText(spaces[x][y].getText().substring(10,
+                spaces[x][y].getText().length() - 12));
+    }
+    
 }

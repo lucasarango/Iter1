@@ -12,10 +12,6 @@ public class View {
         playerView = new PlayerView(playerNames);
     }
     
-    public void updateInventory() {
-        playerView.updatePlayer();
-    }
-    
     //Order of display on single space is 
 	//Type, Height, Developer, Palace Height (if there)
 	
@@ -48,6 +44,31 @@ public class View {
     //When tabbing through developers, switch away from this one
     public void switchFromDeveloper(int x, int y) {
         boardView.switchFromDeveloper(x, y);
+    }
+    
+    //Method for decrementing 1 block counts
+    public void updateOneBlockCount(String playerName, boolean isCity) {
+        playerView.updateOneBlockCount(playerName, isCity);
+    }
+    
+    //Method for decrementing 2 block counts
+    public void updateTwoBlockCount(String playerName) {
+        playerView.updateTwoBlockCount(playerName);
+    }
+    
+    //Method for incrementing/decrementing developer count
+    public void developerCount(String playerName, int increment) {
+        playerView.developerCount(playerName, increment);
+    }
+    
+    //Highlight a space for selection
+    public void highlightSpace(int x, int y) {
+        boardView.highlightSpace(x, y);
+    }
+    
+    //De-highlight a space for selection
+    public void unHighlightSpace(int x, int y) {
+        boardView.unHighlightSpace(x, y);
     }
     
     //Map players to their colors
