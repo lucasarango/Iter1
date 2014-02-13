@@ -1,4 +1,5 @@
 import javax.swing.*;
+
 import java.awt.*;
 
 public class BoardView extends JFrame{
@@ -111,9 +112,10 @@ public class BoardView extends JFrame{
     
     //Highlights a given space (if it's not highlighted)
     public void highlightSpace(int x, int y) {
-        if (!spaces[x][y].getText().substring(0,3).equals("<ht"))
-            spaces[x][y].setText("<html><h2>" + spaces[x][y].getText() +
-                                 "</h2></html>");
+        //if (!spaces[x][y].getText().substring(0,3).equals("<ht"))
+        //    spaces[x][y].setText("<html><h2>" + spaces[x][y].getText() +
+        //                         "</h2></html>");
+    	spaces[x][y].setFont(new Font("Serif", Font.BOLD, 12));
     }
     
     //DeHighlights a given space (if it's higlighted)

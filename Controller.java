@@ -128,8 +128,9 @@ public class Controller extends JFrame implements KeyListener {
 				setTextPalaceUpgrade();
 			}
 			else if(key == PALACE_PLACE) {
-				resetCursor();
+				mediator.deselectSpace(coord);
 				upgradePalace();
+				resetCursor();
 				upgradingPalace = false;
 				palaceLevel = 0;
 				setTextMenu();
@@ -138,6 +139,7 @@ public class Controller extends JFrame implements KeyListener {
 				upgradingPalace = false;
 				palaceLevel = 0;
 				resetCursor();
+				mediator.deselectSpace(coord);
 				setTextMenu();
 			}
 	    	return;
@@ -166,8 +168,9 @@ public class Controller extends JFrame implements KeyListener {
 				setTextPlacingPalace();
 			}
 			else if(key == PALACE_PLACE) {
-				resetCursor();
+				mediator.deselectSpace(coord);
 				placePalace();
+				resetCursor();
 				placingPalace = false;
 				palaceLevel = 0;
 				setTextMenu();
@@ -175,6 +178,7 @@ public class Controller extends JFrame implements KeyListener {
 			else if(key == QUIT) {
 				placingPalace = false;
 				palaceLevel = 0;
+				mediator.deselectSpace(coord);
 				resetCursor();
 				setTextMenu();
 			}
@@ -204,14 +208,16 @@ public class Controller extends JFrame implements KeyListener {
 				setTextPlaceBlock();
 			}
 			else if(key == BLOCK_PLACE) {
-				resetCursor();
 				placeBlock();
+				mediator.deselectSpace(coord);
+				resetCursor();
 				placingBlock = false;
 				setTextMenu();
 			}
 			else if(key == QUIT) {
 				returnBlock();
 				placingBlock = false;
+				mediator.deselectSpace(coord);
 				resetCursor();
 				setTextMenu();
 			}
@@ -237,13 +243,15 @@ public class Controller extends JFrame implements KeyListener {
 				setTextPlaceDeveloper();
 			}
 			else if(key == DEVELOPER_PLACE) {
-				resetCursor();
 				placeDeveloper();
+				mediator.deselectSpace(coord);
+				resetCursor();
 				placingDeveloper = false;
 				setTextMenu();
 			}
 			else if(key == QUIT) {
 				placingDeveloper = false;
+				mediator.deselectSpace(coord);
 				resetCursor();
 				setTextMenu();
 			}
@@ -451,7 +459,6 @@ public class Controller extends JFrame implements KeyListener {
 	}
 	
 	private void resetCursor() {
-		mediator.deselectSpace(coord);
 		coord[0] = 0;
 		coord[1] = 0;
 	}
