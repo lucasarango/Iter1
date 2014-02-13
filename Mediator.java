@@ -85,7 +85,7 @@ public class Mediator
 	public void placeDeveloper(Developer d, int[] coord)
 	{
 		if(board.placeDeveloper(d, coord)){
-			view.updateDeveloper(int[0], int[1], game.getPlayerName());
+			view.updateDeveloper(coord[0], coord[1], game.getPlayerName());
 			view.developerCount(-1);
 		}
 		else
@@ -135,7 +135,7 @@ public class Mediator
 
 	public void upgradePalace(int[] coord, int value)
 	{
-		if(board.upgradePalace(int[] coord, int value)){
+		if(board.upgradePalace(coord, value)){
 			Space[][] temp = boarod.getSpaces();
 			Space ret = temp[coord[0]][coord[1]];
 			updateSpace(coord, ret.getBlock());
