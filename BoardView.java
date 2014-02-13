@@ -38,7 +38,7 @@ public class BoardView extends JFrame{
 		spaces = new JLabel[14][14];
 		for (int i = 0; i < 14; i++)
 			for (int x = 0; x < 14; x++) {
-			    spaces[i][x] = new JLabel("");
+			    spaces[i][x] = new JLabel("____");
 				if (x > 0 && x < 13 && i > 0 && i < 13)
 				    spaces[i][x] = new JLabel("XXXX");
 				add(spaces[i][x]);
@@ -50,14 +50,33 @@ public class BoardView extends JFrame{
 	//Type, Height, Developer, Palace Height (if there)
 	
 	//Update space w/ no palace
-	public void updateSpace(int x, int y, String type, int height) {
+	public void updateSpace(int x, int y, Tile tile, int height) {
+		String type = spaces[x][y].getText().substring(0,1);
+        if (tile instanceof VillageTile)
+            type = "V";
+        else if (tile instanceof PalaceTile)
+            type = "P";
+        else if (tile instanceof RiceTile)
+            type = "R";
+        else if (tile instanceof IrrigationTile)
+            type = "I";
 	    String isDevHere = spaces[x][y].getText().substring(2,3);
-	    spaces[x][y].setText(type + Integer.toString(height) + isDevHere + "X"); 
+	    spaces[x][y].setText(type + Integer.toString(height) + isDevHere + 
+	    					 spaces[x][y].getText().substring(3,4)); 
 	}
 	
 	//Update space w/ palace
-	public void updateSpace(int x, int y, String type, 
+	public void updateSpace(int x, int y, Tile tile, 
 	                        int height, int palaceLevel) {
+		String type = spaces[x][y].getText().substring(0,1);
+        if (tile instanceof VillageTile)
+            type = "V";
+        else if (tile instanceof PalaceTile)
+            type = "P";
+        else if (tile instanceof RiceTile)
+            type = "R";
+        else if (tile instanceof IrrigationTile)
+            type = "I";
 	    String isDevHere = spaces[x][y].getText().substring(2,3);
 	    spaces[x][y].setText(type + Integer.toString(height) + isDevHere + 
 	                        Integer.toString(palaceLevel)); 

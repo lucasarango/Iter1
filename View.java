@@ -18,31 +18,13 @@ public class View {
 	
 	//Update space w/ no palace
     public void updateSpace(int x, int y, Tile tile, int height) {
-        String type = "";
-        if (tile instanceof VillageTile)
-            type = "V";
-        else if (tile instanceof PalaceTile)
-            type = "P";
-        else if (tile instanceof RiceTile)
-            type = "R";
-        else if (tile instanceof IrrigationTile)
-            type = "I";
-        boardView.updateSpace(x, y, type, height);
+        boardView.updateSpace(x, y, tile, height);
     }
     
     //Update space w/ palace
     public void updateSpace(int x, int y, Tile tile, int height,
                             int palaceLevel) {
-        String type = "";
-        if (tile instanceof VillageTile)
-            type = "V";
-        else if (tile instanceof PalaceTile)
-            type = "P";
-        else if (tile instanceof RiceTile)
-            type = "R";
-        else if (tile instanceof IrrigationTile)
-            type = "I";
-        boardView.updateSpace(x, y, type, height, palaceLevel);
+        boardView.updateSpace(x, y, tile, height, palaceLevel);
     }
     
     //Put a developer here
