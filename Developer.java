@@ -18,4 +18,8 @@ public class Developer {
 	public void score(int score) {
 		player.addToScore(score);
 	}
+	
+	public Player getPlayer() {
+		return player;
+	}
 }

@@ -1,6 +1,7 @@
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.*;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -11,10 +12,10 @@ public class Controller extends JFrame implements KeyListener {
 	
 	private boolean TEST = true;
 	
-	protected static int DEVELOPER_LEFT 	= 0;
-	protected static int DEVELOPER_RIGHT 	= 1;
-	protected static int DEVELOPER_UP 		= 2;
-	protected static int DEVELOPER_DOWN 	= 3;
+	protected static int DEVELOPER_LEFT 	= KeyEvent.VK_NUMPAD4;
+	protected static int DEVELOPER_RIGHT 	= KeyEvent.VK_NUMPAD6;
+	protected static int DEVELOPER_UP 		= KeyEvent.VK_NUMPAD8;
+	protected static int DEVELOPER_DOWN 	= KeyEvent.VK_NUMPAD2;
 	protected static int DEVELOPER_CHANGE	= KeyEvent.VK_TAB;
 	protected static int DEVELOPER_PLACE	= KeyEvent.VK_D;
 	
@@ -40,6 +41,9 @@ public class Controller extends JFrame implements KeyListener {
 	protected static int PALACE_UPGRADE		= KeyEvent.VK_U;
 
 	protected static int ACTION_TOKEN_USE	= KeyEvent.VK_T;
+	
+	protected static int SAVE_GAME			= KeyEvent.VK_S;
+	protected static int LOAD_GAME		 	= KeyEvent.VK_L;
 	
 	protected static int QUIT				= KeyEvent.VK_Q;	
 	protected static int END_TURN			= KeyEvent.VK_ENTER;
@@ -106,7 +110,7 @@ public class Controller extends JFrame implements KeyListener {
     
     @Override
 	public void keyPressed(KeyEvent e) {
-    	if(TEST) System.out.println(KeyEvent.getKeyText(e.getKeyCode()));
+    	//if(TEST) System.out.println(KeyEvent.getKeyText(e.getKeyCode()));
     	int key = e.getKeyCode();
     	// State: Upgrading Palace
     	if(upgradingPalace) {
@@ -365,7 +369,30 @@ public class Controller extends JFrame implements KeyListener {
 		// End turn
 		else if(key == END_TURN) {
 			endTurn();
+			return;
 		}
+		
+		// Save game
+		else if(key == SAVE_GAME) {
+			try {
+				mediator.saveGame();
+			}
+			catch(FileNotFoundException err) {
+				err.printStackTrace();
+			}
+			return;
+		}
+		
+		else if(key == LOAD_GAME) {
+			try {
+				mediator.loadGame();
+			}
+			catch(FileNotFoundException err) {
+				err.printStackTrace();
+			}
+			return;
+		}
+		
 	}
 	
 	@Override
@@ -427,25 +454,36 @@ public class Controller extends JFrame implements KeyListener {
 
 	private void changeDeveloper() {
 		Developer oldGuy = developerList.get(developerIndex);
-		for(int i = 0; i < developerList.size(); i++) {
-			if(isDeveloperOnBoard(i)) {
-				developerIndex = i;
+		for(int i = 1; i <= developerList.size(); i++) {
+			int index = (developerIndex + i) % developerList.size();
+			if(TEST) System.out.println("Checking index " + index);
+			if(isDeveloperOnBoard(index)) {
+				if(TEST) System.out.println("Developer found at " + index);
+				developerIndex = index;
+				break;
 			}
 		}
-		if(TEST) System.out.println("Switching developer");
+		if(TEST) System.out.println("Switching developer: " + developerList.get(developerIndex).toString() +
+				" to " + oldGuy);
 	    mediator.switchDeveloper(developerList.get(developerIndex), oldGuy);	    
     }
 	
 	private void changeDeveloper(Developer oldGuy) {
+		boolean found = false;
 		for(int i = 0; i < developerList.size(); i++) {
-			if(isDeveloperOnBoard(i)) {
-				developerIndex = i;
-			}
-			else if(i == developerList.size() - 1) {
-				mediator.switchDeveloper(null, oldGuy);	
+			int index = (developerIndex + i) % developerList.size();
+			if(TEST) System.out.println("Checking index " + index);
+			if(isDeveloperOnBoard(index)) {
+				if(TEST) System.out.println("Developer found at " + index);
+				developerIndex = index;
+				found = true;
+				break;
 			}
 		}
-	    mediator.switchDeveloper(developerList.get(developerIndex), oldGuy);	    
+		if(found)
+			mediator.switchDeveloper(developerList.get(developerIndex), oldGuy);
+		else
+			mediator.switchDeveloper(null, oldGuy);	
     }
 
 
@@ -505,8 +543,8 @@ public class Controller extends JFrame implements KeyListener {
 		}*/
 		else if(blockType == 'R') {
 			for(Block b : blockList) {
-				if(getBlockType(b) instanceof VillageTile && b instanceof OneBlock) {
-					if(TEST) System.out.println("Obtaining village block");
+				if(getBlockType(b) instanceof RiceTile && b instanceof OneBlock) {
+					if(TEST) System.out.println("Obtaining rice block");
 					selectedBlock = b;
 					return true;
 				}
@@ -579,7 +617,7 @@ public class Controller extends JFrame implements KeyListener {
 	}
 	
 	private void upgradePalace() {
-		if(TEST) System.out.println("Upgrading palace");
+		if(TEST) System.out.println("Upgrading palace " + palaceLevel);
 		mediator.upgradePalace(coord, palaceLevel);
 	}
 	
@@ -599,17 +637,24 @@ public class Controller extends JFrame implements KeyListener {
     	selectingBlockSize = false;
         selectingOneBlock = false;
 
-        Developer temp = developerList.get(developerIndex);
-        mediator.endTurn();
+        Developer temp = null;
+        if(isDeveloperOnBoard()) {
+        	temp = developerList.get(developerIndex);
+        }
+        mediator.switchDeveloper(null, temp);
+        boolean endGame = mediator.endTurn();
         blockList = mediator.getBlockList();
         developerList = mediator.getDevelopers();
+        changeDeveloper(temp);
+        while(true) {
+        	boolean weGetAnA = true;
+        }
 	}
-
 	
 	private String printBlock(Block b) {
 		String s = "<html><body>";
 		s += "============================<br>";
-		for (int i = 0; i < 3; i++) {
+		for (int i = 2; i >= 0; i--) {
 			for (int j = 0; j < 3; j++) {
 				if (b.getGrid()[j][i] == null)
 					s += "+";
@@ -641,7 +686,8 @@ public class Controller extends JFrame implements KeyListener {
 				"U to upgrade palace, and Q to quit.</body></html>");
 	}
 	private void setTextMenu() {
-		controlOutput.setText("<html><body>U: Upgrade palace.<br>B: Place block.<br>D: Place developer.<br>TAB: Switch selected developer.<br>ENTER: End turn.</html></body>"); // Main Menu
+		controlOutput.setText("<html><body>U: Upgrade palace.<br>B: Place block.<br>D: Place developer." + 
+				"<br>TAB: Switch selected developer.<br>S: Save Game<br>L: Load Game<br>ENTER: End turn.</html></body>"); // Main Menu
 	}
 	private void setTextPlaceDeveloper() {
 		controlOutput.setText("<html><body>Placing Developer. Coordinates: " + Arrays.toString(coord) +

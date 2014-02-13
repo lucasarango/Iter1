@@ -48,10 +48,11 @@ public class GameMaster {
 		return currentPlayer.useActionToken();
 	}
 
-	public void endTurn() {
+	public boolean endTurn() {
 		// Reset stuff
 		// Add score to player
 		// Transition to new player
+		boolean gameOver = false;
 		int turn = playerList.indexOf(currentPlayer);
 		turn++;
 		if (turn >= playerList.size()) {
@@ -60,7 +61,29 @@ public class GameMaster {
 		actionPoints = 6;
 		currentPlayer.addToScore(turnScore);
 		turnScore = 0;
-		currentPlayer = playerList.get(turn);
+		
+		
+		//check for last turn
+		if(mediator.getThreeBlock() == null){
+			//last turn
+			//check for last player
+			if(playerList.size() == 1){
+				//end of game
+				return true;
+			}
+			playerList.remove(currentPlayer);
+			//check if removed player was first player
+			/*if(turn == 0){
+				currentPlayer = playerList.get(turn-1);
+			}
+			else*/
+				currentPlayer = playerList.get(turn-1);
+		}
+		else{
+			currentPlayer = playerList.get(turn);
+		}
+		
+		return gameOver;
 	}
 
 	public void placeBlock(Block block) {
@@ -155,7 +178,7 @@ public class GameMaster {
 			player.save(p);
 			p.append("</Player>\n");
 		}
-		p.append("%/GameMaster%");
+		p.append("%/GameMaster%\n");
 	}
 	
 	public void load(Scanner reader) {

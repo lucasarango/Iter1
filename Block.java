@@ -5,7 +5,7 @@ abstract class Block {
 	protected Tile[][] tileGrid;
 
 	abstract public boolean rotate();
-		
+
 	abstract public Tile[][] getGrid();
 
 	abstract public void setGrid(Tile[][] t);
@@ -35,7 +35,7 @@ abstract class Block {
 			}
 		}
 	}
-	
+
 	/**this load function assumes it will be encapsulated in an xml tag,
 	 * and will exit when it sees a closing tag of any kind that it did
 	 * not create*/

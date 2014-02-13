@@ -91,6 +91,13 @@ public class PlayerView extends JFrame{
 	    updatePlayer(playerNum);
 	}
 	
+	//Method for updating player score, given player
+	public void updateScore(String playerName, int score) {
+		int playerNum = getPlayerNumber(playerName);
+		this.score[playerNum] = score;
+		updatePlayer(playerNum);
+	}
+	
 	//Maps player names to the number in the data structure
 	private int getPlayerNumber(String playerName) {
 	    if (playerName.equals(playerNames[0]))
@@ -107,7 +114,7 @@ public class PlayerView extends JFrame{
 	
 	//Update a given player
 	public void updatePlayer(int i) {
-	    playerTextArea[i] = new JTextArea(playerNames[i] + "\n" +
+	    playerTextArea[i].setText(playerNames[i] + "\n" +
 		                              "1 Blks (City): " + oneCityBlkCounts[i] +
 		                              "\n1 Blks (Rice): " + 
 		                              oneVillageBlkCounts[i] +

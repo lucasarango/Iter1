@@ -1,5 +1,6 @@
 import java.io.PrintWriter;
 import java.util.*;
+import java.io.PrintWriter;
 
 /**************************************************************************************
  * Player is a state object managed by GameMaster. It doesn't influence the game
@@ -85,7 +86,7 @@ public class Player {
 			return false;
 		}
 	}
-
+	
 	/**this save function assumes it will be encapsulated in an xml tag*/
 	public void save(PrintWriter p){
 		p.append("name:"+this.name+"\n");

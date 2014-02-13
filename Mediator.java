@@ -5,11 +5,12 @@ import java.io.File;
 import java.util.List;
 import java.util.Scanner;
 
+
 public class Mediator
 {
 	
 	public static final String SAVEPATH="savefile";
-	
+
 	private GameMaster game;
 	private Board board;
 	private View view;
@@ -65,17 +66,7 @@ public class Mediator
 
 		if(board.placeBlock(b, coord)){
 			System.out.println("Block placed");
-			Space[][] temp = board.getSpaces();
-			Space ret = temp[coord[0]][coord[1]];
-
-
-			if(ret.getTile() instanceof PalaceTile){
-
-				updateSpace(coord, ret.getBlock());
-			}
-			else{
-				updateSpace(coord, ret.getBlock());
-			}
+			updateSpace(coord, b);
 		
 			//check if one or two block
 			if(b instanceof OneBlock){
@@ -156,10 +147,16 @@ public class Mediator
 
 	public void upgradePalace(int[] coord, int value)
 	{
+		System.out.println("trying to upgrade " + coord[0] + " " + coord[1]);
 		if(board.upgradePalace(coord, value)){
+			System.out.println("Palace did upgrade");
 			Space[][] temp = board.getSpaces();
-			Space ret = temp[coord[0]][coord[1]];
+			Space ret = temp[coord[0]+1][coord[1]+1];
+			
 			updateSpace(coord, ret.getBlock());
+		}
+		else{
+			System.out.println("Didnt upgrade");
 		}
 			
 	}
@@ -178,11 +175,11 @@ public class Mediator
 		int[] coord = new int[2];
 		if(current != null){
 		coord = board.findDeveloper(current);
-		view.switchFromDeveloper(coord[0], coord[1]);
+		view.switchToDeveloper(coord[0], coord[1]);
 		}
 		if(last != null){
 		coord = board.findDeveloper(last);
-		view.switchToDeveloper(coord[0], coord[1]);
+		view.switchFromDeveloper(coord[0], coord[1]);
 		}
 
 	}
@@ -213,13 +210,13 @@ public class Mediator
 		}
 	}
 
+
 	private void updateSpace(int[] coord, Block b){
 		System.out.println("updating space");
 		Tile[][] tiles = b.getGrid();
-
 		Space[][] temp = board.getSpaces();
-		Space ret = temp[coord[0]][coord[1]];
-
+		
+		
 		// iterate through grid and only place nonempty tiles
 		for (int i = 0; i < tiles.length; i++) {
 			for (int j = 0; j < tiles[i].length; j++) {
@@ -227,21 +224,32 @@ public class Mediator
 				if (tiles[i][j] != null) {
 					// check for palace tile
 					if (tiles[i][j] instanceof PalaceTile) {
+						
+						Space ret = temp[coord[0]+i][coord[1]+j];
 						System.out.println("its a palace");
-						view.updateSpace(coord[0]+i, coord[1]+j, ret.getTile(), ret.getHeight(), ((PalaceTile)ret.getTile()).getValue());
+						view.updateSpace(coord[0]+i-1, coord[1]+j-1, ret.getTile(), ret.getHeight(), ((PalaceTile)ret.getTile()).getValue());
 					}
 					else{
+						Space ret = temp[coord[0]+i][coord[1]+j];
 						System.out.println("not a palace");
-						view.updateSpace(coord[0]+i, coord[1]+j, ret.getTile(), ret.getHeight());
+						System.out.println("Coordinates arjnje " + coord[0]+i + " " + coord[1]+j );
+						if(ret.getTile() != null)
+							System.out.println("not null");
+						else
+							System.out.println("its null oops");
+						
+						view.updateSpace(coord[0]+i-1, coord[1]+j-1, ret.getTile(), ret.getHeight());
 					}
 				}
 			}
 		}
 		
+		view.updateScore( game.getPlayerName(), game.getPlayerScore());
+		
 	}
 	
-	public void endTurn(){
-		game.endTurn();
+	public boolean endTurn(){
+		return game.endTurn();
 	}
 
 }
