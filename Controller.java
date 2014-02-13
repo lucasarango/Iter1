@@ -86,6 +86,7 @@ public class Controller extends JFrame implements KeyListener {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
         controlOutput.setFocusable(true);
+        controlOutput.setFocusTraversalKeysEnabled(false);
         controlOutput.addKeyListener(this);
     }
     

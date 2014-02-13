@@ -107,7 +107,7 @@ public class BoardView extends JFrame{
     
     //When tabbing through developers, switch away from this one
     public void switchFromDeveloper(int x, int y) {
-        spaces[x][y].setText(spaces[x][y].getText().substring(0,2) + "d " + 
+        spaces[x][y].setText(spaces[x][y].getText().substring(0,2) + "d" + 
                              spaces[x][y].getText().substring(3));
     }
     
