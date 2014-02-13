@@ -22,6 +22,7 @@ public class Mediator {
 	}
 	public void rotateBlock(Block block) {
 		System.out.println("rotateBlock called.");
+		block.rotate();
 	}
 	public void upgradePalace(int[] coord, int level) {
 		System.out.println("upgradePalace called.");
