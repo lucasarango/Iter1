@@ -328,6 +328,7 @@ public class Controller extends JFrame implements KeyListener {
 		
 		// Scroll developer
 		else if(key == DEVELOPER_CHANGE) {
+			if(TEST) System.out.println("Tab pressed");
 			changeDeveloper();
 			return;
 		}
@@ -534,6 +535,7 @@ public class Controller extends JFrame implements KeyListener {
 	
 	private boolean placeBlock() {
 		if(TEST) System.out.println("Placing block");
+		if(TEST) System.out.println(selectedBlock.toString() + ", " + Arrays.toString(coord));
 		mediator.placeBlock(selectedBlock, coord);
 		return true;
 	}
