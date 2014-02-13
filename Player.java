@@ -1,3 +1,4 @@
+import java.io.PrintWriter;
 import java.util.*;
 
 /**************************************************************************************
@@ -85,4 +86,38 @@ public class Player {
 		}
 	}
 
+	/**this save function assumes it will be encapsulated in an xml tag*/
+	public void save(PrintWriter p){
+		p.append("name:"+this.name+"\n");
+		p.append("invDevelopers:"+inventory.getDevelopers().size()+"\n");
+		for (Block one: inventory.getOneBlocksLeft()){
+			//p.append("oneBlock:"+one.)
+		}
+	}
+	
+	/**this load function assumes it will be encapsulated in an xml tag,
+	 * and will exit when it sees a closing tag of any kind that it did
+	 * not create*/
+	public void load(Scanner reader){
+		
+		//this will be escaped with a break;
+		while(true){
+			
+			String line=reader.nextLine().replace("//s+", "");
+			
+			if (line.startsWith("</")){
+				break;
+			
+			}else{
+				int colonIndex = line.indexOf(':');
+				if (colonIndex>0){
+					String tag = line.substring(0, colonIndex);
+					String value = line.substring(colonIndex + 1, line.length());
+					if (tag.equals("name")){
+						this.name=value;
+					}
+				}
+			}
+		}//end while(true)
+	}
 }

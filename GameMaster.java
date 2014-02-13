@@ -1,3 +1,4 @@
+import java.io.PrintWriter;
 import java.util.*;
 
 public class GameMaster {
@@ -137,4 +138,72 @@ public class GameMaster {
 		return d;
 	}
 
+	/**saves GameMaster with a hybrid xml-like format
+	 * the GameMaster marks its start with %GameMaster%,
+	 * and it's end with %/GameMaster%
+	 * Sub-savables are marked with XML like tags, and called for their own internal save*/
+	public void save(PrintWriter p){
+		p.append("%GameMaster%\n");
+		p.append("currentPlayer:"+currentPlayer.getName()+"\n");
+		p.append("actionPoints:"+actionPoints+"\n");
+		p.append("turnScore:"+turnScore+"\n");
+		for (Player player: playerList){
+			p.append("<Player>\n");
+			player.save(p);
+			p.append("</Player>\n");
+		}
+		p.append("%/GameMaster%");
+	}
+	
+	public void load(Scanner reader) {
+		
+		// clear the player list
+		playerList.clear();
+		
+		// this stores the player name. The name won't be assocaitable to a
+		// player until all the palyers have been loaded
+		String currentPlayerName="";
+		
+		while (true) {
+		
+			//reads a line, removes all white space
+			String line = reader.nextLine().replaceAll("\\s+", "");
+			
+			//This will signal the end of the game master section.  If you see this, you're done
+			if (line.startsWith("%/")){
+				break;
+				
+			//check for a player tag
+			} else if (line.startsWith("<Player>")){
+				Player newb = new Player("notYetLoaded");
+				newb.load(reader);
+				playerList.add(newb);
+			
+			// finally, check for a colon delimited data/value pair
+			} else {
+			
+				int colonIndex = line.indexOf(':');
+			
+				//if there is a colon
+				if (colonIndex > 0) {
+					String tag = line.substring(0, colonIndex);
+					String value = line.substring(colonIndex + 1, line.length());
+					if (tag.equals("currentPlayer")) {
+						currentPlayerName = value;
+					} else if (tag.equals("actionPoints")) {
+						this.actionPoints = Integer.parseInt(value);
+					} else if (tag.equals("turnScore")) {
+						this.turnScore = Integer.parseInt(value);
+					}
+				}//NOT if (colonIndex > 0)
+			}//End else for if (line.startsWith("<Player>"))
+		}//end while(!endReached)
+		
+		//identify the current player
+		for (Player player: playerList){
+			if (player.getName().equals(currentPlayerName)){
+				this.currentPlayer=player;
+			}
+		}
+	}
 }
