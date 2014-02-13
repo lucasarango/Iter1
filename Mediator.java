@@ -63,24 +63,30 @@ public class Mediator
 	{
 
 		if(board.placeBlock(b, coord)){
-			
+			System.out.println("Block placed");
 			updateSpace(coord, b);
 		
 			//check if one or two block
 			if(b instanceof OneBlock){
 				Tile[][] tiles = b.getGrid();
 				Tile checker = tiles[1][1];
+				System.out.println("dis shit a one block");
+
+				if(checker instanceof VillageTile)
+					System.out.println("its a villlage!");
+				else
+					System.out.println("not a village");
 				
 				view.updateOneBlockCount(game.getPlayerName(), checker instanceof VillageTile);
 			}
 			else if(b instanceof TwoBlock){
 				view.updateTwoBlockCount(game.getPlayerName());
-				
+				System.out.println("dis shit a two block");
 			}
 
 		}
 		else{
-			
+			System.out.println("Block not placed");
 		}
 			//notify error
 	}
@@ -139,16 +145,16 @@ public class Mediator
 
 	public void upgradePalace(int[] coord, int value)
 	{
-		
+		System.out.println("trying to upgrade " + coord[0] + " " + coord[1]);
 		if(board.upgradePalace(coord, value)){
-			
+			System.out.println("Palace did upgrade");
 			Space[][] temp = board.getSpaces();
 			Space ret = temp[coord[0]+1][coord[1]+1];
 			
 			updateSpace(coord, ret.getBlock());
 		}
 		else{
-			
+			System.out.println("Didnt upgrade");
 		}
 			
 	}
@@ -200,22 +206,11 @@ public class Mediator
 				}
 			}
 		}
-		
-		//update board in view
-		Space[][] spaces = board.getSpaces();
-
-		for(int x = 0; x < spaces[0].length; x++)
-		{
-			for(int y = 0; y < spaces[1].length; y++)
-			{
-				view.updateSpace(x, y, spaces[x][y].getTile(), spaces[x][y].getHeight());
-			}
-		}
 	}
 
 
 	private void updateSpace(int[] coord, Block b){
-		
+		System.out.println("updating space");
 		Tile[][] tiles = b.getGrid();
 		Space[][] temp = board.getSpaces();
 		
@@ -229,24 +224,25 @@ public class Mediator
 					if (tiles[i][j] instanceof PalaceTile) {
 						
 						Space ret = temp[coord[0]+i][coord[1]+j];
-						
+						System.out.println("its a palace");
 						view.updateSpace(coord[0]+i-1, coord[1]+j-1, ret.getTile(), ret.getHeight(), ((PalaceTile)ret.getTile()).getValue());
 					}
 					else{
 						Space ret = temp[coord[0]+i][coord[1]+j];
+						System.out.println("not a palace");
+						System.out.println("Coordinates arjnje " + coord[0]+i + " " + coord[1]+j );
+						if(ret.getTile() != null)
+							System.out.println("not null");
+						else
+							System.out.println("its null oops");
+						
 						view.updateSpace(coord[0]+i-1, coord[1]+j-1, ret.getTile(), ret.getHeight());
 					}
 				}
 			}
 		}
 		
-		List<Player> players = game.playerList;
-		for(int i = 0; i < players.size(); i++){
-			view.updateScore( players.get(i).getName(), players.get(i).getScore());
-		}
-		
-		view.updateScore(game.getPlayerName(), game.getPlayerScore());
-		
+		view.updateScore( game.getPlayerName(), game.getPlayerScore());
 		
 	}
 	

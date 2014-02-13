@@ -10,7 +10,7 @@ import javax.swing.*;
 
 public class Controller extends JFrame implements KeyListener { 
 	
-	private boolean TEST = false;
+	private boolean TEST = true;
 	
 	protected static int DEVELOPER_LEFT 	= KeyEvent.VK_NUMPAD4;
 	protected static int DEVELOPER_RIGHT 	= KeyEvent.VK_NUMPAD6;
@@ -274,24 +274,14 @@ public class Controller extends JFrame implements KeyListener {
     		else if(key == TWOBLOCK) {
     			selectBlock('2');
     			selectingBlockSize = false;
-    			if(selectedBlock != null) {
-    				placingBlock = true;
-    				setTextPlaceBlock();
-    			}
-    			else {
-    				setTextMenu();
-    			}
+    			placingBlock = true;
+    			setTextPlaceBlock();
     		}
     		else if(key == THREEBLOCK) {
     			selectBlock('3');
     			selectingBlockSize = false;
-    			if(selectedBlock != null) {
-    				placingBlock = true;
-    				setTextPlaceBlock();
-    			}
-    			else {
-    				setTextMenu();
-    			}
+    			placingBlock = true;
+    			setTextPlaceBlock();
     		}
     		return;
     	}
@@ -300,46 +290,26 @@ public class Controller extends JFrame implements KeyListener {
     		if(key == IRRIGATION) {
     			selectBlock('I');
     			selectingOneBlock = false;
-    			if(selectedBlock != null) {
-    				placingBlock = true;
-    				setTextPlaceBlock();
-    			}
-    			else {
-    				setTextMenu();
-    			}
+    			placingBlock = true;
+    			setTextPlaceBlock();
     		}
     		else if(key == VILLAGE) {
     			selectBlock('V');
     			selectingOneBlock = false;
-    			if(selectedBlock != null) {
-    				placingBlock = true;
-    				setTextPlaceBlock();
-    			}
-    			else {
-    				setTextMenu();
-    			}
+    			placingBlock = true;
+    			setTextPlaceBlock();
     		}
     		else if(key == PALACE) {
     			selectBlock('P');
     			selectingOneBlock = false;
-    			if(selectedBlock != null) {
-    				placingBlock = true;
-    				setTextPlaceBlock();
-    			}
-    			else {
-    				setTextMenu();
-    			}
+    			placingPalace = true;
+    			setTextPlacingPalace();
     		}
     		else if(key == RICE) {
     			selectBlock('R');
     			selectingOneBlock = false;
-    			if(selectedBlock != null) {
-    				placingBlock = true;
-    				setTextPlaceBlock();
-    			}
-    			else {
-    				setTextMenu();
-    			}
+    			placingBlock = true;
+    			setTextPlaceBlock();
     		}
     		return;
     	}
@@ -468,8 +438,7 @@ public class Controller extends JFrame implements KeyListener {
 		}
 	}
 
-    @SuppressWarnings("unused")
-	private void selectDeveloperOffBoard(){
+    private void selectDeveloperOffBoard(){
     	while(isDeveloperOnBoard())
     	{
     		developerIndex = (developerIndex++) % developerList.size();
@@ -677,8 +646,7 @@ public class Controller extends JFrame implements KeyListener {
         blockList = mediator.getBlockList();
         developerList = mediator.getDevelopers();
         changeDeveloper(temp);
-        while(endGame) {
-        	controlOutput.setText("Game Over!");
+        while(true) {
         	boolean weGetAnA = true;
         }
 	}

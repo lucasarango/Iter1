@@ -19,9 +19,9 @@ public class View {
 	//Update space w/ no palace
     public void updateSpace(int x, int y, Tile tile, int height) {
     	if(tile != null)
-    	
+    	System.out.println("sachit is bineg call with " + x + " " + y + tile.getClass().getSimpleName());
         boardView.updateSpace(x, y, tile, height);
-        
+        System.out.println("sachit was calleddd.");
     }
     
     //Update space w/ palace
