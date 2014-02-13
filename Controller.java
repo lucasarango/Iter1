@@ -19,9 +19,16 @@ public class Controller extends JFrame implements KeyListener {
 	protected static int BLOCK_ROTATE		= KeyEvent.VK_R;
 	protected static int BLOCK_PLACE		= KeyEvent.VK_P;
 	
+    protected static int ONEBLOCK           = KeyEvent.VK_1;
+    protected static int TWOBLOCK           = KeyEvent.VK_2;
+    protected static int THREEBLOCK         = KeyEvent.VK_3;
+
 	protected static int ACTION_TOKEN_USE	= KeyEvent.VK_T;
 	
 	protected static int END_TURN			= KeyEvent.VK_ENTER;
+
+    private List<Developer> developerList;
+    private int developerIndex;
 
     JLabel controlOutput;
     
@@ -91,21 +98,31 @@ public class Controller extends JFrame implements KeyListener {
 	
 	@Override
 	public void keyReleased(KeyEvent e) {
+
 	}
 	
 	@Override
 	public void keyTyped(KeyEvent e) {
+        if (e.getKeyCode() == ONEBLOCK) {
+
+        }
+        else if (e.getKeyCode() ==TWOBLOCK){
+
+        }
+        else if (e.getKeyCode() == THREEBLOCK) {
+
+        }
 	}
 	
 	private void moveDeveloper(int direction) {
 		if(direction == DEVELOPER_LEFT) {
-			
+			mediator.moveDeveloper(developerList.get(developerIndex), [-1 0])
 		}
 		else if(direction == DEVELOPER_RIGHT) {
-			
+			mediator.moveDeveloper(developerList.get(developerIndex), 1, 0)
 		}
 		else if(direction == DEVELOPER_UP) {
-			
+			mediator.moveDeveloper(developerList.get(developerIndex), -1, 0)
 		}
 		else if(direction == DEVELOPER_DOWN) {
 			
@@ -129,7 +146,7 @@ public class Controller extends JFrame implements KeyListener {
 			
 		}
 		else if(direction == BLOCK_DOWN) {
-			
+		  	
 		}
 		return;
 	}
