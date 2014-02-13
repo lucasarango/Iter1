@@ -140,6 +140,10 @@ public class Controller extends JFrame implements KeyListener {
 		}
 	}
 
+    private void placeDeveloper(){
+
+    }
+
 	private void changeDeveloper() {
 	    if (developerIndex == developerList.size() - 1)
             developerIndex = 0;
