@@ -86,6 +86,10 @@ public class Controller extends JFrame implements KeyListener {
     
     private void initializeGame() {
     	mediator = new Mediator();
+
+    	//Initial developer and block list
+    	developerList = mediator.getDeveloperList();
+    	blockList = mediator.getBlockList();
     }
     
     @Override
@@ -503,6 +507,23 @@ public class Controller extends JFrame implements KeyListener {
 	private void rotateBlock() {
 		mediator.rotateBlock(selectedBlock);
 	}
+
+	//Pull new block lists, new developer lists, etc
+	private void endTurn()
+	{
+		placingBlock = false;
+     	upgradingPalace	= false;
+     	palaceLevel	= 0;
+    	placingDeveloper = false;
+    	selectingBlockSize = false;
+        selectingOneBlock = false;
+
+        Developer temp = developerList.get(developerIndex);
+        mediator.endTurn();
+        blockList = mediator.getBlockList();
+        developerList.getDeveloperList();
+	}
+
 	
 	private String printBlock(Block b) {
 		String s = "<html><body>";
