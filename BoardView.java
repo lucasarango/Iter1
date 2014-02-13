@@ -37,11 +37,12 @@ public class BoardView extends JFrame{
 
 		//Now we initialize the 144 game spaces
 		spaces = new JLabel[14][14];
-		for (int i = 0; i < 14; i++)
-			for (int x = 0; x < 14; x++) {
+		for (int x = 13; x >= 0; x--)
+			for (int i = 0; i < 14; i++) {			    
 			    spaces[i][x] = new JLabel("____");
 				if (x > 0 && x < 13 && i > 0 && i < 13)
 				    spaces[i][x] = new JLabel("XXXX");
+				spaces[i][x].setFont(new Font("Serif", Font.BOLD, 13));
 				add(spaces[i][x]);
 			}
 		
@@ -112,18 +113,12 @@ public class BoardView extends JFrame{
     
     //Highlights a given space (if it's not highlighted)
     public void highlightSpace(int x, int y) {
-        //if (!spaces[x][y].getText().substring(0,3).equals("<ht"))
-        //    spaces[x][y].setText("<html><h2>" + spaces[x][y].getText() +
-        //                         "</h2></html>");
-    	spaces[x][y].setFont(new Font("Serif", Font.BOLD, 12));
+    	spaces[x][y].setFont(new Font("Serif", Font.BOLD, 18));
     }
     
     //DeHighlights a given space (if it's higlighted)
     public void unHighlightSpace(int x, int y) {
-        if (spaces[x][y].getText().substring(0,3).equals("<ht"))
-            spaces[x][y].setText(spaces[x][y].getText().substring(10,
-                spaces[x][y].getText().length() - 12));
+        spaces[x][y].setFont(new Font("Serif", Font.BOLD, 13));
     }
     
 }
-
