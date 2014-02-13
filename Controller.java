@@ -568,4 +568,5 @@ public class Controller extends JFrame implements KeyListener {
 	private void setTextSelectingOneBlock() {
 		controlOutput.setText("<html><body>Choose the one-tile space:<br>V: Village<br>I: Irrigation<br>R: Rice</html></body>");
 	}
+
 }
