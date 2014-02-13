@@ -207,7 +207,7 @@ public class Mediator
 					// check for palace tile
 					if (tiles[i][j] instanceof PalaceTile) {
 						System.out.println("its a palace");
-						view.updateSpace(coord[0]+i, coord[1]+j, ret.getTile(), ret.getHeight(), (PalaceTile)ret.getTile().getValue());
+						view.updateSpace(coord[0]+i, coord[1]+j, ret.getTile(), ret.getHeight(), ((PalaceTile)ret.getTile()).getValue());
 					}
 					else{
 						System.out.println("not a palace");
