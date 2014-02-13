@@ -1,6 +1,7 @@
 
 import java.io.PrintWriter;
 import java.io.File;
+import java.util.List;
 
 public class Mediator
 {
@@ -28,11 +29,11 @@ public class Mediator
 		
 	}
 
-	public ArrayList<BLock> getBlockList(){
+	public List<Block> getBlockList(){
 		return game.getPlayerBlocks();
 	}
 
-	public ArrayList<Developer> getDevelopers(){
+	public List<Developer> getDevelopers(){
 		return game.getPlayerDevelopers();
 	}
 
@@ -49,14 +50,15 @@ public class Mediator
 		else{
 			view.removeDeveloper(oldspace[0], oldspace[1]);
 
-			view.developerCount(1);
+			view.developerCount(game.getPlayerName(), 1);
 		}
 			
 	}
 
 	public void placeBlock(Block b, int[] coord)
 	{
-		if(board.placeBlock(b, board.getSpaces()[coord[0]][coord[1]])){
+
+		if(board.placeBlock(b, coord)){
 			Space[][] temp = board.getSpaces();
 			Space ret = temp[coord[0]][coord[1]];
 			if(ret.getTile() instanceof PalaceTile){
@@ -87,7 +89,7 @@ public class Mediator
 	{
 		if(board.placeDeveloper(d, coord)){
 			view.updateDeveloper(coord[0], coord[1], game.getPlayerName());
-			view.developerCount(-1);
+			view.developerCount(game.getPlayerName(),-1);
 		}
 		else{}
 			//notify error
