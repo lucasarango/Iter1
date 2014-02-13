@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.util.List;
 
 public class View {
     
@@ -6,10 +7,10 @@ public class View {
     private PlayerView playerView;
     private String[] playerNames;
     
-    public View (String[] playerNames) {
-        this.playerNames = playerNames;
-        boardView = new BoardView(playerNames);
-        playerView = new PlayerView(playerNames);
+    public View (List<String> playerNames) {
+        this.playerNames = playerNames.toArray(new String[playerNames.size()]);
+        boardView = new BoardView(this.playerNames);
+        playerView = new PlayerView(this.playerNames);
     }
     
     //Order of display on single space is 
