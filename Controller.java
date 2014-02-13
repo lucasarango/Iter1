@@ -11,10 +11,10 @@ public class Controller extends JFrame implements KeyListener {
 	
 	private boolean TEST = true;
 	
-	protected static int DEVELOPER_LEFT 	= 0;
-	protected static int DEVELOPER_RIGHT 	= 1;
-	protected static int DEVELOPER_UP 		= 2;
-	protected static int DEVELOPER_DOWN 	= 3;
+	protected static int DEVELOPER_LEFT 	= KeyEvent.VK_NUMPAD4;
+	protected static int DEVELOPER_RIGHT 	= KeyEvent.VK_NUMPAD6;
+	protected static int DEVELOPER_UP 		= KeyEvent.VK_NUMPAD8;
+	protected static int DEVELOPER_DOWN 	= KeyEvent.VK_NUMPAD2;
 	protected static int DEVELOPER_CHANGE	= KeyEvent.VK_TAB;
 	protected static int DEVELOPER_PLACE	= KeyEvent.VK_D;
 	
@@ -428,7 +428,6 @@ public class Controller extends JFrame implements KeyListener {
 	private void changeDeveloper() {
 		Developer oldGuy = developerList.get(developerIndex);
 		for(int i = 1; i <= developerList.size(); i++) {
-			
 			int index = (developerIndex + i) % developerList.size();
 			if(TEST) System.out.println("Checking index " + index);
 			if(isDeveloperOnBoard(index)) {
@@ -443,15 +442,21 @@ public class Controller extends JFrame implements KeyListener {
     }
 	
 	private void changeDeveloper(Developer oldGuy) {
+		boolean found = false;
 		for(int i = 0; i < developerList.size(); i++) {
-			if(isDeveloperOnBoard(i)) {
-				developerIndex = i;
-			}
-			else if(i == developerList.size() - 1) {
-				mediator.switchDeveloper(null, oldGuy);	
+			int index = (developerIndex + i) % developerList.size();
+			if(TEST) System.out.println("Checking index " + index);
+			if(isDeveloperOnBoard(index)) {
+				if(TEST) System.out.println("Developer found at " + index);
+				developerIndex = index;
+				found = true;
+				break;
 			}
 		}
-	    mediator.switchDeveloper(developerList.get(developerIndex), oldGuy);	    
+		if(found)
+			mediator.switchDeveloper(developerList.get(developerIndex), oldGuy);
+		else
+			mediator.switchDeveloper(null, oldGuy);	
     }
 
 
@@ -605,11 +610,15 @@ public class Controller extends JFrame implements KeyListener {
     	selectingBlockSize = false;
         selectingOneBlock = false;
 
-        Developer temp = developerList.get(developerIndex);
+        Developer temp = null;
+        if(isDeveloperOnBoard()) {
+        	temp = developerList.get(developerIndex);
+        }
         mediator.switchDeveloper(null, temp);
         mediator.endTurn();
         blockList = mediator.getBlockList();
         developerList = mediator.getDevelopers();
+        changeDeveloper(temp);
 	}
 
 	
