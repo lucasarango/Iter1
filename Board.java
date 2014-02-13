@@ -75,6 +75,14 @@ public class Board {
 		return ret;
 	}
 
+	public Block placePalace(int[] coord, int value){
+		Block palace = new OneBlock(new PalaceTile(value));
+		
+		placeBlock(palace, coord);
+
+		return palace;
+	}
+
 	public boolean returnThreeBlock(Block b) {
 		// Put three block back if player doesn't want to place it
 		if (threeBlocksLeft.size() >= 56) {
@@ -296,6 +304,19 @@ public class Board {
 
 	public int[] findDeveloper(Developer d){
 		return findSpace(d.getSpace());
+	}
+
+	public boolean upgradePalace(int[] coord, int value){
+		boolean ret = false;
+
+		if(spaces[coord[0]][coord[1]] instanceof PalaceTile)
+		{
+			spaces[coord[0]][coord[1]].levelUp(value);
+			scorePalace(spaces[coord[0]][coord[1]].getTile(), coord[0], coord[1]);
+			ret = true;
+		}
+
+		return ret;
 	}
 
 }
