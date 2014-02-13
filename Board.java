@@ -1,6 +1,8 @@
 import java.util.*;
+import java.io.PrintWriter;
+import java.util.regex.Pattern;
 
-public class Board {
+public class Board {	
 
 	private Space[][] spaces;
 	private List<Block> threeBlocksLeft;
@@ -29,7 +31,7 @@ public class Board {
 
 		for (int i = 0; i < dimensions[0]; i++) {
 			for (int j = 0; j < dimensions[1]; j++) {
-				spaces[i][j] = new Space();
+				spaces[i][j] = new Space(j,i);
 			}
 		}
 		placeBlock(new OneBlock(new IrrigationTile()), new int[] {1,3}) ;
@@ -54,7 +56,7 @@ public class Board {
 
 		for (int i = 0; i < dimensions[0]; i++) {
 			for (int j = 0; j < dimensions[1]; j++) {
-				spaces[i][j] = new Space();
+				spaces[i][j] = new Space(j,i);
 			}
 		}
 
@@ -152,8 +154,8 @@ public class Board {
 						tiles[i][j] instanceof IrrigationTile)
 					{
 						possibleScore = true;
-						possibleCoord[0] = coord[0+i];
-						possibleCoord[1] = coord[1+j];
+						possibleCoord[0] = coord[0]+i;
+						possibleCoord[1] = coord[1]+j;
 					}
 					
 					
@@ -188,7 +190,7 @@ public class Board {
 
 	}
 
-	private int[] findSpace(Space s) {
+	public int[] findSpace(Space s) {
 		// optimize this
 		int[] ret = { -1, -1 };
 		for (int i = 0; i < dimensions[0]; i++) {
@@ -210,8 +212,12 @@ public class Board {
 		// if(check here)
 		score = tile.getValue() / 2;
 
-		if (highestDev != null)
+		if (highestDev != null){
 			highestDev.score(score);
+			System.out.println("Dev found");
+		}
+		else
+			System.out.println("Dev not found");
 
 	}
 
@@ -221,11 +227,11 @@ public class Board {
 		int x=coord[0],y=coord[1];
 		Space s = spaces[x][y];
 		ArrayList<ArrayList<Space>> visited = new ArrayList<ArrayList<Space>>();
-		boolean[] closed = new boolean[4];
+		ArrayList<Boolean> closed = new ArrayList<Boolean>();
 		for(int i=0; i<5; i++)
 		{
 			visited.add(new ArrayList<Space>());
-			closed[i] = true;
+			closed.add(true);
 		}
 		
 		for(int i=0; i<5; i++)
@@ -242,23 +248,28 @@ public class Board {
 			else if(i==4)
 				s = spaces[x-1][y];
 			queuePath.add(s);
+			visited.get(i).add(s);
 			
 			while (!queuePath.isEmpty())
 			{
+				if(s.getTile() == null)
+				{
+					closed.set(i, false);
+					break;
+				}
 				s = queuePath.remove();
 				coord = findSpace(s);
 				x = coord[0];
 				y = coord[1];
 				
-				
 				if (spaces[x][y + 1].getTile() == null)	//check if any of the surrounding spaces are empty, if they are then this iteration is not closed
-					closed[i]=false;
+					closed.set(i, false);
 				if (spaces[x][y - 1].getTile() == null)
-					closed[i]=false;
+					closed.set(i, false);
 				if (spaces[x + 1][y].getTile() == null)
-					closed[i]=false;
+					closed.set(i, false);
 				if (spaces[x - 1][y].getTile() == null)
-					closed[i]=false;
+					closed.set(i, false);
 				
 				if (spaces[x][y + 1].getTile() instanceof IrrigationTile	//usual parse through irrigation tiles
 						&& !visited.get(i).contains(spaces[x][y + 1])) {
@@ -282,17 +293,20 @@ public class Board {
 				}
 			}
 		}
-		for(int i=0; i<visited.size(); i++)
-			for(int j=0; j<visited.size(); j++)
+		for(int i=0; i<visited.size(); i++)//Checks if the checked irrigation paths are the same
+			for(int j=i+1; j<visited.size(); j++)
 			{
 				if(visited.get(i).contains(visited.get(j).get(0)))
 				{
 					visited.remove(j);
+					closed.remove(j);
 					j--;
 				}
 			}
 		for(int i=0; i<visited.size(); i++)
 		{
+			if(!closed.get(i))
+				continue;
 			coord = findSpace(visited.get(i).get(0));
 			x = coord[0];
 			y = coord[1];
@@ -587,4 +601,151 @@ private Developer findHighestDeveloper(Space s) {
 		return ret;
 	}
 
+	public void load(Scanner s)
+	{
+		while(s.hasNextLine() && !s.nextLine().equals("%Board%"));
+		threeBlocksLeft.clear();
+		int next = s.nextInt();
+		for(int i = 0; i < next; i++)
+			threeBlocksLeft.add(new ThreeBlock());
+		next = s.nextInt();
+		irrigationsLeft.clear();
+		for(int i = 0; i < next; i++)
+			irrigationsLeft.add(new OneBlock(new IrrigationTile()));
+		dimensions[0] = s.nextInt();
+		dimensions[1] = s.nextInt();
+		spaces = new Space[dimensions[0]][dimensions[1]];
+		for (int i = 0; i < dimensions[0]; i++)
+			for (int j = 0; j < dimensions[1]; j++)
+				spaces[i][j] = new Space(j,i);
+		System.out.println("dimensions:" +dimensions[0]+" "+dimensions[1]+" three left: "+threeBlocksLeft.size()+" irri left: "+next);
+		while(s.hasNext() && s.next().equals("position:"))
+		{
+			int y = s.nextInt();
+			int x = s.nextInt();
+			s.next("height:");
+			int height = s.nextInt();
+			
+			System.out.print("position:" +y+" "+x+" height: "+height+" grid: ");
+			s.next("grid:");
+			
+			Tile[][] t = new Tile[3][3];
+			int tiles = 0;
+			int sex = 0;
+			for (int i = 0; i < 3; i++)
+			{
+				for (int j = 0; j < 3; j++)
+				{
+					sex++;
+					String str = s.next();
+					System.out.print(str+" ");
+					if (str.equals("+"))
+						continue;
+					else if (str.equals("P"))
+						t[i][j] = new PalaceTile(s.nextInt());
+					else if (str.equals("V"))
+						t[i][j] = new VillageTile();
+					else if (str.equals("I"))
+						t[i][j] = new IrrigationTile();
+					else if (str.equals("R"))
+						t[i][j] = new RiceTile();
+					tiles++;
+				}
+			}
+			System.out.println(sex);
+			Block b;
+			if(tiles == 1)
+				b = new OneBlock(t);
+			else if(tiles == 2)
+				b = new TwoBlock(t);
+			else if(tiles == 3)
+				b = new ThreeBlock(t);
+			else
+				continue;
+			for (int i = 0; i < 3; i++)
+				for (int j = 0; j < 3; j++)
+				{
+					if(b.getGrid()[i][j] != null)
+					{
+						if((spaces[i+y][j+x].getTile() != null && spaces[i+y][j+x].getHeight()<height) || spaces[i+y][j+x].getTile() == null)
+						{
+							System.out.println("It got where it needed");
+							for(int currentHeight = 0; currentHeight < height; currentHeight++)
+								spaces[i+y][j+x].placeBlock(b, b.getGrid()[i][j]);
+						}
+					}
+				}
+		}
+	}
+	
+	public void save(PrintWriter p)
+	{
+		p.println("%Board%");
+		p.println(threeBlocksLeft.size()+" "+irrigationsLeft.size()+" "+dimensions[0]+" "+dimensions[1]);
+		ArrayList<int[]> blocksSaved = new ArrayList<int[]>();
+		ArrayList<int[]> developersSaving = new ArrayList<int[]>();
+		for(int i = 0; i < dimensions[0]; i++)
+			for(int j = 0; j < dimensions[1]; j++)
+			{
+				if(spaces[i][j].getTile() != null)
+				{
+					Block b = spaces[i][j].getBlock();
+					
+					int[] info = new int[3];
+					for(int y = 0; y < 3; y++)
+						for(int x = 0; x < 3; x++)
+							if(spaces[i][j].getTile() == b.getGrid()[y][x])
+							{
+								info[0]=i-y;
+								info[1]=j-x;
+							}
+					info[2]=spaces[i][j].getHeight();
+				
+					boolean found = false;
+					for(int x = 0; x<blocksSaved.size() && !found; x++)
+						if(blocksSaved.get(x)[0] == info[0] && blocksSaved.get(x)[1] == info[1] && blocksSaved.get(x)[2] == info[2])
+							found = true;
+					if(found)
+						continue;
+					
+				
+					blocksSaved.add(info);
+				
+					p.print("position: "+info[0]+" "+info[1]+" height: "+info[2]+" grid: ");
+					for(int y = 0; y < 3; y++)
+					{
+						for(int x = 0; x < 3; x++)
+						{
+							if (b.getGrid()[y][x] == null)
+								p.print("+");
+							else if (b.getGrid()[y][x] instanceof PalaceTile)
+								p.print("P,"+((PalaceTile)spaces[y][x].getTile()).getValue());
+							else if (b.getGrid()[y][x] instanceof VillageTile)
+								p.print("V");
+							else if (b.getGrid()[y][x] instanceof IrrigationTile)
+								p.print("I");
+							else if (b.getGrid()[y][x] instanceof RiceTile)
+								p.print("R");
+							p.print(" ");		
+						}
+						if(y != 2)
+							p.print("| ");
+					}
+					p.println();
+				}/*
+				if(pos.isThereDeveloper(spaces[i][j]))
+				{
+					int[] pos = new int[2];
+					pos[0] = i;
+					pos[1] = j;
+					developersSaving.add(pos);
+				}*/
+			}
+		/*p.println("%Developers%");
+		for(int i = 0; i < developersSaving.size(); i++)
+		{
+			int x = developersSaving.get(i)[0], y = developersSaving.get(i)[1];
+			p.print(x+" "+y+" "); pos.getDeveloper(spaces[x][y]).save(p);
+		}*/
+	}
 }

@@ -1,3 +1,4 @@
+import java.io.PrintWriter;
 import java.util.*;
 
 /**************************************************************************************
@@ -92,4 +93,76 @@ public class Inventory {
 		return oneBlocksLeft.get(0);
 	}
 
+	/**this save function assumes it will be encapsulated in an xml tag*/
+	public void save(PrintWriter p){
+		for (Developer d:developers){
+			p.append("dev:");
+			if (d.getSpace()!=null){
+				p.append(d.getSpace().x+""+d.getSpace().y);
+			}
+			p.append('\n');
+		}
+		for (Block block: oneBlocksLeft){
+			p.append("<"+OneBlock.class.getName()+">\n");
+			block.save(p);
+			p.append("</"+OneBlock.class.getName()+">\n");
+		}
+		for (Block block: twoBlocksLeft){
+			p.append("<"+TwoBlock.class.getName()+">\n");
+			block.save(p);
+			p.append("</"+TwoBlock.class.getName()+">\n");
+		}
+	}
+	
+	/**this load function assumes it will be encapsulated in an xml tag,
+	 * and will exit when it sees a closing tag of any kind that it did
+	 * not create*/
+	public void load(Scanner reader, Player owner){
+		
+		//clear current lists
+		developers=new ArrayList<Developer>();
+		oneBlocksLeft=new ArrayList<Block>();
+		twoBlocksLeft=new ArrayList<Block>();
+		
+		//this will be escaped with a break;
+		while(true){
+			
+			String line=reader.nextLine().replace("//s+", "");
+			
+			if (line.startsWith("</")){
+				break;
+			
+			}else if (line.startsWith("<")){
+				String className = line.substring(1, line.indexOf(">"));
+				Block newb=null;
+				ArrayList<Block> destination = null;
+				if (className.equals(OneBlock.class.getName())){
+					newb = new OneBlock(new VillageTile());
+					destination=oneBlocksLeft;
+				}
+				if (className.equals(TwoBlock.class.getName())){
+					newb = new TwoBlock();
+					destination=twoBlocksLeft;
+				}
+				if (newb!=null){
+					newb.load(reader);
+					destination.add(newb);
+				}
+			}else{
+				int colonIndex = line.indexOf(':');
+				if (colonIndex>0){
+					String tag = line.substring(0, colonIndex);
+					String value = line.substring(colonIndex + 1, line.length());
+					if (tag.equals("dev")){
+						Developer newb =new Developer(owner); 
+						developers.add(newb);
+						if (value.length()>0){
+							String[] xy=value.split(",");
+							newb.move(new Space(Integer.parseInt(xy[0]), Integer.parseInt(xy[1])));
+						}
+					}
+				}
+			}
+		}//end while(true)
+	}
 }
