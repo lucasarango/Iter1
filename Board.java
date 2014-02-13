@@ -1,6 +1,5 @@
 import java.util.*;
 import java.io.PrintWriter;
-import java.util.regex.Pattern;
 
 public class Board {	
 
@@ -162,7 +161,7 @@ public class Board {
 					// check for valid placement
 					if (checkPlacement(b, spaces[coord[0] + i][coord[1] + j])) {
 						spaces[coord[0] + i][coord[1] + j].placeBlock(b, tiles[i][j]);
-						System.out.println("The space at" +  Arrays.toString(coord) + " is " + spaces[coord[0]+i][coord[1]+j].getTile().getClass().getSimpleName());
+						
 						ret = true;
 						// check if a scoreable tile
 						if (tiles[i][j] instanceof PalaceTile)
@@ -214,10 +213,8 @@ public class Board {
 
 		if (highestDev != null){
 			highestDev.score(score);
-			System.out.println("Dev found");
+			
 		}
-		else
-			System.out.println("Dev not found");
 
 	}
 
@@ -587,8 +584,8 @@ private Developer findHighestDeveloper(Space s) {
 	public boolean upgradePalace(int[] coord, int value){
 		boolean ret = false;
 		Space tempSpace = spaces[coord[0]+1][coord[1]+1];
-		System.out.println("trying to upgrade " + coord[0] + " " + coord[1]);
-		//System.out.println("The tile is of type " + tempSpace.getTile().getClass().getSimpleName());
+		
+		//
 		Tile temp = tempSpace.getTile();
 		if(temp instanceof PalaceTile)
 		{
@@ -618,7 +615,6 @@ private Developer findHighestDeveloper(Space s) {
 		for (int i = 0; i < dimensions[0]; i++)
 			for (int j = 0; j < dimensions[1]; j++)
 				spaces[i][j] = new Space(j,i);
-		System.out.println("dimensions:" +dimensions[0]+" "+dimensions[1]+" three left: "+threeBlocksLeft.size()+" irri left: "+next);
 		while(s.hasNext() && s.next().equals("position:"))
 		{
 			int y = s.nextInt();
@@ -652,7 +648,7 @@ private Developer findHighestDeveloper(Space s) {
 					tiles++;
 				}
 			}
-			System.out.println(sex);
+			
 			Block b;
 			if(tiles == 1)
 				b = new OneBlock(t);
@@ -669,7 +665,7 @@ private Developer findHighestDeveloper(Space s) {
 					{
 						if((spaces[i+y][j+x].getTile() != null && spaces[i+y][j+x].getHeight()<height) || spaces[i+y][j+x].getTile() == null)
 						{
-							System.out.println("It got where it needed");
+							
 							for(int currentHeight = 0; currentHeight < height; currentHeight++)
 								spaces[i+y][j+x].placeBlock(b, b.getGrid()[i][j]);
 						}

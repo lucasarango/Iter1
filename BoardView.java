@@ -65,7 +65,7 @@ public class BoardView extends JFrame{
 	    String isDevHere = spaces[x][y].getText().substring(2,3);
 	    spaces[x][y].setText(type + Integer.toString(height) + isDevHere + 
 	    					 spaces[x][y].getText().substring(3,4)); 
-	    System.out.println("sachit was called");
+	    
 	}
 	
 	//Update space w/ palace
