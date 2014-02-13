@@ -136,10 +136,27 @@ public class Board {
 			return false;
 
 		// iterate through grid and only place nonempty tiles
+		boolean possibleScore = false;
+		int[] possibleCoord = new int[2];
 		for (int i = 0; i < tiles.length; i++) {
 			for (int j = 0; j < tiles[i].length; j++) {
 				// check if empty part of grid
-				if (tiles[i][j] != null) {
+				if (tiles[i][j] != null)
+				{
+					//checks for possible irrigation score condition
+					
+					if (spaces[coord[0] + i][coord[1] + j+1].getTile() instanceof IrrigationTile	||
+						spaces[coord[0] + i][coord[1] + j-1].getTile() instanceof IrrigationTile	||
+						spaces[coord[0] + i+1][coord[1] + j].getTile() instanceof IrrigationTile	||
+						spaces[coord[0] + i-1][coord[1] + j].getTile() instanceof IrrigationTile	||
+						tiles[i][j] instanceof IrrigationTile)
+					{
+						possibleScore = true;
+						possibleCoord[0] = coord[0+i];
+						possibleCoord[1] = coord[1+j];
+					}
+					
+					
 					// check for valid placement
 					if (checkPlacement(b, spaces[coord[0] + i][coord[1] + j])) {
 						spaces[coord[0] + i][coord[1] + j].placeBlock(b, tiles[i][j]);
@@ -149,13 +166,13 @@ public class Board {
 						if (tiles[i][j] instanceof PalaceTile)
 							scorePalace((PalaceTile) tiles[i][j], coord[0] + i,
 									coord[1] + j);
-						else if (tiles[i][j] instanceof IrrigationTile)
-							scoreIrrigationTile((IrrigationTile) tiles[i][j],
-									coord[0] + i, coord[1] + j);
 					}
 				}
 			}
 		}
+		
+		if(possibleScore)
+			checkIrrigationScore(possibleCoord);
 
 		return ret;
 	}
@@ -198,17 +215,102 @@ public class Board {
 
 	}
 
-	private void scoreIrrigationTile(IrrigationTile tile, int x, int y) {
+	
+	private void checkIrrigationScore(int[] coord)
+	{
+		int x=coord[0],y=coord[1];
+		Space s = spaces[x][y];
+		ArrayList<ArrayList<Space>> visited = new ArrayList<ArrayList<Space>>();
+		boolean[] closed = new boolean[4];
+		for(int i=0; i<5; i++)
+		{
+			visited.add(new ArrayList<Space>());
+			closed[i] = true;
+		}
+		
+		for(int i=0; i<5; i++)
+		{
+			Queue<Space> queuePath = new LinkedList<Space>();
+			if(i==0)
+				s = spaces[x][y];
+			if(i==1)
+				s = spaces[x][y+1];
+			else if(i==2)
+				s = spaces[x][y-1];
+			else if(i==3)
+				s = spaces[x+1][y];
+			else if(i==4)
+				s = spaces[x-1][y];
+			queuePath.add(s);
+			
+			while (!queuePath.isEmpty())
+			{
+				s = queuePath.remove();
+				coord = findSpace(s);
+				x = coord[0];
+				y = coord[1];
+				
+				
+				if (spaces[x][y + 1].getTile() == null)	//check if any of the surrounding spaces are empty, if they are then this iteration is not closed
+					closed[i]=false;
+				if (spaces[x][y - 1].getTile() == null)
+					closed[i]=false;
+				if (spaces[x + 1][y].getTile() == null)
+					closed[i]=false;
+				if (spaces[x - 1][y].getTile() == null)
+					closed[i]=false;
+				
+				if (spaces[x][y + 1].getTile() instanceof IrrigationTile	//usual parse through irrigation tiles
+						&& !visited.get(i).contains(spaces[x][y + 1])) {
+					queuePath.add(spaces[x][y + 1]);
+					visited.get(i).add(spaces[x][y + 1]);
+				}
+				if (spaces[x][y - 1].getTile() instanceof IrrigationTile
+						&& !visited.get(i).contains(spaces[x][y - 1])) {
+					queuePath.add(spaces[x][y - 1]);
+					visited.get(i).add(spaces[x][y - 1]);
+				}
+				if (spaces[x + 1][y].getTile() instanceof IrrigationTile
+						&& !visited.contains(spaces[x + 1][y])) {
+					queuePath.add(spaces[x + 1][y]);
+					visited.get(i).add(spaces[x + 1][y]);
+				}
+				if (spaces[x - 1][y].getTile() instanceof IrrigationTile
+						&& !visited.get(i).contains(spaces[x - 1][y])) {
+					queuePath.add(spaces[x - 1][y]);
+					visited.get(i).add(spaces[x - 1][y]);
+				}
+			}
+		}
+		for(int i=0; i<visited.size(); i++)
+			for(int j=0; j<visited.size(); j++)
+			{
+				if(visited.get(i).contains(visited.get(j).get(0)))
+				{
+					visited.remove(j);
+					j--;
+				}
+			}
+		for(int i=0; i<visited.size(); i++)
+		{
+			coord = findSpace(visited.get(i).get(0));
+			x = coord[0];
+			y = coord[1];
+			scoreIrrigationTile(x,y);
+		}
+	}
+	
+	private void scoreIrrigationTile(int x, int y) {
 		Developer highestDev = findHighestDeveloper(spaces[x][y]);
 
 
 		int[] coord;
-		Space s;
+		Space s = spaces[x][y];
 		ArrayList<Space> visited = new ArrayList<Space>();
 		Queue<Space> queuePath = new LinkedList<Space>();
 
-		queuePath.add(spaces[x][y]);
-		visited.add(spaces[x][y]);
+		queuePath.add(s);
+		visited.add(s);
 
 		while (!queuePath.isEmpty())
 		{
@@ -232,7 +334,7 @@ public class Board {
 				queuePath.add(spaces[x + 1][y]);
 				visited.add(spaces[x + 1][y]);
 			}
-			if (spaces[x - 1][y + 1].getTile() instanceof IrrigationTile
+			if (spaces[x - 1][y].getTile() instanceof IrrigationTile
 					&& !visited.contains(spaces[x - 1][y])) {
 				queuePath.add(spaces[x - 1][y]);
 				visited.add(spaces[x - 1][y]);
@@ -311,7 +413,7 @@ private Developer findHighestDeveloper(Space s) {
 					queuePath.add(spaces[x + 1][y]);
 					visited.add(spaces[x + 1][y]);
 				}
-				if (spaces[x - 1][y + 1].getTile() instanceof VillageTile
+				if (spaces[x - 1][y].getTile() instanceof VillageTile
 						&& !visited.contains(spaces[x - 1][y])) {
 					queuePath.add(spaces[x - 1][y]);
 					visited.add(spaces[x - 1][y]);
@@ -367,7 +469,7 @@ private Developer findHighestDeveloper(Space s) {
 					queuePath.add(spaces[x + 1][y]);
 					visited.add(spaces[x + 1][y]);
 				}
-				if (spaces[x - 1][y + 1].getTile() instanceof IrrigationTile
+				if (spaces[x - 1][y].getTile() instanceof IrrigationTile
 						&& !visited.contains(spaces[x - 1][y])) {
 					queuePath.add(spaces[x - 1][y]);
 					visited.add(spaces[x - 1][y]);
