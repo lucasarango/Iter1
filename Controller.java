@@ -336,8 +336,17 @@ public class Controller extends JFrame implements KeyListener {
 		}
 	}
 
-    private void placeDeveloper(){
-    	
+    private void selectDeveloperOffBoard(){
+    	while(isDeveloperOnBoard())
+    	{
+    		developerIndex = (developerIndex++) % developerList.size();
+    	}
+    }
+
+    private void placeDeveloper()
+    {
+    	mediator.placeDeveloper(developerList.get(developerIndex), coord)
+    	placeDeveloper = false;
     }
 
 	private void changeDeveloper() {
@@ -346,9 +355,6 @@ public class Controller extends JFrame implements KeyListener {
 	    mediator.switchDeveloper(developerList.get(developerIndex), oldGuy);	    
     }
 
-	private void changeBlock() {
-		
-	}
 
 	private void moveCursor(int direction) {
 		int[] oldCoot = Arrays.copyOf(coord, 2);
