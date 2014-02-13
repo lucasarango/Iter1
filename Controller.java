@@ -1,6 +1,7 @@
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.*;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -40,6 +41,9 @@ public class Controller extends JFrame implements KeyListener {
 	protected static int PALACE_UPGRADE		= KeyEvent.VK_U;
 
 	protected static int ACTION_TOKEN_USE	= KeyEvent.VK_T;
+	
+	protected static int SAVE_GAME			= KeyEvent.VK_S;
+	protected static int LOAD_GAME		 	= KeyEvent.VK_L;
 	
 	protected static int QUIT				= KeyEvent.VK_Q;	
 	protected static int END_TURN			= KeyEvent.VK_ENTER;
@@ -365,7 +369,30 @@ public class Controller extends JFrame implements KeyListener {
 		// End turn
 		else if(key == END_TURN) {
 			endTurn();
+			return;
 		}
+		
+		// Save game
+		else if(key == SAVE_GAME) {
+			try {
+				mediator.saveGame();
+			}
+			catch(FileNotFoundException err) {
+				err.printStackTrace();
+			}
+			return;
+		}
+		
+		else if(key == LOAD_GAME) {
+			try {
+				mediator.loadGame();
+			}
+			catch(FileNotFoundException err) {
+				err.printStackTrace();
+			}
+			return;
+		}
+		
 	}
 	
 	@Override
@@ -615,12 +642,14 @@ public class Controller extends JFrame implements KeyListener {
         	temp = developerList.get(developerIndex);
         }
         mediator.switchDeveloper(null, temp);
-        mediator.endTurn();
+        boolean endGame = mediator.endTurn();
         blockList = mediator.getBlockList();
         developerList = mediator.getDevelopers();
         changeDeveloper(temp);
+        while(true) {
+        	boolean weGetAnA = true;
+        }
 	}
-
 	
 	private String printBlock(Block b) {
 		String s = "<html><body>";
@@ -657,7 +686,8 @@ public class Controller extends JFrame implements KeyListener {
 				"U to upgrade palace, and Q to quit.</body></html>");
 	}
 	private void setTextMenu() {
-		controlOutput.setText("<html><body>U: Upgrade palace.<br>B: Place block.<br>D: Place developer.<br>TAB: Switch selected developer.<br>ENTER: End turn.</html></body>"); // Main Menu
+		controlOutput.setText("<html><body>U: Upgrade palace.<br>B: Place block.<br>D: Place developer." + 
+				"<br>TAB: Switch selected developer.<br>S: Save Game<br>L: Load Game<br>ENTER: End turn.</html></body>"); // Main Menu
 	}
 	private void setTextPlaceDeveloper() {
 		controlOutput.setText("<html><body>Placing Developer. Coordinates: " + Arrays.toString(coord) +

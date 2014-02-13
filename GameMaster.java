@@ -178,7 +178,7 @@ public class GameMaster {
 			player.save(p);
 			p.append("</Player>\n");
 		}
-		p.append("%/GameMaster%");
+		p.append("%/GameMaster%\n");
 	}
 	
 	public void load(Scanner reader) {
