@@ -59,41 +59,51 @@ public class Mediator
 	{
 
 		if(board.placeBlock(b, coord)){
+			System.out.println("Block placed");
 			Space[][] temp = board.getSpaces();
 			Space ret = temp[coord[0]][coord[1]];
+
+
 			if(ret.getTile() instanceof PalaceTile){
-				//view.updateSpace(coord[0], coord[1], ret.getTile(), ret.getHeight());
+
 				updateSpace(coord, ret.getBlock());
 			}
 			else{
 				updateSpace(coord, ret.getBlock());
-				//view.updateSpace(coord[0], coord[1], ret.getTile(), ret.getHeight(), (PalaceTile)ret.getTile().getValue());
 			}
 		
 			//check if one or two block
 			if(b instanceof OneBlock){
 				Tile[][] tiles = b.getGrid();
 				Tile checker = tiles[1][1];
+				System.out.println("dis shit a one block");
+
+				if(checker instanceof VillageTile)
+					System.out.println("its a villlage!");
+				else
+					System.out.println("not a village");
+				
 				view.updateOneBlockCount(game.getPlayerName(), checker instanceof VillageTile);
 			}
 			else if(b instanceof TwoBlock){
 				view.updateTwoBlockCount(game.getPlayerName());
+				System.out.println("dis shit a two block");
 			}
 
 		}
-		else{}
+		else{
+			System.out.println("Block not placed");
+		}
 			//notify error
 	}
 
 	public void placeDeveloper(Developer d, int[] coord)
 	{
 		if(board.placeDeveloper(d, coord)){
-			System.out.println("Developer placed");
 			view.updateDeveloper(coord[0], coord[1], game.getPlayerName());
 			view.developerCount(game.getPlayerName(),-1);
 		}
 		else{
-			System.out.println("Developer not placed");
 		}
 			//notify error
 	}
@@ -145,7 +155,6 @@ public class Mediator
 			Space[][] temp = board.getSpaces();
 			Space ret = temp[coord[0]][coord[1]];
 			updateSpace(coord, ret.getBlock());
-			//view.updateSpace(coord[0], coord[1], ret.getTile(), ret.getHeight(), (PalaceTile)ret.getTile().getValue());
 		}
 			
 	}
@@ -184,7 +193,7 @@ public class Mediator
 	}
 
 	private void updateSpace(int[] coord, Block b){
-		
+		System.out.println("updating space");
 		Tile[][] tiles = b.getGrid();
 
 		Space[][] temp = board.getSpaces();
@@ -197,9 +206,11 @@ public class Mediator
 				if (tiles[i][j] != null) {
 					// check for palace tile
 					if (tiles[i][j] instanceof PalaceTile) {
-						//view.updateSpace(coord[0]+i, coord[1]+j, ret.getTile(), ret.getHeight(), (PalaceTile)ret.getTile().getValue());
+						System.out.println("its a palace");
+						view.updateSpace(coord[0]+i, coord[1]+j, ret.getTile(), ret.getHeight(), (PalaceTile)ret.getTile().getValue());
 					}
 					else{
+						System.out.println("not a palace");
 						view.updateSpace(coord[0]+i, coord[1]+j, ret.getTile(), ret.getHeight());
 					}
 				}
