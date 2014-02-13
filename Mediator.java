@@ -27,11 +27,11 @@ public class Mediator
 		
 	}
 
-	public List<BLock> getBlockList(){
+	public ArrayList<BLock> getBlockList(){
 		return game.getPlayerBlocks();
 	}
 
-	public List<Developer> getDevelopers(){
+	public ArrayList<Developer> getDevelopers(){
 		return game.getPlayerDevelopers();
 	}
 
@@ -73,12 +73,12 @@ public class Mediator
 				Tile checker = tiles[1][1];
 				view.updateOneBlockCount(game.getPlayerName(), checker instanceof VillageTile);
 			}
-			else if(b instance of TwoBlock){
+			else if(b instanceof TwoBlock){
 				view.updateTwoBlockCount(game.getPlayerName());
 			}
 
 		}
-		else
+		else{}
 			//notify error
 	}
 
@@ -88,7 +88,7 @@ public class Mediator
 			view.updateDeveloper(coord[0], coord[1], game.getPlayerName());
 			view.developerCount(-1);
 		}
-		else
+		else{}
 			//notify error
 	}
 
@@ -145,7 +145,7 @@ public class Mediator
 	}
 
 	public void selectSpace(int[] news, int[] old){
-		view.highlightSpace(news[0], news[1];
+		view.highlightSpace(news[0], news[1]);
 		view.unHighlightSpace(old[0], old[1]);
 	}
 
@@ -170,13 +170,10 @@ public class Mediator
 
 	}
 
-	public List<Player> getPlayers(){
-		return
-	}
 
 	private void updateSpace(int[] coord, Block b){
 		
-		new Tile[][] tiles = b.getGrid();
+		Tile[][] tiles = b.getGrid();
 
 		Space[][] temp = boarod.getSpaces();
 		Space ret = temp[coord[0]][coord[1]];
