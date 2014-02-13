@@ -15,7 +15,7 @@ public class Mediator
 		view = new View(names);
 
 		//update board in view
-		Spaces[][] spaces = board.getSpaces();
+		Space[][] spaces = board.getSpaces();
 
 		for(int x = 0; x < spaces[0].length; x++)
 		{
@@ -56,20 +56,20 @@ public class Mediator
 	public void placeBlock(Block b, int[] coord)
 	{
 		if(board.placeBlock(b, board.getSpaces()[coord[0]][coord[1]])){
-			Space[][] temp = boarod.getSpaces();
+			Space[][] temp = board.getSpaces();
 			Space ret = temp[coord[0]][coord[1]];
 			if(ret.getTile() instanceof PalaceTile){
 				//view.updateSpace(coord[0], coord[1], ret.getTile(), ret.getHeight());
 				updateSpace(coord, ret.getBlock());
 			}
 			else{
-				updateSpace(coord, re.getBlock());
+				updateSpace(coord, ret.getBlock());
 				//view.updateSpace(coord[0], coord[1], ret.getTile(), ret.getHeight(), (PalaceTile)ret.getTile().getValue());
 			}
 		
 			//check if one or two block
 			if(b instanceof OneBlock){
-				Tiles[][] tiles = b.getGrid();
+				Tile[][] tiles = b.getGrid();
 				Tile checker = tiles[1][1];
 				view.updateOneBlockCount(game.getPlayerName(), checker instanceof VillageTile);
 			}
@@ -114,7 +114,7 @@ public class Mediator
 	}
 
 	public Block getIrrigationTile(){
-		Block b = board.getIrrigationTile();
+		Block b = board.getIrrigationTileBlock();
 		if(b != null)
 			return b;
 		else{
@@ -136,7 +136,7 @@ public class Mediator
 	public void upgradePalace(int[] coord, int value)
 	{
 		if(board.upgradePalace(coord, value)){
-			Space[][] temp = boarod.getSpaces();
+			Space[][] temp = board.getSpaces();
 			Space ret = temp[coord[0]][coord[1]];
 			updateSpace(coord, ret.getBlock());
 			//view.updateSpace(coord[0], coord[1], ret.getTile(), ret.getHeight(), (PalaceTile)ret.getTile().getValue());
@@ -175,7 +175,7 @@ public class Mediator
 		
 		Tile[][] tiles = b.getGrid();
 
-		Space[][] temp = boarod.getSpaces();
+		Space[][] temp = board.getSpaces();
 		Space ret = temp[coord[0]][coord[1]];
 
 		// iterate through grid and only place nonempty tiles
