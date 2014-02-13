@@ -9,8 +9,9 @@ public class Board {
 	private List<Block> irrigationsLeft;
 	private int[] dimensions;
 	private Position pos = new Position();
+	private Mediator mediator;
 
-	public Board() {
+	public Board(Mediator m) {
 		threeBlocksLeft = new ArrayList<Block>();
 
 		for (int i = 0; i < 56; i++) {
@@ -33,13 +34,15 @@ public class Board {
 				spaces[i][j] = new Space();
 			}
 		}
-		placeBlock(new OneBlock(new IrrigationTile()), spaces[1][2]);
-		placeBlock(new OneBlock(new IrrigationTile()), spaces[5][7]);
-		placeBlock(new OneBlock(new IrrigationTile()), spaces[3][11]);
+		placeBlock(new OneBlock(new IrrigationTile()), new int[] {1,3}) ;
+		placeBlock(new OneBlock(new IrrigationTile()), new int[] {5,7});
+		placeBlock(new OneBlock(new IrrigationTile()), new int[] {3,11});
+
+		this.mediator = m;
 
 	}
 
-	public Board(int x, int y) {
+	public Board(Mediator m, int x, int y) {
 		threeBlocksLeft = new ArrayList<Block>();
 
 		for (int i = 0; i < 56; i++) {
@@ -57,6 +60,8 @@ public class Board {
 			}
 		}
 
+		this.mediator = m;
+
 	}
 
 	public Block getThreeBlock() {
@@ -70,6 +75,14 @@ public class Board {
 		}
 
 		return ret;
+	}
+
+	public Block placePalace(int[] coord, int value){
+		Block palace = new OneBlock(new PalaceTile(value));
+		
+		placeBlock(palace, coord);
+
+		return palace;
 	}
 
 	public boolean returnThreeBlock(Block b) {
@@ -113,7 +126,7 @@ public class Board {
 		return irrigationsLeft.size();
 	}
 
-	public boolean placeBlock(Block b, Space s) {
+	public boolean placeBlock(Block b, int[] coord) {
 		// assumes block has been checked and exists
 
 		// initialize return value to false
@@ -121,7 +134,8 @@ public class Board {
 
 		Tile[][] tiles = b.getGrid();
 
-		int[] coord = findSpace(s);
+		if(coord[0] >= dimensions[0] || coord[1] >= dimensions[1])
+			return false;
 
 		// iterate through grid and only place nonempty tiles
 		for (int i = 0; i < tiles.length; i++) {
@@ -130,8 +144,8 @@ public class Board {
 				if (tiles[i][j] != null) {
 					// check for valid placement
 					if (checkPlacement(b, spaces[coord[0] + i][coord[1] + j])) {
-						spaces[coord[0] + i][coord[1] + j].placeBlock(b,
-								tiles[i][j]);
+						spaces[coord[0] + i][coord[1] + j].placeBlock(b, tiles[i][j]);
+						ret = true;
 						// check if a scoreable tile
 						if (tiles[i][j] instanceof PalaceTile)
 							scorePalace((PalaceTile) tiles[i][j], coord[0] + i,
@@ -395,6 +409,66 @@ public class Board {
 			int x = developersSaving.get(i)[0], y = developersSaving.get(i)[1];
 			p.print(x+" "+y+" "); pos.getDeveloper(spaces[x][y]).save(p);
 		}*/
+	}
+
+	public boolean moveDeveloper(Developer d, int[] offset){
+		
+		//find current index
+		Space currentSpace = d.getSpace();
+		int[] currentLocation = findSpace(currentSpace);
+
+		//update location
+		currentLocation[0] += offset[0];
+		currentLocation[1] += offset[1];
+
+		if(currentLocation[0] >= dimensions[0] || currentLocation[1] >= dimensions[1])
+			return false;
+
+
+		Space newSpace = spaces[currentLocation[0]][currentLocation[1]];
+
+		//change developer space and update positions
+		d.move(newSpace);
+	
+		pos.removePair(currentSpace);
+
+		pos.addPair(newSpace, d);
+
+		return true;
+	}
+
+	public boolean placeDeveloper(Developer d, int[] coord){
+		
+
+		if(coord[0] >= dimensions[0] || coord[1] >= dimensions[1])
+			return false;
+
+
+		Space newSpace = spaces[coord[0]][coord[1]];
+
+		//change developer space and update positions
+		d.move(newSpace);
+		pos.addPair(newSpace, d);
+
+		return true;
+	}
+
+	public int[] findDeveloper(Developer d){
+		return findSpace(d.getSpace());
+	}
+
+	public boolean upgradePalace(int[] coord, int value){
+		boolean ret = false;
+		Space tempSpace = spaces[coord[0]][coord[1]];
+		Tile temp = tempSpace.getTile();
+		if(temp instanceof PalaceTile)
+		{
+			((PalaceTile)temp).levelUp(value);
+			scorePalace((PalaceTile) temp, coord[0], coord[1]);
+			ret = true;
+		}
+
+		return ret;
 	}
 
 }
