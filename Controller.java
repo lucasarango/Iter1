@@ -5,10 +5,10 @@ import javax.swing.*;
 
 public class Controller extends JFrame implements KeyListener { 
 	
-	protected static int DEVELOPER_LEFT 	= KeyEvent.VK_NUMPAD4;
-	protected static int DEVELOPER_RIGHT 	= KeyEvent.VK_NUMPAD6;
-	protected static int DEVELOPER_UP 		= KeyEvent.VK_NUMPAD8;
-	protected static int DEVELOPER_DOWN 	= KeyEvent.VK_NUMPAD2;
+	protected static int DEVELOPER_LEFT 	= 0
+	protected static int DEVELOPER_RIGHT 	= 1
+	protected static int DEVELOPER_UP 		= 2
+	protected static int DEVELOPER_DOWN 	= 3
 	protected static int DEVELOPER_CHANGE	= KeyEvent.VK_TAB;
 	
 	protected static int BLOCK_LEFT			= KeyEvent.VK_LEFT;
@@ -27,7 +27,8 @@ public class Controller extends JFrame implements KeyListener {
 	
 	protected static int END_TURN			= KeyEvent.VK_ENTER;
 
-    private List<Developer> developerList;
+    private ArrayList<Developer> developerList;
+    //represents current developer
     private int developerIndex;
 
     JLabel controlOutput;
@@ -42,6 +43,7 @@ public class Controller extends JFrame implements KeyListener {
         initializeControl();
         //Now initialize the other components of the game
         initializeGame();
+        developerIndex = 0;
     }
     
     private void initializeControl() {
@@ -115,26 +117,36 @@ public class Controller extends JFrame implements KeyListener {
 	}
 	
 	private void moveDeveloper(int direction) {
+        int[] a = {0 ,0}
 		if(direction == DEVELOPER_LEFT) {
-			mediator.moveDeveloper(developerList.get(developerIndex), [-1 0])
+            a[0] = -1;
+            mediator.moveDeveloper(developerList.get(developerIndex), a);
 		}
 		else if(direction == DEVELOPER_RIGHT) {
-			mediator.moveDeveloper(developerList.get(developerIndex), 1, 0)
+            a[0] = 1;
+            mediator.moveDeveloper(developerList.get(developerIndex), a);
 		}
 		else if(direction == DEVELOPER_UP) {
-			mediator.moveDeveloper(developerList.get(developerIndex), -1, 0)
+            a[1] = 1;
+            mediator.moveDeveloper(developerList.get(developerIndex), a);
 		}
 		else if(direction == DEVELOPER_DOWN) {
-			
+            a[1] = -1;
+            mediator.moveDeveloper(developerList.get(developerIndex), a);
 		}
-		return;
 	}
+
 	private void changeDeveloper() {
-		
-	}
+	    if (developerIndex == developerList.size() - 1)
+            developerIndex = 0;
+        else
+            developerIndex++;
+    }
+
 	private void changeBlock() {
 		
 	}
+
 	private void moveBlock(int direction) {
 		if(direction == BLOCK_LEFT) {
 			
