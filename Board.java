@@ -116,7 +116,7 @@ public class Board {
 		return irrigationsLeft.size();
 	}
 
-	public boolean placeBlock(Block b, Space s) {
+	public boolean placeBlock(Block b, int[] coord) {
 		// assumes block has been checked and exists
 
 		// initialize return value to false
@@ -124,7 +124,8 @@ public class Board {
 
 		Tile[][] tiles = b.getGrid();
 
-		int[] coord = findSpace(s);
+		if(coord[0] >= dimensions[0] || coord[1] >= dimensions[1])
+			return false;
 
 		// iterate through grid and only place nonempty tiles
 		for (int i = 0; i < tiles.length; i++) {
@@ -258,9 +259,16 @@ public class Board {
 		//find current index
 		int[] currentLocation = findSpace(currentSpace);
 
+
+
 		//update location
 		currentLocation[0] += offset[0];
 		currentLocation[1] += offset[1];
+
+		if(currentLocation[0] >= dimensions[0] || currentLocation[1] >= dimensions[1])
+			return false;
+
+			
 		Space newSpace = spaces[currentLocation[0]][currentLocation[1]];
 
 		//change developer space and update positions
