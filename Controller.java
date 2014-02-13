@@ -23,6 +23,9 @@ public class Controller extends JFrame implements KeyListener {
     protected static int TWOBLOCK           = KeyEvent.VK_2;
     protected static int THREEBLOCK         = KeyEvent.VK_3;
 
+    protected static int IRRIGATION			= KeyEvent.VK_I;
+	protected static int RICE				= KeyEvent.VK_R;
+
 	protected static int ACTION_TOKEN_USE	= KeyEvent.VK_T;
 	
 	protected static int END_TURN			= KeyEvent.VK_ENTER;
@@ -102,18 +105,19 @@ public class Controller extends JFrame implements KeyListener {
 	public void keyReleased(KeyEvent e) {
 
 	}
-	
 	@Override
 	public void keyTyped(KeyEvent e) {
         if (e.getKeyCode() == ONEBLOCK) {
-
+        	controlOutput.setText("Press I for irrigation, V for village, and R for rice.")
         }
-        else if (e.getKeyCode() ==TWOBLOCK){
-
+        else if (e.getKeyCode() == TWOBLOCK){
+        	controlOutput.setText("Choose a direction (up, down, left, right)");
         }
         else if (e.getKeyCode() == THREEBLOCK) {
-
+        	controlOutput.setText("Choose a direction (up, down, left, right)");
         }
+
+        if(e.getKeyCode() == I)
 	}
 	
 	private void moveDeveloper(int direction) {
