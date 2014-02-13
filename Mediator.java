@@ -88,10 +88,13 @@ public class Mediator
 	public void placeDeveloper(Developer d, int[] coord)
 	{
 		if(board.placeDeveloper(d, coord)){
+			System.out.println("Developer placed");
 			view.updateDeveloper(coord[0], coord[1], game.getPlayerName());
 			view.developerCount(game.getPlayerName(),-1);
 		}
-		else{}
+		else{
+			System.out.println("Developer not placed");
+		}
 			//notify error
 	}
 
