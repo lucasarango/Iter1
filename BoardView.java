@@ -99,7 +99,7 @@ public class BoardView extends JFrame{
     
     //When tabbing through developers, switch to this one
     public void switchToDeveloper(int x, int y) {
-        spaces[x][y].setText(spaces[x][y].getText().substring(0,2) + "D" + 
+        	spaces[x][y].setText(spaces[x][y].getText().substring(0,2) + "D" + 
                              spaces[x][y].getText().substring(3));
     }
     
@@ -111,7 +111,7 @@ public class BoardView extends JFrame{
     
     //Highlights a given space (if it's not highlighted)
     public void highlightSpace(int x, int y) {
-        if (!spaces[x][y].getText().substring(0,3).equals("<b>"))
+        if (!spaces[x][y].getText().substring(0,3).equals("<ht"))
             spaces[x][y].setText("<html><h2>" + spaces[x][y].getText() +
                                  "</h2></html>");
     }

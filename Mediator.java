@@ -151,6 +151,10 @@ public class Mediator
 		view.highlightSpace(news[0], news[1]);
 		view.unHighlightSpace(old[0], old[1]);
 	}
+	
+	public void deselectSpace(int[] old){
+		view.unHighlightSpace(old[0], old[1]);
+	}
 
 	public void switchDeveloper(Developer current, Developer last)
 	{

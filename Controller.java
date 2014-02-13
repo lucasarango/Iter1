@@ -128,10 +128,10 @@ public class Controller extends JFrame implements KeyListener {
 				setTextPalaceUpgrade();
 			}
 			else if(key == PALACE_PLACE) {
+				resetCursor();
 				upgradePalace();
 				upgradingPalace = false;
 				palaceLevel = 0;
-				resetCursor();
 				setTextMenu();
 			}
 			else if(key == QUIT) {
@@ -166,10 +166,10 @@ public class Controller extends JFrame implements KeyListener {
 				setTextPlacingPalace();
 			}
 			else if(key == PALACE_PLACE) {
+				resetCursor();
 				placePalace();
 				placingPalace = false;
 				palaceLevel = 0;
-				resetCursor();
 				setTextMenu();
 			}
 			else if(key == QUIT) {
@@ -204,9 +204,9 @@ public class Controller extends JFrame implements KeyListener {
 				setTextPlaceBlock();
 			}
 			else if(key == BLOCK_PLACE) {
+				resetCursor();
 				placeBlock();
 				placingBlock = false;
-				resetCursor();
 				setTextMenu();
 			}
 			else if(key == QUIT) {
@@ -237,9 +237,9 @@ public class Controller extends JFrame implements KeyListener {
 				setTextPlaceDeveloper();
 			}
 			else if(key == DEVELOPER_PLACE) {
+				resetCursor();
 				placeDeveloper();
 				placingDeveloper = false;
-				resetCursor();
 				setTextMenu();
 			}
 			else if(key == QUIT) {
@@ -451,6 +451,7 @@ public class Controller extends JFrame implements KeyListener {
 	}
 	
 	private void resetCursor() {
+		mediator.deselectSpace(coord);
 		coord[0] = 0;
 		coord[1] = 0;
 	}
@@ -598,7 +599,7 @@ public class Controller extends JFrame implements KeyListener {
 	}
 	private void setTextPlaceBlock() {
 		controlOutput.setText("<html><body>Placing block. Coordinates: " + Arrays.toString(coord) + ".<br>" + printBlock(selectedBlock) +
-				"\n" + "Press R to upgrade, " +	"P to place palace, and Q to quit.</body></html>");
+				"\n" + "Press R to rotate, B to place tile, and Q to quit.</body></html>");
 	}
 	private void setTextPalaceUpgrade() {
 		controlOutput.setText("<html><body>Upgrading palace. Coordinates: " + Arrays.toString(coord) + ", Level: " + palaceLevel + ".<br>Press P to confirm, " +
@@ -609,7 +610,7 @@ public class Controller extends JFrame implements KeyListener {
 				"U to upgrade palace, and Q to quit.</body></html>");
 	}
 	private void setTextMenu() {
-		controlOutput.setText("<html><body>U: Upgrade palace.<br>B: Place block.<br>P: Place developer.</html></body>"); // Main Menu
+		controlOutput.setText("<html><body>U: Upgrade palace.<br>B: Place block.<br>D: Place developer.<br>TAB: Switch selected developer.<br>ENTER: End turn.</html></body>"); // Main Menu
 	}
 	private void setTextPlaceDeveloper() {
 		controlOutput.setText("<html><body>Placing Developer. Coordinates: " + Arrays.toString(coord) +
@@ -619,7 +620,7 @@ public class Controller extends JFrame implements KeyListener {
 		controlOutput.setText("<html><body>Choose block size:<br>1: One-space tile<br>2: Two-space tile<br>3: Three-space tile</html></body>");
 	}
 	private void setTextSelectingOneBlock() {
-		controlOutput.setText("<html><body>Choose the one-tile space:<br>V: Village<br>I: Irrigation<br>R: Rice</html></body>");
+		controlOutput.setText("<html><body>Choose the one-tile space:<br>V: Village<br>I: Irrigation<br>P: Palace<br>R: Rice</html></body>");
 	}
 
 }
