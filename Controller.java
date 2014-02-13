@@ -100,6 +100,7 @@ public class Controller extends JFrame implements KeyListener {
     	//Initial developer and block list
     	developerList = mediator.getDevelopers();
     	blockList = mediator.getBlockList();
+    	if(TEST) System.out.println("Developers: " + developerList.toString() + "\nBlocks: " + blockList.toString());
     }
     
     @Override
@@ -388,18 +389,22 @@ public class Controller extends JFrame implements KeyListener {
         int[] a = {0 ,0};
 		if(direction == DEVELOPER_LEFT) {
             a[0] = -1;
+            if(TEST) System.out.println("Moving developer left");
             mediator.moveDeveloper(developerList.get(developerIndex), a);
 		}
 		else if(direction == DEVELOPER_RIGHT) {
             a[0] = 1;
+            if(TEST) System.out.println("Moving developer right");
             mediator.moveDeveloper(developerList.get(developerIndex), a);
 		}
 		else if(direction == DEVELOPER_UP) {
             a[1] = 1;
+            if(TEST) System.out.println("Moving developer up");
             mediator.moveDeveloper(developerList.get(developerIndex), a);
 		}
 		else if(direction == DEVELOPER_DOWN) {
             a[1] = -1;
+            if(TEST) System.out.println("Moving developer down");
             mediator.moveDeveloper(developerList.get(developerIndex), a);
 		}
 	}
@@ -413,6 +418,7 @@ public class Controller extends JFrame implements KeyListener {
 
     private void placeDeveloper()
     {
+    	if(TEST) System.out.println("Placing developer");
     	mediator.placeDeveloper(developerList.get(developerIndex), coord);
     	placingDeveloper = false;
     }
@@ -424,6 +430,7 @@ public class Controller extends JFrame implements KeyListener {
 				developerIndex = i;
 			}
 		}
+		if(TEST) System.out.println("Switching developer");
 	    mediator.switchDeveloper(developerList.get(developerIndex), oldGuy);	    
     }
 	
@@ -443,7 +450,7 @@ public class Controller extends JFrame implements KeyListener {
 	private void moveCursor(int direction) {
 		int[] oldCoot = Arrays.copyOf(coord, 2);
 		if(direction == MOVE_LEFT) {
-			coord[0] += -1;
+			coord[0] = (coord[0]-- < 0) ? 0 : coord[0];
 		}
 		else if(direction == MOVE_RIGHT) {
 			coord[0] += 1;
@@ -452,7 +459,7 @@ public class Controller extends JFrame implements KeyListener {
 			coord[1] += 1;
 		}
 		else if(direction == MOVE_DOWN) {
-		  	coord[1] += -1;
+		  	coord[1] = (coord[1]-- < 0) ? 0 : coord[1];
 		}
 		mediator.selectSpace(coord, oldCoot);
 		return;
@@ -465,13 +472,15 @@ public class Controller extends JFrame implements KeyListener {
 	
 	private Tile getBlockType(Block b) {
 		Tile[][] tileArray = b.getGrid();
-		return tileArray[2][2];
+		return tileArray[1][1];
 	}
 	
 	private boolean selectBlock(char blockType) {
 		if(blockType == 'V') {
 			for(Block b : blockList) {
+				if(TEST) System.out.println("block types");
 				if(getBlockType(b) instanceof VillageTile && b instanceof OneBlock) {
+					if(TEST) System.out.println("Obtaining village block");
 					selectedBlock = b;
 					return true;
 				}
@@ -480,8 +489,10 @@ public class Controller extends JFrame implements KeyListener {
 		}
 		else if(blockType == 'I') {
 			selectedBlock = mediator.getIrrigationTile();
-			if(getBlockType(selectedBlock) instanceof Tile && selectedBlock instanceof OneBlock)
+			if(getBlockType(selectedBlock) instanceof Tile && selectedBlock instanceof OneBlock) {
+				if(TEST) System.out.println("Obtaining irrigation block");
 				return true;
+			}
 			else return false;
 		}
 		/*else if(blockType == 'P') {
@@ -493,6 +504,7 @@ public class Controller extends JFrame implements KeyListener {
 		else if(blockType == 'R') {
 			for(Block b : blockList) {
 				if(getBlockType(b) instanceof VillageTile && b instanceof OneBlock) {
+					if(TEST) System.out.println("Obtaining village block");
 					selectedBlock = b;
 					return true;
 				}
@@ -503,6 +515,7 @@ public class Controller extends JFrame implements KeyListener {
 			for(Block b : blockList) {
 				if(b instanceof TwoBlock) {
 					selectedBlock = b;
+					if(TEST) System.out.println("Obtaining 2 block");
 					return true;
 				}
 			}
@@ -510,23 +523,28 @@ public class Controller extends JFrame implements KeyListener {
 		}
 		else if(blockType == '3') {
 			selectedBlock = mediator.getThreeBlock();
-			if(selectedBlock instanceof ThreeBlock)
+			if(selectedBlock instanceof ThreeBlock) {
+				if(TEST) System.out.println("Obtaining 3 block");
 				return true;
+			}
 			else return false;
 		}
 		return false;
 	}
 	
 	private boolean placeBlock() {
+		if(TEST) System.out.println("Placing block");
 		mediator.placeBlock(selectedBlock, coord);
 		return true;
 	}
 	
 	private void returnBlock() {
 		if(selectedBlock instanceof ThreeBlock) {
+			if(TEST) System.out.println("Returning 3 block");
 			mediator.returnThreeBlock(selectedBlock);
 		}
 		else if((getBlockType(selectedBlock) instanceof VillageTile && selectedBlock instanceof OneBlock)) {
+			if(TEST) System.out.println("Returning irrigation tile");
 			mediator.returnIrrigationTile(selectedBlock);
 		}
 		
@@ -553,14 +571,17 @@ public class Controller extends JFrame implements KeyListener {
 		
 	}
 	private void placePalace() {
+		if(TEST) System.out.println("Placing palace");
 		mediator.placePalace(coord, palaceLevel);
 	}
 	
 	private void upgradePalace() {
+		if(TEST) System.out.println("Upgrading palace");
 		mediator.upgradePalace(coord, palaceLevel);
 	}
 	
 	private void rotateBlock() {
+		if(TEST) System.out.println("Rotating block");
 		mediator.rotateBlock(selectedBlock);
 	}
 
