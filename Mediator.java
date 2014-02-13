@@ -48,7 +48,8 @@ public class Mediator
 	public void placeBlock(Block b, int[] coord)
 	{
 		if(board.placeBlock(b, board.getSpaces()[coord[0]][coord[1]])){
-			Space ret = board.getSpaces()[coord[0]][coord[1]]);
+			Space[][] temp = boarod.getSpaces();
+			Space ret = temp[coord[0]][coord[1]];
 			if(ret.getTile() instanceof PalaceTile){
 				//view.updateSpace(coord[0], coord[1], ret.getTile(), ret.getHeight());
 				updateSpace(coord, ret.getBlock());
@@ -127,11 +128,17 @@ public class Mediator
 	public void upgradePalace(int[] coord, int value)
 	{
 		if(board.upgradePalace(int[] coord, int value)){
-			Space ret = board.getSpaces()[coord[0]][coord[1]]);
+			Space[][] temp = boarod.getSpaces();
+			Space ret = temp[coord[0]][coord[1]];
 			updateSpace(coord, ret.getBlock());
 			//view.updateSpace(coord[0], coord[1], ret.getTile(), ret.getHeight(), (PalaceTile)ret.getTile().getValue());
 		}
 			
+	}
+
+	public void selectSpace(int[] news, int[] old){
+		view.highlightSpace(news[0], news[1];
+		view.unHighlightSpace(old[0], old[1]);
 	}
 
 	public void switchDeveloper(Developer current, Developer last)
@@ -163,7 +170,8 @@ public class Mediator
 		
 		new Tile[][] tiles = b.getGrid();
 
-		Space ret = board.getSpaces()[coord[0]][coord[1]]);
+		Space[][] temp = boarod.getSpaces();
+		Space ret = temp[coord[0]][coord[1]];
 
 		// iterate through grid and only place nonempty tiles
 		for (int i = 0; i < tiles.length; i++) {
