@@ -1,14 +1,16 @@
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.*;
+import java.util.ArrayList;
+
 import javax.swing.*;
 
 public class Controller extends JFrame implements KeyListener { 
 	
-	protected static int DEVELOPER_LEFT 	= 0
-	protected static int DEVELOPER_RIGHT 	= 1
-	protected static int DEVELOPER_UP 		= 2
-	protected static int DEVELOPER_DOWN 	= 3
+	protected static int DEVELOPER_LEFT 	= 0;
+	protected static int DEVELOPER_RIGHT 	= 1;
+	protected static int DEVELOPER_UP 		= 2;
+	protected static int DEVELOPER_DOWN 	= 3;
 	protected static int DEVELOPER_CHANGE	= KeyEvent.VK_TAB;
 	
 	protected static int BLOCK_LEFT			= KeyEvent.VK_LEFT;
@@ -30,10 +32,13 @@ public class Controller extends JFrame implements KeyListener {
 	
 	protected static int END_TURN			= KeyEvent.VK_ENTER;
 
+	private ArrayList<Block> blockList;
     private ArrayList<Developer> developerList;
     //represents current developer
     private int developerIndex;
 
+    private Block selectedBlock;
+    private int[] coord = {0,0};
     JLabel controlOutput;
     
     //DELETE THIS
@@ -141,7 +146,7 @@ public class Controller extends JFrame implements KeyListener {
 	}
 
     private void placeDeveloper(){
-
+    	
     }
 
 	private void changeDeveloper() {
@@ -157,17 +162,73 @@ public class Controller extends JFrame implements KeyListener {
 
 	private void moveBlock(int direction) {
 		if(direction == BLOCK_LEFT) {
-			
+			coord[0] += -1;
 		}
 		else if(direction == BLOCK_RIGHT) {
-			
+			coord[0] += 1;
 		}
 		else if(direction == BLOCK_UP) {
-			
+			coord[1] += 1;
 		}
 		else if(direction == BLOCK_DOWN) {
-		  	
+		  	coord[1] += -1;
 		}
 		return;
+	}
+	
+	private Tile getBlockType(Block b) {
+		Tile[][] tileArray = b.getGrid();
+		return tileArray[2][2];
+	}
+	
+	private boolean selectBlock(char blockType) {
+		if(blockType == 'V') {
+			for(Block b : blockList) {
+				if(getBlockType(b) instanceof VillageTile && b instanceof OneBlock) {
+					selectedBlock = b;
+					return true;
+				}
+			}
+			return false;
+		}
+		else if(blockType == 'I') {
+			selectedBlock = mediator.getIrrigationTile();
+			if(getBlockType(selectedBlock) instanceof Tile && selectedBlock instanceof OneBlock)
+				return true;
+			else return false;
+		}
+		else if(blockType == 'R') {
+			for(Block b : blockList) {
+				if(getBlockType(b) instanceof VillageTile && b instanceof OneBlock) {
+					selectedBlock = b;
+					return true;
+				}
+			}
+			return false;
+		}
+		else if(blockType == '2') {
+			for(Block b : blockList) {
+				if(b instanceof TwoBlock) {
+					selectedBlock = b;
+					return true;
+				}
+			}
+			return false;
+		}
+		else if(blockType == '3') {
+			selectedBlock = mediator.getThreeBlock();
+			if(selectedBlock instanceof ThreeBlock)
+				return true;
+			else return false;
+		}
+		return false;
+	}
+	
+	private boolean isDeveloperOnBoard() {
+		Developer d = developerList.get(developerIndex);
+		if(d.getSpace() instanceof Space) {
+			return true;
+		}
+		return false;
 	}
 }
