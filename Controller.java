@@ -106,7 +106,7 @@ public class Controller extends JFrame implements KeyListener {
     
     @Override
 	public void keyPressed(KeyEvent e) {
-    	if(TEST) System.out.println(KeyEvent.getKeyText(e.getKeyCode()));
+    	//if(TEST) System.out.println(KeyEvent.getKeyText(e.getKeyCode()));
     	int key = e.getKeyCode();
     	// State: Upgrading Palace
     	if(upgradingPalace) {
@@ -427,12 +427,18 @@ public class Controller extends JFrame implements KeyListener {
 
 	private void changeDeveloper() {
 		Developer oldGuy = developerList.get(developerIndex);
-		for(int i = 0; i < developerList.size(); i++) {
-			if(isDeveloperOnBoard(i)) {
-				developerIndex = i;
+		for(int i = 1; i <= developerList.size(); i++) {
+			
+			int index = (developerIndex + i) % developerList.size();
+			if(TEST) System.out.println("Checking index " + index);
+			if(isDeveloperOnBoard(index)) {
+				if(TEST) System.out.println("Developer found at " + index);
+				developerIndex = index;
+				break;
 			}
 		}
-		if(TEST) System.out.println("Switching developer");
+		if(TEST) System.out.println("Switching developer: " + developerList.get(developerIndex).toString() +
+				" to " + oldGuy);
 	    mediator.switchDeveloper(developerList.get(developerIndex), oldGuy);	    
     }
 	
@@ -600,6 +606,7 @@ public class Controller extends JFrame implements KeyListener {
         selectingOneBlock = false;
 
         Developer temp = developerList.get(developerIndex);
+        mediator.switchDeveloper(null, temp);
         mediator.endTurn();
         blockList = mediator.getBlockList();
         developerList = mediator.getDevelopers();
