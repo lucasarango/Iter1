@@ -197,5 +197,9 @@ public class Mediator
 		}
 		
 	}
+	
+	public void endTurn(){
+		game.endTurn();
+	}
 
 }

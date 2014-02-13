@@ -32,9 +32,9 @@ public class Board {
 				spaces[i][j] = new Space();
 			}
 		}
-		placeBlock(new OneBlock(new IrrigationTile()), spaces[1][2]);
-		placeBlock(new OneBlock(new IrrigationTile()), spaces[5][7]);
-		placeBlock(new OneBlock(new IrrigationTile()), spaces[3][11]);
+		placeBlock(new OneBlock(new IrrigationTile()), new int[] {1,3}) ;
+		placeBlock(new OneBlock(new IrrigationTile()), new int[] {5,7});
+		placeBlock(new OneBlock(new IrrigationTile()), new int[] {3,11});
 
 		this.mediator = m;
 
@@ -314,7 +314,7 @@ public class Board {
 		if(temp instanceof PalaceTile)
 		{
 			((PalaceTile)temp).levelUp(value);
-			scorePalace(((PalaceTile)temp).getTile(), coord[0], coord[1]);
+			scorePalace((PalaceTile) temp, coord[0], coord[1]);
 			ret = true;
 		}
 
