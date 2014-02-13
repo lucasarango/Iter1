@@ -70,7 +70,6 @@ public class Mediator
 			if(b instanceof OneBlock){
 				Tile[][] tiles = b.getGrid();
 				Tile checker = tiles[1][1];
-				System.out.println("dis shit a one block");
 
 				if(checker instanceof VillageTile)
 					System.out.println("its a villlage!");
@@ -81,7 +80,6 @@ public class Mediator
 			}
 			else if(b instanceof TwoBlock){
 				view.updateTwoBlockCount(game.getPlayerName());
-				System.out.println("dis shit a two block");
 			}
 
 		}

@@ -360,7 +360,7 @@ public class Board {
 
 	}
 
-private Developer findHighestDeveloper(Space s) {
+	private Developer findHighestDeveloper(Space s) {
 		ArrayList<Space> visited = new ArrayList<Space>();
 		ArrayList<Player> players = new ArrayList<Player>();
 		
@@ -387,30 +387,34 @@ private Developer findHighestDeveloper(Space s) {
 				coord = findSpace(s);
 				x = coord[0];
 				y = coord[1];
+				System.out.println(coord[0]+" "+coord[1]);
 				// FOUND A DEVELOPER
-				if (!(s.getTile() instanceof PalaceTile) && Position.isThereDeveloper(s))
+				if (pos.getDeveloper(spaces[x-1][y-1]) != null)
 				{
-					if(!players.contains(pos.getDeveloper(s).getPlayer()))	//First instance of player, add it to arraylist and create its int array in map
+					System.out.print("Found developer: ");
+					if(!players.contains(pos.getDeveloper(spaces[x-1][y-1]).getPlayer()))	//First instance of player, add it to arraylist and create its int array in map
 					{
-						players.add(pos.getDeveloper(s).getPlayer());
+						System.out.println(pos.getDeveloper(spaces[x-1][y-1]).getPlayer());
+						players.add(pos.getDeveloper(spaces[x-1][y-1]).getPlayer());
 						int[] temp = new int[50];
 						for(int i = 0; i < 50; i++)
 							temp[i] = 0;
-						map.put(pos.getDeveloper(s).getPlayer(), temp);
+						map.put(pos.getDeveloper(spaces[x-1][y-1]).getPlayer(), temp);
 					}
 					if(s.getHeight()>highestVal)	//if height is greater than past heighest value, reset heighest devs so code will know what to pass at the end
 					{
-						highestVal = s.getHeight();
+						highestVal = spaces[x-1][y-1].getHeight();
 						highestDevs.clear();
-						highestDevs.put(pos.getDeveloper(s).getPlayer(), pos.getDeveloper(s));
+						highestDevs.put(pos.getDeveloper(spaces[x-1][y-1]).getPlayer(), pos.getDeveloper(spaces[x-1][y-1]));
 					}
 					else if(s.getHeight() == highestVal)
 					{
-						highestDevs.put(pos.getDeveloper(s).getPlayer(), pos.getDeveloper(s));
+						highestDevs.put(pos.getDeveloper(spaces[x-1][y-1]).getPlayer(), pos.getDeveloper(spaces[x-1][y-1]));
 					}
-					int[] temp = map.get(pos.getDeveloper(s).getPlayer());
+					int[] temp = map.get(pos.getDeveloper(spaces[x-1][y-1]).getPlayer());
 					temp[s.getHeight()]++;
-					map.put(pos.getDeveloper(s).getPlayer(), temp);
+					System.out.println(temp[s.getHeight()]);
+					map.put(pos.getDeveloper(spaces[x-1][y-1]).getPlayer(), temp);
 				}
 				if (spaces[x][y + 1].getTile() instanceof VillageTile
 						&& !visited.contains(spaces[x][y + 1])) {
@@ -522,14 +526,18 @@ private Developer findHighestDeveloper(Space s) {
 		for( int height=highestVal; highestDev == null && height >= 0; height--)
 		{
 			int most = 0;	//most developers on this level
+			System.out.print("Height: "+height+" most: "+most);
 			for(int p = 0; p < players.size(); p++)	//get most developers on this level
 				if(map.get(players.get(p))[height] > most)
 					most = map.get(players.get(p))[height];
+			System.out.print(" most: "+most+"Players: "+players.size());
 			for(int p = 0; p < players.size(); p++)	//if player has less than most developers, remove it from array list
 				if(map.get(players.get(p))[height] < most)
 					players.remove(players.get(p));
+			System.out.println(" Players: "+players.size());
 			if(players.size() == 1)	//if there is only one player left, he had the highest developers
 				highestDev = highestDevs.get(players.get(0));
+			System.out.println(highestDevs.get(players.get(0)));
 		}
 		return highestDev;
 	}
@@ -594,7 +602,7 @@ private Developer findHighestDeveloper(Space s) {
 		{
 			
 			((PalaceTile)temp).levelUp(value);
-			scorePalace((PalaceTile) temp, coord[0], coord[1]);
+			scorePalace((PalaceTile) temp, coord[0]+1, coord[1]+1);
 			ret = true;
 		}
 
