@@ -105,6 +105,7 @@ public class Controller extends JFrame implements KeyListener {
     
     @Override
 	public void keyPressed(KeyEvent e) {
+    	if(TEST) System.out.println(KeyEvent.getKeyText(e.getKeyCode()));
     	int key = e.getKeyCode();
     	// State: Upgrading Palace
     	if(upgradingPalace) {
