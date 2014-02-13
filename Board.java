@@ -385,29 +385,32 @@ private Developer findHighestDeveloper(Space s) {
 				x = coord[0];
 				y = coord[1];
 				// FOUND A DEVELOPER
-				if (!(s.getTile() instanceof PalaceTile) && Position.isThereDeveloper(s))
+				if (pos.getDeveloper(spaces[x-1][y-1]) != null)
 				{
-					if(!players.contains(pos.getDeveloper(s).getPlayer()))	//First instance of player, add it to arraylist and create its int array in map
+					System.out.print("Found developer: ");
+					if(!players.contains(pos.getDeveloper(spaces[x-1][y-1]).getPlayer()))	//First instance of player, add it to arraylist and create its int array in map
 					{
-						players.add(pos.getDeveloper(s).getPlayer());
+						System.out.println(pos.getDeveloper(spaces[x-1][y-1]).getPlayer());
+						players.add(pos.getDeveloper(spaces[x-1][y-1]).getPlayer());
 						int[] temp = new int[50];
 						for(int i = 0; i < 50; i++)
 							temp[i] = 0;
-						map.put(pos.getDeveloper(s).getPlayer(), temp);
+						map.put(pos.getDeveloper(spaces[x-1][y-1]).getPlayer(), temp);
 					}
 					if(s.getHeight()>highestVal)	//if height is greater than past heighest value, reset heighest devs so code will know what to pass at the end
 					{
-						highestVal = s.getHeight();
+						highestVal = spaces[x-1][y-1].getHeight();
 						highestDevs.clear();
-						highestDevs.put(pos.getDeveloper(s).getPlayer(), pos.getDeveloper(s));
+						highestDevs.put(pos.getDeveloper(spaces[x-1][y-1]).getPlayer(), pos.getDeveloper(spaces[x-1][y-1]));
 					}
 					else if(s.getHeight() == highestVal)
 					{
-						highestDevs.put(pos.getDeveloper(s).getPlayer(), pos.getDeveloper(s));
+						highestDevs.put(pos.getDeveloper(spaces[x-1][y-1]).getPlayer(), pos.getDeveloper(spaces[x-1][y-1]));
 					}
-					int[] temp = map.get(pos.getDeveloper(s).getPlayer());
+					int[] temp = map.get(pos.getDeveloper(spaces[x-1][y-1]).getPlayer());
 					temp[s.getHeight()]++;
-					map.put(pos.getDeveloper(s).getPlayer(), temp);
+					System.out.println(temp[s.getHeight()]);
+					map.put(pos.getDeveloper(spaces[x-1][y-1]).getPlayer(), temp);
 				}
 				if (spaces[x][y + 1].getTile() instanceof VillageTile
 						&& !visited.contains(spaces[x][y + 1])) {
@@ -584,14 +587,12 @@ private Developer findHighestDeveloper(Space s) {
 	public boolean upgradePalace(int[] coord, int value){
 		boolean ret = false;
 		Space tempSpace = spaces[coord[0]+1][coord[1]+1];
-		
-		//
 		Tile temp = tempSpace.getTile();
 		if(temp instanceof PalaceTile)
 		{
 			
 			((PalaceTile)temp).levelUp(value);
-			scorePalace((PalaceTile) temp, coord[0], coord[1]);
+			scorePalace((PalaceTile) temp, coord[0]+1, coord[1]+1);
 			ret = true;
 		}
 
