@@ -496,29 +496,32 @@ private Developer findHighestDeveloper(Space s) {
 			for(int checkI=0; checkI<check.size();checkI++)
 			{
 				s = check.get(checkI);
-				if (Position.isThereDeveloper(s))
+				coord = findSpace(s);
+				x = coord[0];
+				y = coord[1];
+				if (Position.isThereDeveloper(spaces[x-1][y-1]))
 				{
-					if(!players.contains(pos.getDeveloper(s).getPlayer()))
+					if(!players.contains(pos.getDeveloper(spaces[x-1][y-1]).getPlayer()))
 					{
-						players.add(pos.getDeveloper(s).getPlayer());
+						players.add(pos.getDeveloper(spaces[x-1][y-1]).getPlayer());
 						int[] temp = new int[50];
 						for(int i = 0; i < 50; i++)
 							temp[i] = 0;
-						map.put(pos.getDeveloper(s).getPlayer(), temp);
+						map.put(pos.getDeveloper(spaces[x-1][y-1]).getPlayer(), temp);
 					}
 					if(s.getHeight()>highestVal)
 					{
 						highestVal = s.getHeight();
 						highestDevs.clear();
-						highestDevs.put(pos.getDeveloper(s).getPlayer(), pos.getDeveloper(s));
+						highestDevs.put(pos.getDeveloper(spaces[x-1][y-1]).getPlayer(), pos.getDeveloper(spaces[x-1][y-1]));
 					}
 					else if(s.getHeight() == highestVal)
 					{
-						highestDevs.put(pos.getDeveloper(s).getPlayer(), pos.getDeveloper(s));
+						highestDevs.put(pos.getDeveloper(spaces[x-1][y-1]).getPlayer(), pos.getDeveloper(spaces[x-1][y-1]));
 					}
-					int[] temp = map.get(pos.getDeveloper(s).getPlayer());
+					int[] temp = map.get(pos.getDeveloper(spaces[x-1][y-1]).getPlayer());
 					temp[s.getHeight()]++;
-					map.put(pos.getDeveloper(s).getPlayer(), temp);
+					map.put(pos.getDeveloper(spaces[x-1][y-1]).getPlayer(), temp);
 				}
 			}
 		}
@@ -537,7 +540,6 @@ private Developer findHighestDeveloper(Space s) {
 			System.out.println(" Players: "+players.size());
 			if(players.size() == 1)	//if there is only one player left, he had the highest developers
 				highestDev = highestDevs.get(players.get(0));
-			System.out.println(highestDevs.get(players.get(0)));
 		}
 		return highestDev;
 	}

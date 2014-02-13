@@ -646,7 +646,7 @@ public class Controller extends JFrame implements KeyListener {
         blockList = mediator.getBlockList();
         developerList = mediator.getDevelopers();
         changeDeveloper(temp);
-        while(true) {
+        while(endGame) {
         	boolean weGetAnA = true;
         }
 	}
