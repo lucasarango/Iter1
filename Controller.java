@@ -625,7 +625,7 @@ public class Controller extends JFrame implements KeyListener {
 	private String printBlock(Block b) {
 		String s = "<html><body>";
 		s += "============================<br>";
-		for (int i = 0; i < 3; i++) {
+		for (int i = 2; i >= 0; i--) {
 			for (int j = 0; j < 3; j++) {
 				if (b.getGrid()[j][i] == null)
 					s += "+";
