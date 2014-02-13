@@ -360,7 +360,7 @@ public class Board {
 
 	}
 
-	private Developer findHighestDeveloper(Space s) {
+private Developer findHighestDeveloper(Space s) {
 		ArrayList<Space> visited = new ArrayList<Space>();
 		ArrayList<Player> players = new ArrayList<Player>();
 		
@@ -597,12 +597,12 @@ public class Board {
 		Space tempSpace = spaces[coord[0]+1][coord[1]+1];
 		System.out.println("trying to upgrade " + coord[0] + " " + coord[1]);
 		//System.out.println("The tile is of type " + tempSpace.getTile().getClass().getSimpleName());
-		Tile temp = tempSpace.getTile();
+		PalaceTile temp = (PalaceTile) tempSpace.getTile();
 		if(temp instanceof PalaceTile)
 		{
 			
-			((PalaceTile)temp).levelUp(value);
-			scorePalace((PalaceTile) temp, coord[0]+1, coord[1]+1);
+			temp.levelUp(value);
+			scorePalace(temp, coord[0]+1, coord[1]+1);
 			ret = true;
 		}
 
