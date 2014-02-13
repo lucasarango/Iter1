@@ -143,6 +143,7 @@ public class Board {
 					// check for valid placement
 					if (checkPlacement(b, spaces[coord[0] + i][coord[1] + j])) {
 						spaces[coord[0] + i][coord[1] + j].placeBlock(b, tiles[i][j]);
+						System.out.println("The space at" +  Arrays.toString(coord) + " is " + spaces[coord[0]+i][coord[1]+j].getTile().getClass().getSimpleName());
 						ret = true;
 						// check if a scoreable tile
 						if (tiles[i][j] instanceof PalaceTile)
@@ -309,10 +310,13 @@ public class Board {
 
 	public boolean upgradePalace(int[] coord, int value){
 		boolean ret = false;
-		Space tempSpace = spaces[coord[0]][coord[1]];
+		Space tempSpace = spaces[coord[0]+1][coord[1]+1];
+		System.out.println("trying to upgrade " + coord[0] + " " + coord[1]);
+		//System.out.println("The tile is of type " + tempSpace.getTile().getClass().getSimpleName());
 		Tile temp = tempSpace.getTile();
 		if(temp instanceof PalaceTile)
 		{
+			
 			((PalaceTile)temp).levelUp(value);
 			scorePalace((PalaceTile) temp, coord[0], coord[1]);
 			ret = true;

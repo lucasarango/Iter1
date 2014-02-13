@@ -505,8 +505,8 @@ public class Controller extends JFrame implements KeyListener {
 		}*/
 		else if(blockType == 'R') {
 			for(Block b : blockList) {
-				if(getBlockType(b) instanceof VillageTile && b instanceof OneBlock) {
-					if(TEST) System.out.println("Obtaining village block");
+				if(getBlockType(b) instanceof RiceTile && b instanceof OneBlock) {
+					if(TEST) System.out.println("Obtaining rice block");
 					selectedBlock = b;
 					return true;
 				}
@@ -579,7 +579,7 @@ public class Controller extends JFrame implements KeyListener {
 	}
 	
 	private void upgradePalace() {
-		if(TEST) System.out.println("Upgrading palace");
+		if(TEST) System.out.println("Upgrading palace " + palaceLevel);
 		mediator.upgradePalace(coord, palaceLevel);
 	}
 	
