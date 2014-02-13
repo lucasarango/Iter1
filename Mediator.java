@@ -27,6 +27,14 @@ public class Mediator
 		
 	}
 
+	public List<BLock> getBlockList(){
+		return game.getPlayerBlocks();
+	}
+
+	public List<Developer> getDevelopers(){
+		return game.getPlayerDevelopers();
+	}
+
 	public void moveDeveloper(Developer d, int[] offset)
 	{
 		int[] oldspace = board.findDeveloper(d);
