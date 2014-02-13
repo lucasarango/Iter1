@@ -39,6 +39,7 @@ public class PlayerView extends JFrame{
 	    }
 	    
 	    this.playerNames = playerNames;
+
         try {
             initialize();
         }
@@ -47,7 +48,6 @@ public class PlayerView extends JFrame{
         }
         setVisible(true);
 	}
-	
 	/**
 	 * Initialize the contents of the this.
 	 */
@@ -117,4 +117,3 @@ public class PlayerView extends JFrame{
 		                              "\nScore: " + score[i]);
 	}
 }
-	

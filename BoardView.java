@@ -13,6 +13,7 @@ public class BoardView extends JFrame{
 	public BoardView(String[] playerNames) {
                      
         this.playerNames = playerNames;
+
         try {
             initialize();
         }
@@ -21,7 +22,7 @@ public class BoardView extends JFrame{
         }
         setVisible(true);
 	}
-	
+
 	/**
 	 * Initialize the contents of the this.
 	 */
@@ -32,7 +33,7 @@ public class BoardView extends JFrame{
         this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.getContentPane().setLayout(new GridLayout(14, 14, 4, 4));
-		
+
 		//Now we initialize the 144 game spaces
 		spaces = new JLabel[14][14];
 		for (int i = 0; i < 14; i++)
@@ -104,3 +105,4 @@ public class BoardView extends JFrame{
     }
     
 }
+

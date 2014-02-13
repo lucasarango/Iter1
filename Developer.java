@@ -1,15 +1,21 @@
 public class Developer {
-	private int xCoord;
-	private int yCoord;
+	private Space location;
+	private Player player;
 
-	
-	public Developer() {
+	public Developer(Player p) {
+		this.player = p;
+	}
 
+	public boolean move(Space s) {
+		this.location = s;
+		return true;
 	}
-	
-	public boolean move(int x, int y) {
-		this.xCoord= x;
-		this.yCoord= y;
+
+	public Space getSpace() {
+		return location;
 	}
-	
+
+	public void score(int score) {
+		player.addToScore(score);
+	}
 }
