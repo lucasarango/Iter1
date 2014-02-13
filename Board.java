@@ -264,6 +264,7 @@ public class Board {
 	public boolean moveDeveloper(Developer d, int[] offset){
 		
 		//find current index
+		Space currentSpace = d.getSpace();
 		int[] currentLocation = findSpace(currentSpace);
 
 		//update location
@@ -308,11 +309,12 @@ public class Board {
 
 	public boolean upgradePalace(int[] coord, int value){
 		boolean ret = false;
-
-		if(spaces[coord[0]][coord[1]] instanceof PalaceTile)
+		Space tempSpace = spaces[coord[0]][coord[1]];
+		Tile temp = tempSpace.getTile();
+		if(temp instanceof PalaceTile)
 		{
-			spaces[coord[0]][coord[1]].levelUp(value);
-			scorePalace(spaces[coord[0]][coord[1]].getTile(), coord[0], coord[1]);
+			((PalaceTile)temp).levelUp(value);
+			scorePalace(((PalaceTile)temp).getTile(), coord[0], coord[1]);
 			ret = true;
 		}
 
