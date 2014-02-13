@@ -132,8 +132,8 @@ public class Board {
 
 		Tile[][] tiles = b.getGrid();
 
-		if(coord[0] >= dimensions[0] || coord[1] >= dimensions[1])
-			return false;
+		/*if(coord[0] >= dimensions[0] || coord[1] >= dimensions[1])
+			return false;*/
 
 		// iterate through grid and only place nonempty tiles
 		for (int i = 0; i < tiles.length; i++) {
@@ -142,8 +142,7 @@ public class Board {
 				if (tiles[i][j] != null) {
 					// check for valid placement
 					if (checkPlacement(b, spaces[coord[0] + i][coord[1] + j])) {
-						spaces[coord[0] + i][coord[1] + j].placeBlock(b,
-								tiles[i][j]);
+						spaces[coord[0] + i][coord[1] + j].placeBlock(b, tiles[i][j]);
 						// check if a scoreable tile
 						if (tiles[i][j] instanceof PalaceTile)
 							scorePalace((PalaceTile) tiles[i][j], coord[0] + i,
