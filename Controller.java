@@ -3,6 +3,7 @@ import java.awt.event.KeyListener;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.*;
 
@@ -30,6 +31,7 @@ public class Controller extends JFrame implements KeyListener {
 
     protected static int VILLAGE			= KeyEvent.VK_V;
     protected static int IRRIGATION			= KeyEvent.VK_I;
+    protected static int PALACE				= KeyEvent.VK_P;
 	protected static int RICE				= KeyEvent.VK_R;
 	
 	protected static int PALACE_PLACE		= KeyEvent.VK_P;
@@ -40,8 +42,8 @@ public class Controller extends JFrame implements KeyListener {
 	protected static int QUIT				= KeyEvent.VK_Q;	
 	protected static int END_TURN			= KeyEvent.VK_ENTER;
 
-	private ArrayList<Block> blockList;
-    private ArrayList<Developer> developerList;
+	private List<Block> blockList;
+    private List<Developer> developerList;
     //represents current developer
     private int developerIndex;
 
@@ -49,6 +51,7 @@ public class Controller extends JFrame implements KeyListener {
     private int[] coord = {0,0};
     
     private boolean placingBlock = false;
+    private boolean placingPalace = false;
     private boolean upgradingPalace	= false;
     private int palaceLevel	= 0;
     private boolean placingDeveloper = false;
@@ -85,10 +88,15 @@ public class Controller extends JFrame implements KeyListener {
     }
     
     private void initializeGame() {
-    	mediator = new Mediator();
+    	List<String> names = new ArrayList<String>();
+    	names.add("Player 1");
+    	names.add("Player 2");
+    	names.add("Player 3");
+    	names.add("Player 4");
+    	mediator = new Mediator(names);
 
     	//Initial developer and block list
-    	developerList = mediator.getDeveloperList();
+    	developerList = mediator.getDevelopers();
     	blockList = mediator.getBlockList();
     }
     
@@ -96,32 +104,27 @@ public class Controller extends JFrame implements KeyListener {
 	public void keyPressed(KeyEvent e) {
     	System.out.println("Key pressed");
     	int key = e.getKeyCode();
-    	// State: Selecting Palace
+    	// State: Upgrading Palace
     	if(upgradingPalace) {
 	    	if(key == MOVE_LEFT) {
 				moveCursor(MOVE_LEFT);
 				setTextPalaceUpgrade();
-				return;
 	    	}
 			else if(key == MOVE_RIGHT) {
 				moveCursor(MOVE_RIGHT);
 				setTextPalaceUpgrade();
-				return;
 			}
 			else if(key == MOVE_UP) {
 				moveCursor(MOVE_UP);
 				setTextPalaceUpgrade();
-				return;
 			}
 			else if(key == MOVE_DOWN) {
 				moveCursor(MOVE_DOWN);
 				setTextPalaceUpgrade();
-				return;
 			}
 			else if(key == PALACE_UPGRADE) {
 				palaceLevel++;
 				setTextPalaceUpgrade();
-				return;
 			}
 			else if(key == PALACE_PLACE) {
 				upgradePalace();
@@ -129,15 +132,52 @@ public class Controller extends JFrame implements KeyListener {
 				palaceLevel = 0;
 				resetCursor();
 				setTextMenu();
-				return;
 			}
 			else if(key == QUIT) {
 				upgradingPalace = false;
 				palaceLevel = 0;
 				resetCursor();
 				setTextMenu();
-				return;
 			}
+	    	return;
+    	}
+    	
+    	// State: Placing Palace
+    	if(placingPalace) {
+	    	if(key == MOVE_LEFT) {
+				moveCursor(MOVE_LEFT);
+				setTextPlacingPalace();
+	    	}
+			else if(key == MOVE_RIGHT) {
+				moveCursor(MOVE_RIGHT);
+				setTextPlacingPalace();
+			}
+			else if(key == MOVE_UP) {
+				moveCursor(MOVE_UP);
+				setTextPlacingPalace();
+			}
+			else if(key == MOVE_DOWN) {
+				moveCursor(MOVE_DOWN);
+				setTextPlacingPalace();
+			}
+			else if(key == PALACE_UPGRADE) {
+				palaceLevel++;
+				setTextPlacingPalace();
+			}
+			else if(key == PALACE_PLACE) {
+				placePalace();
+				placingPalace = false;
+				palaceLevel = 0;
+				resetCursor();
+				setTextMenu();
+			}
+			else if(key == QUIT) {
+				placingPalace = false;
+				palaceLevel = 0;
+				resetCursor();
+				setTextMenu();
+			}
+	    	return;
     	}
     	
     	// State: Placing Block
@@ -145,43 +185,36 @@ public class Controller extends JFrame implements KeyListener {
     		if(key == MOVE_LEFT) {
 				moveCursor(MOVE_LEFT);
 				setTextPlaceBlock();
-				return;
 	    	}
 			else if(key == MOVE_RIGHT) {
 				moveCursor(MOVE_RIGHT);
 				setTextPlaceBlock();
-				return;
 			}
 			else if(key == MOVE_UP) {
 				moveCursor(MOVE_UP);
 				setTextPlaceBlock();
-				return;
 			}
 			else if(key == MOVE_DOWN) {
 				moveCursor(MOVE_DOWN);
 				setTextPlaceBlock();
-				return;
 			}
 			else if(key == BLOCK_ROTATE) {
 				rotateBlock();
 				setTextPlaceBlock();
-				return;
 			}
 			else if(key == BLOCK_PLACE) {
 				placeBlock();
 				placingBlock = false;
 				resetCursor();
 				setTextMenu();
-				return;
 			}
-			
 			else if(key == QUIT) {
 				returnBlock();
 				placingBlock = false;
 				resetCursor();
 				setTextMenu();
-				return;
 			}
+    		return;
     	}
     	
     	// State: Placing Developer
@@ -189,36 +222,31 @@ public class Controller extends JFrame implements KeyListener {
     		if(key == MOVE_LEFT) {
 				moveCursor(MOVE_LEFT);
 				setTextPlaceDeveloper();
-				return;
 	    	}
 			else if(key == MOVE_RIGHT) {
 				moveCursor(MOVE_RIGHT);
 				setTextPlaceDeveloper();
-				return;
 			}
 			else if(key == MOVE_UP) {
 				moveCursor(MOVE_UP);
 				setTextPlaceDeveloper();
-				return;
 			}
 			else if(key == MOVE_DOWN) {
 				moveCursor(MOVE_DOWN);
 				setTextPlaceDeveloper();
-				return;
 			}
 			else if(key == DEVELOPER_PLACE) {
 				placeDeveloper();
 				placingDeveloper = false;
 				resetCursor();
 				setTextMenu();
-				return;
 			}
 			else if(key == QUIT) {
 				placingDeveloper = false;
 				resetCursor();
 				setTextMenu();
-				return;
 			}
+    		return;
     	}
     	// State: Choosing block size
     	if(selectingBlockSize) {
@@ -226,22 +254,20 @@ public class Controller extends JFrame implements KeyListener {
     			selectingBlockSize = false;
     			selectingOneBlock = true;
     			setTextSelectingOneBlock();
-    			return;
     		}
     		else if(key == TWOBLOCK) {
     			selectBlock('2');
     			selectingBlockSize = false;
     			placingBlock = true;
     			setTextPlaceBlock();
-    			return;
     		}
     		else if(key == THREEBLOCK) {
     			selectBlock('3');
     			selectingBlockSize = false;
     			placingBlock = true;
     			setTextPlaceBlock();
-    			return;
     		}
+    		return;
     	}
     	// State: Choosing one-block size
     	if(selectingOneBlock) {
@@ -250,22 +276,26 @@ public class Controller extends JFrame implements KeyListener {
     			selectingOneBlock = false;
     			placingBlock = true;
     			setTextPlaceBlock();
-    			return;
     		}
     		else if(key == VILLAGE) {
     			selectBlock('V');
     			selectingOneBlock = false;
     			placingBlock = true;
     			setTextPlaceBlock();
-    			return;
+    		}
+    		else if(key == PALACE) {
+    			selectBlock('P');
+    			selectingOneBlock = false;
+    			placingPalace = true;
+    			setTextPlacingPalace();
     		}
     		else if(key == RICE) {
     			selectBlock('R');
     			selectingOneBlock = false;
     			placingBlock = true;
     			setTextPlaceBlock();
-    			return;
     		}
+    		return;
     	}
     	
 		// Moving Developer
@@ -294,7 +324,7 @@ public class Controller extends JFrame implements KeyListener {
 		
 		else if(key == DEVELOPER_PLACE) {
 			for(int i = 0; i < developerList.size(); i++) {
-				if(isDeveloperOnBoard(i)) {
+				if(!isDeveloperOnBoard(i)) {
 					developerIndex = i;
 					break;
 				}
@@ -312,6 +342,7 @@ public class Controller extends JFrame implements KeyListener {
 		else if(key == BLOCK_PLACE) {
 			setTextSelectingBlockSize();
 			selectingBlockSize = true;
+			return;
 		}
 		
 		// Play action token
@@ -439,6 +470,12 @@ public class Controller extends JFrame implements KeyListener {
 				return true;
 			else return false;
 		}
+		/*else if(blockType == 'P') {
+			selectedBlock = mediator.getPalaceTile();
+			if(getBlockType(selectedBlock) instanceof Tile && selectedBlock instanceof OneBlock)
+				return true;
+			else return false;
+		}*/
 		else if(blockType == 'R') {
 			for(Block b : blockList) {
 				if(getBlockType(b) instanceof VillageTile && b instanceof OneBlock) {
@@ -472,9 +509,11 @@ public class Controller extends JFrame implements KeyListener {
 	}
 	
 	private void returnBlock() {
-		if((getBlockType(selectedBlock) instanceof VillageTile && selectedBlock instanceof OneBlock) ||
-				selectedBlock instanceof ThreeBlock) {
-			mediator.returnBlock(selectedBlock);
+		if(selectedBlock instanceof ThreeBlock) {
+			mediator.returnThreeBlock(selectedBlock);
+		}
+		else if((getBlockType(selectedBlock) instanceof VillageTile && selectedBlock instanceof OneBlock)) {
+			mediator.returnIrrigationTile(selectedBlock);
 		}
 		
 	}
@@ -499,6 +538,9 @@ public class Controller extends JFrame implements KeyListener {
 		upgradingPalace = true;
 		
 	}
+	private void placePalace() {
+		mediator.placePalace(coord, palaceLevel);
+	}
 	
 	private void upgradePalace() {
 		mediator.upgradePalace(coord, palaceLevel);
@@ -521,7 +563,7 @@ public class Controller extends JFrame implements KeyListener {
         Developer temp = developerList.get(developerIndex);
         mediator.endTurn();
         blockList = mediator.getBlockList();
-        developerList.getDeveloperList();
+        developerList = mediator.getDevelopers();
 	}
 
 	
@@ -548,18 +590,22 @@ public class Controller extends JFrame implements KeyListener {
 		return s;
 	}
 	private void setTextPlaceBlock() {
-		controlOutput.setText("<html><body>Placing block. Coordinate: " + Arrays.toString(coord) + ".<br>" + printBlock(selectedBlock) +
+		controlOutput.setText("<html><body>Placing block. Coordinates: " + Arrays.toString(coord) + ".<br>" + printBlock(selectedBlock) +
 				"\n" + "Press R to upgrade, " +	"P to place palace, and Q to quit.</body></html>");
 	}
 	private void setTextPalaceUpgrade() {
-		controlOutput.setText("<html><body>Upgrading palace. Coordinate: " + Arrays.toString(coord) + ", Level: " + palaceLevel + ".<br>Press P to confirm, " +
+		controlOutput.setText("<html><body>Upgrading palace. Coordinates: " + Arrays.toString(coord) + ", Level: " + palaceLevel + ".<br>Press P to confirm, " +
+				"U to upgrade palace, and Q to quit.</body></html>");
+	}
+	private void setTextPlacingPalace() {
+		controlOutput.setText("<html><body>Placing palace. Coordinates: " + Arrays.toString(coord) + ", Level: " + palaceLevel + ".<br>Press P to confirm, " +
 				"U to upgrade palace, and Q to quit.</body></html>");
 	}
 	private void setTextMenu() {
 		controlOutput.setText("<html><body>U: Upgrade palace.<br>B: Place block.<br>P: Place developer.</html></body>"); // Main Menu
 	}
 	private void setTextPlaceDeveloper() {
-		controlOutput.setText("<html><body>Placing Developer. Coordinate: " + Arrays.toString(coord) +
+		controlOutput.setText("<html><body>Placing Developer. Coordinates: " + Arrays.toString(coord) +
 				"D to place developer, and Q to quit.</html></body>");
 	}
 	private void setTextSelectingBlockSize() {
