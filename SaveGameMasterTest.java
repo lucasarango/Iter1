@@ -14,7 +14,7 @@ public class SaveGameMasterTest {
 		names.add("fred");
 		names.add("george");
 		
-		GameMaster master=new GameMaster(names);
+		GameMaster master=new GameMaster(names,null);
 		
 		PrintWriter savefile = new PrintWriter("testsavefile");
 		master.save(savefile);
@@ -22,7 +22,7 @@ public class SaveGameMasterTest {
 		
 		ArrayList<String> dummynames=new ArrayList<String>();
 		dummynames.add("nobody");
-		GameMaster master2 = new GameMaster(dummynames);
+		GameMaster master2 = new GameMaster(dummynames,null);
 		
 		File loaded = new File("testsavefile");
 		Scanner scanner = new Scanner(loaded);
