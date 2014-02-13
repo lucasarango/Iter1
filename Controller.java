@@ -330,7 +330,6 @@ public class Controller extends JFrame implements KeyListener {
 		
 		// Scroll developer
 		else if(key == DEVELOPER_CHANGE) {
-			if(TEST) System.out.println("Tab pressed");
 			changeDeveloper();
 			return;
 		}
