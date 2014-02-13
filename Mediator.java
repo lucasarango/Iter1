@@ -1,10 +1,15 @@
 
+import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.File;
 import java.util.List;
+import java.util.Scanner;
 
 public class Mediator
 {
+	
+	public static final String SAVEPATH="savefile";
+	
 	private GameMaster game;
 	private Board board;
 	private View view;
@@ -182,14 +187,30 @@ public class Mediator
 
 	}
 
-	public void saveGame()
+	public void saveGame() throws FileNotFoundException
 	{
-
+		PrintWriter savefile = new PrintWriter(SAVEPATH);
+			game.save(savefile);
+			board.save(savefile);
+		savefile.close();
 	}
 
-	public void loadGame()
+	public void loadGame() throws FileNotFoundException
 	{
-
+		File loaded = new File(SAVEPATH);
+		Scanner scanner = new Scanner(loaded);
+		game.load(scanner);
+		board.load(scanner);
+		scanner.close();
+		for (Player p:game.playerList){
+			for (Developer d: p.getDevelopers()){
+				if (d.getSpace()!=null){
+					int x=d.getSpace().x;
+					int y = d.getSpace().y;
+					d.move(board.getSpaces()[y][x]);
+				}
+			}
+		}
 	}
 
 	private void updateSpace(int[] coord, Block b){

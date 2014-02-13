@@ -95,7 +95,13 @@ public class Inventory {
 
 	/**this save function assumes it will be encapsulated in an xml tag*/
 	public void save(PrintWriter p){
-		p.append("developers:"+this.developers.size()+"\n");
+		for (Developer d:developers){
+			p.append("dev:");
+			if (d.getSpace()!=null){
+				p.append(d.getSpace().x+""+d.getSpace().y);
+			}
+			p.append('\n');
+		}
 		for (Block block: oneBlocksLeft){
 			p.append("<"+OneBlock.class.getName()+">\n");
 			block.save(p);
@@ -147,10 +153,12 @@ public class Inventory {
 				if (colonIndex>0){
 					String tag = line.substring(0, colonIndex);
 					String value = line.substring(colonIndex + 1, line.length());
-					if (tag.equals("developers")){
-						int numDevelopers=Integer.parseInt(value);
-						for (int i=0; i< numDevelopers;i++){
-							developers.add(new Developer(owner));
+					if (tag.equals("dev")){
+						Developer newb =new Developer(owner); 
+						developers.add(newb);
+						if (value.length()>0){
+							String[] xy=value.split(",");
+							newb.move(new Space(Integer.parseInt(xy[0]), Integer.parseInt(xy[1])));
 						}
 					}
 				}

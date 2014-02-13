@@ -5,7 +5,7 @@ public class GameMaster {
 	private Player currentPlayer;
 	private int actionPoints;
 	private int turnScore;
-	private List<Player> playerList;
+	List<Player> playerList;
 	private Position pos = new Position();
 	private Mediator mediator;
 

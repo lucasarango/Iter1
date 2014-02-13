@@ -111,7 +111,6 @@ public class Player {
 			
 			}else if (line.startsWith("<inv>")){
 				inventory.load(reader, this);
-				
 			}else{
 				int colonIndex = line.indexOf(':');
 				if (colonIndex>0){

@@ -31,7 +31,7 @@ public class Board {
 
 		for (int i = 0; i < dimensions[0]; i++) {
 			for (int j = 0; j < dimensions[1]; j++) {
-				spaces[i][j] = new Space();
+				spaces[i][j] = new Space(j,i);
 			}
 		}
 		placeBlock(new OneBlock(new IrrigationTile()), new int[] {1,3}) ;
@@ -56,7 +56,7 @@ public class Board {
 
 		for (int i = 0; i < dimensions[0]; i++) {
 			for (int j = 0; j < dimensions[1]; j++) {
-				spaces[i][j] = new Space();
+				spaces[i][j] = new Space(j,i);
 			}
 		}
 
@@ -279,7 +279,7 @@ public class Board {
 		spaces = new Space[dimensions[0]][dimensions[1]];
 		for (int i = 0; i < dimensions[0]; i++)
 			for (int j = 0; j < dimensions[1]; j++)
-				spaces[i][j] = new Space();
+				spaces[i][j] = new Space(j,i);
 		System.out.println("dimensions:" +dimensions[0]+" "+dimensions[1]+" three left: "+threeBlocksLeft.size()+" irri left: "+next);
 		while(s.hasNext() && s.next().equals("position:"))
 		{
