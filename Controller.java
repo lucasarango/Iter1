@@ -209,7 +209,7 @@ public class Controller extends JFrame implements KeyListener {
 				setTextMenu();
 				return;
 			}
-			else if(key == QUIT || key == DEVELOPER_CHANGE) {
+			else if(key == QUIT) {
 				placingDeveloper = false;
 				resetCursor();
 				setTextMenu();
@@ -265,26 +265,45 @@ public class Controller extends JFrame implements KeyListener {
     	}
     	
 		// Moving Developer
-		if(key == DEVELOPER_LEFT)
+		if(key == DEVELOPER_LEFT) {
 			moveDeveloper(DEVELOPER_LEFT);
-		else if(key == DEVELOPER_RIGHT)
+			return;
+		}
+		else if(key == DEVELOPER_RIGHT) {
 			moveDeveloper(DEVELOPER_RIGHT);
-		else if(key == DEVELOPER_UP)
+			return;
+		}
+		else if(key == DEVELOPER_UP) {
 			moveDeveloper(DEVELOPER_UP);
-		else if(key == DEVELOPER_DOWN)
+			return;
+		}
+		else if(key == DEVELOPER_DOWN) {
 			moveDeveloper(DEVELOPER_DOWN);
+			return;
+		}
 		
 		// Scroll developer
 		else if(key == DEVELOPER_CHANGE) {
 			changeDeveloper();
-			if(!isDeveloperOnBoard()) {
-				placingDeveloper = true;
+			return;
+		}
+		
+		else if(key == DEVELOPER_PLACE) {
+			for(int i = 0; i < developerList.size(); i++) {
+				if(isDeveloperOnBoard(i)) {
+					developerIndex = i;
+					break;
+				}
 			}
+			placingDeveloper = true;
+			setTextPlaceDeveloper();
+			return;
 		}
 		
 		else if(key == PALACE_UPGRADE) {
 			selectPalace();
 			setTextPalaceUpgrade();
+			return;
 		}
 		else if(key == BLOCK_PLACE) {
 			setTextSelectingBlockSize();
@@ -345,13 +364,29 @@ public class Controller extends JFrame implements KeyListener {
 
     private void placeDeveloper()
     {
-    	mediator.placeDeveloper(developerList.get(developerIndex), coord)
-    	placeDeveloper = false;
+    	mediator.placeDeveloper(developerList.get(developerIndex), coord);
+    	placingDeveloper = false;
     }
 
 	private void changeDeveloper() {
 		Developer oldGuy = developerList.get(developerIndex);
-	    developerIndex = (developerIndex + 1) % developerList.size();
+		for(int i = 0; i < developerList.size(); i++) {
+			if(isDeveloperOnBoard(i)) {
+				developerIndex = i;
+			}
+		}
+	    mediator.switchDeveloper(developerList.get(developerIndex), oldGuy);	    
+    }
+	
+	private void changeDeveloper(Developer oldGuy) {
+		for(int i = 0; i < developerList.size(); i++) {
+			if(isDeveloperOnBoard(i)) {
+				developerIndex = i;
+			}
+			else if(i == developerList.size() - 1) {
+				mediator.switchDeveloper(null, oldGuy);	
+			}
+		}
 	    mediator.switchDeveloper(developerList.get(developerIndex), oldGuy);	    
     }
 
@@ -448,6 +483,14 @@ public class Controller extends JFrame implements KeyListener {
 		return false;
 	}
 	
+	private boolean isDeveloperOnBoard(int developerIndex) {
+		Developer d = developerList.get(developerIndex);
+		if(d.getSpace() instanceof Space) {
+			return true;
+		}
+		return false;
+	}
+	
 	private void selectPalace() {
 		upgradingPalace = true;
 		
@@ -492,7 +535,7 @@ public class Controller extends JFrame implements KeyListener {
 				"U to upgrade palace, and Q to quit.</body></html>");
 	}
 	private void setTextMenu() {
-		controlOutput.setText("<html><body>U: Upgrade palace.<br>B: Place block.</html></body>"); // Main Menu
+		controlOutput.setText("<html><body>U: Upgrade palace.<br>B: Place block.<br>P: Place developer.</html></body>"); // Main Menu
 	}
 	private void setTextPlaceDeveloper() {
 		controlOutput.setText("<html><body>Placing Developer. Coordinate: " + Arrays.toString(coord) +
