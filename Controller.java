@@ -9,6 +9,8 @@ import javax.swing.*;
 
 public class Controller extends JFrame implements KeyListener { 
 	
+	private boolean TEST = true;
+	
 	protected static int DEVELOPER_LEFT 	= 0;
 	protected static int DEVELOPER_RIGHT 	= 1;
 	protected static int DEVELOPER_UP 		= 2;
@@ -102,7 +104,6 @@ public class Controller extends JFrame implements KeyListener {
     
     @Override
 	public void keyPressed(KeyEvent e) {
-    	System.out.println("Key pressed");
     	int key = e.getKeyCode();
     	// State: Upgrading Palace
     	if(upgradingPalace) {
@@ -349,6 +350,11 @@ public class Controller extends JFrame implements KeyListener {
 		else if(key == ACTION_TOKEN_USE) {
 			//mediator.
 		}
+		
+		// End turn
+		else if(key == END_TURN) {
+			endTurn();
+		}
 	}
 	
 	@Override
@@ -440,7 +446,7 @@ public class Controller extends JFrame implements KeyListener {
 		else if(direction == MOVE_DOWN) {
 		  	coord[1] += -1;
 		}
-		//mediator.selectSpace(coord, oldCoot);
+		mediator.selectSpace(coord, oldCoot);
 		return;
 	}
 	
@@ -553,6 +559,7 @@ public class Controller extends JFrame implements KeyListener {
 	//Pull new block lists, new developer lists, etc
 	private void endTurn()
 	{
+		if(TEST) System.out.println("Ending turn");
 		placingBlock = false;
      	upgradingPalace	= false;
      	palaceLevel	= 0;

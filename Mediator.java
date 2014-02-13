@@ -155,11 +155,14 @@ public class Mediator
 	public void switchDeveloper(Developer current, Developer last)
 	{
 		int[] coord = new int[2];
+		if(current != null){
 		coord = board.findDeveloper(current);
 		view.switchFromDeveloper(coord[0], coord[1]);
-
+		}
+		if(last != null){
 		coord = board.findDeveloper(last);
 		view.switchToDeveloper(coord[0], coord[1]);
+		}
 
 	}
 
