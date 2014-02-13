@@ -89,16 +89,17 @@ public class Player {
 	/**this save function assumes it will be encapsulated in an xml tag*/
 	public void save(PrintWriter p){
 		p.append("name:"+this.name+"\n");
-		p.append("invDevelopers:"+inventory.getDevelopers().size()+"\n");
-		for (Block one: inventory.getOneBlocksLeft()){
-			//p.append("oneBlock:"+one.)
-		}
+		p.append("<inv>\n");
+		inventory.save(p);
+		p.append("</inv>\n");
 	}
 	
 	/**this load function assumes it will be encapsulated in an xml tag,
 	 * and will exit when it sees a closing tag of any kind that it did
 	 * not create*/
 	public void load(Scanner reader){
+		
+		inventory = new Inventory(this);
 		
 		//this will be escaped with a break;
 		while(true){
@@ -108,6 +109,9 @@ public class Player {
 			if (line.startsWith("</")){
 				break;
 			
+			}else if (line.startsWith("<inv>")){
+				inventory.load(reader, this);
+				
 			}else{
 				int colonIndex = line.indexOf(':');
 				if (colonIndex>0){

@@ -28,5 +28,9 @@ public class SaveGameMasterTest {
 		Scanner scanner = new Scanner(loaded);
 		master2.load(scanner);
 		scanner.close();
+		
+		PrintWriter saved_loaded_saved = new PrintWriter("testsavefile2");
+		master2.save(saved_loaded_saved);
+		saved_loaded_saved.close();
 	}
 }
