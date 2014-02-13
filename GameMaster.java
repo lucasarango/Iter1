@@ -6,8 +6,9 @@ public class GameMaster {
 	private int turnScore;
 	private List<Player> playerList;
 	private Position pos = new Position();
+	private Mediator mediator;
 
-	public GameMaster(List<String> names) {
+	public GameMaster(List<String> names, Mediator m) {
 		playerList = new ArrayList<Player>();
 		// Create new players and add them to the playerList
 		for (int i = 0; i < names.size(); i++) {
@@ -17,6 +18,8 @@ public class GameMaster {
 		}
 		currentPlayer = playerList.get(0);
 		actionPoints = 6;
+
+		this.mediator = m;
 	}
 
 	public String getPlayerName() {

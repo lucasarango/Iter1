@@ -5,23 +5,38 @@ public class Mediator
 {
 	private GameMaster game;
 	private Board board;
-	private BoardView boardView;
-	private PlayerView playerView;
+	private View view;
 	private Controller controller;
 
-	public Mediator(Controller c)
+	public Mediator(List<String> names)
 	{
-		game = new GameMaster(this);
+		game = new GameMaster(names, this);
 		board = new Board(this);
-		playerView = new PlayerView();
-		boardView = new BoardView();
-		controller = c;
+		view = new View(names);
+
+		//update board in view
+		Spaces[][] spaces = board.getSpaces();
+
+		for(int x = 0; x < spaces[0].length; x++)
+		{
+			for(int y = 0; y < spaces[1].length; y++)
+			{
+				view.updateSpace(x, y, spaces[x][y].getTile(), spaces[x][y].getHeight());
+			}
+		}
+		
 	}
 
 	public void moveDeveloper(Developer d, int[] offset)
 	{
-		if(board.moveDeveloper(d, offset))
-			//notify bv
+		int[] oldspace = board.findDeveloper(d);
+
+		if(board.moveDeveloper(d, offset)){
+
+			view.updateDeveloper(offset[0] + oldspace[0], offset[1] + oldspace[1], game.getPlayerName());
+
+			view.removeDeveloper(oldspace[0], oldspace[1]);
+		}
 		else
 			//notify error
 	}
@@ -29,7 +44,15 @@ public class Mediator
 	public void placeBlock(Block b, int[] coord)
 	{
 		if(board.placeBlock(b, board.getSpaces()[coord[0]][coord[1]]))
-			//notify bv and pv
+			view.updateSpace(coord[0], coord[1], board.getSpaces()[coord[0]][coord[1]]).getTile(), board.getSpaces()[coord[0]][coord[1]]).getHeight())
+		else
+			//notify error
+	}
+
+	public void placeDeveloper(Developer d, int[] coord)
+	{
+		if(board.placeDeveloper(d, coord))
+			view.updateDeveloper(int[0], int[1], game.getPlayerName());
 		else
 			//notify error
 	}

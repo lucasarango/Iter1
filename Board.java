@@ -253,13 +253,10 @@ public class Board {
 		return this.spaces;
 	}
 
-	public void moveDeveloper(Developer d, int[] offset){
-		//find current space
-		Space currentSpace = d.getSpace();
+	public boolean moveDeveloper(Developer d, int[] offset){
+		
 		//find current index
 		int[] currentLocation = findSpace(currentSpace);
-
-
 
 		//update location
 		currentLocation[0] += offset[0];
@@ -268,14 +265,37 @@ public class Board {
 		if(currentLocation[0] >= dimensions[0] || currentLocation[1] >= dimensions[1])
 			return false;
 
-			
+
 		Space newSpace = spaces[currentLocation[0]][currentLocation[1]];
 
 		//change developer space and update positions
 		d.move(newSpace);
+	
 		pos.removePair(currentSpace);
+
 		pos.addPair(newSpace, d);
 
+		return true;
+	}
+
+	public boolean placeDeveloper(Developer d, int[] coord){
+		
+
+		if(coord[0] >= dimensions[0] || coord[1] >= dimensions[1])
+			return false;
+
+
+		Space newSpace = spaces[coord[0]][coord[1]];
+
+		//change developer space and update positions
+		d.move(newSpace);
+		pos.addPair(newSpace, d);
+
+		return true;
+	}
+
+	public int[] findDeveloper(Developer d){
+		return findSpace(d.getSpace());
 	}
 
 }
