@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.util.List;
 
 public class View {
     
@@ -6,23 +7,41 @@ public class View {
     private PlayerView playerView;
     private String[] playerNames;
     
-    public View (String[] playerNames) {
-        this.playerNames = playerNames;
-        boardView = new BoardView(playerNames);
-        playerView = new PlayerView(playerNames);
+    public View (List<String> playerNames) {
+        this.playerNames = playerNames.toArray(new String[playerNames.size()]);
+        boardView = new BoardView(this.playerNames);
+        playerView = new PlayerView(this.playerNames);
     }
     
     //Order of display on single space is 
 	//Type, Height, Developer, Palace Height (if there)
 	
 	//Update space w/ no palace
-    public void updateSpace(int x, int y, String type, int height) {
+    public void updateSpace(int x, int y, Tile tile, int height) {
+        String type = "";
+        if (tile instanceof VillageTile)
+            type = "V";
+        else if (tile instanceof PalaceTile)
+            type = "P";
+        else if (tile instanceof RiceTile)
+            type = "R";
+        else if (tile instanceof IrrigationTile)
+            type = "I";
         boardView.updateSpace(x, y, type, height);
     }
     
     //Update space w/ palace
-    public void updateSpace(int x, int y, String type, int height,
+    public void updateSpace(int x, int y, Tile tile, int height,
                             int palaceLevel) {
+        String type = "";
+        if (tile instanceof VillageTile)
+            type = "V";
+        else if (tile instanceof PalaceTile)
+            type = "P";
+        else if (tile instanceof RiceTile)
+            type = "R";
+        else if (tile instanceof IrrigationTile)
+            type = "I";
         boardView.updateSpace(x, y, type, height, palaceLevel);
     }
     
