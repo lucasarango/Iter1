@@ -1,22 +1,19 @@
-
 import java.io.PrintWriter;
 import java.io.File;
 import java.util.List;
 
-public class Mediator
-{
+public class Mediator {
 	private GameMaster game;
 	private Board board;
 	private View view;
 	private Controller controller;
 
-	public Mediator(List<String> names)
-	{
+	public Mediator(List<String> names) {
 		game = new GameMaster(names, this);
 		board = new Board(this);
 		view = new View(names);
 
-		//update board in view
+		// update board in view
 		Space[][] spaces = board.getSpaces();
 
 		for(int x = 0; x < spaces[0].length; x++)
